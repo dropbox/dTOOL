@@ -15,12 +15,12 @@ Developer tools and AI workflow infrastructure.
 |---------|-------------|--------|---------|
 | **dashflow** | AI agent workflow platform. 108 crates, LangChain-compatible. | Preview | Apache 2.0 |
 | **ai_template** | Canonical template for all AI org repos. Scripts, hooks, structure. | Preview | Apache 2.0 |
-| **dashterm2** | iTerm2 fork with AI automation. | Preview | GPL v2 |
+| **dashnews** | GitHub Discussions host and tooling. | Preview | Apache 2.0 |
+| **dashterm2** | iTerm2 fork adapted to use dTerm with AI-native features. | Preview | GPL v2 |
 | **dterm** | Terminal v3. Next-gen, designed for dashflow integration. | Preview | Apache 2.0 |
+| **dasher** | Unified agentic coding CLI. Claude Code + Codex + Gemini patterns. | Planned | Apache 2.0 |
 | **codex_dashflow** | Codex ported to Rust/DashFlow. Research for Dasher. | Preview | Apache 2.0 |
 | **codex_inky** | Codex + inky TUI. | Preview | Apache 2.0 |
-| **dasher** | Unified agentic coding CLI. Claude Code + Codex + Gemini patterns. | Planned | Apache 2.0 |
-| **gemini_cli_rs** | Gemini CLI port. Research for Dasher. | Planned | Apache 2.0 |
 
 ## License
 
