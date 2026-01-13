@@ -5,10 +5,6 @@
 
 Developer tools and AI workflow infrastructure.
 
-## Thesis
-
-**The terminal is where AI belongs.** GUIs are for humans; terminals are for agents. These tools build the infrastructure for AI-native development—workflow orchestration that chains tools like thoughts, terminals that understand context, and coding assistants that work with you in the environment you already live in. Not AI bolted onto IDEs, but AI that thinks in pipes and processes.
-
 ## Projects
 
 | Project | Description | Status | License |
