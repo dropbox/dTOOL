@@ -1,0 +1,11 @@
+{
+  "passed" : 4,
+  "struct_sizes" : {
+    "packed_screen_char_t" : 8,
+    "savings_percent" : 33.333333333333336,
+    "screen_char_t" : 12
+  },
+  "failed" : 0,
+  "benchmark" : "iTermPackedCharacterBuffer",
+  "date" : "2025-12-17T20:31:38Z"
+}

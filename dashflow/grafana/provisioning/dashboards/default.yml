@@ -1,0 +1,26 @@
+# DashFlow Dashboard Provisioning Configuration
+#
+# Phase 913: Locked to prevent UI drift
+# - disableDeletion: true  → Provisioned dashboards cannot be deleted via UI
+# - allowUiUpdates: false  → UI changes are blocked, ensuring dashboards match git
+#
+# To modify dashboards:
+# 1. Edit JSON files in grafana/dashboards/
+# 2. Commit changes to git
+# 3. Restart Grafana or wait for updateIntervalSeconds
+#
+# For development/testing: Set GRAFANA_ALLOW_UI_UPDATES=true in environment
+# to temporarily allow UI modifications (not recommended for production).
+apiVersion: 1
+
+providers:
+  - name: 'DashFlow'
+    orgId: 1
+    folder: ''
+    folderUid: ''
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 10
+    allowUiUpdates: false
+    options:
+      path: /var/lib/grafana/dashboards

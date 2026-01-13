@@ -1,0 +1,104 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build Release
+        run: |
+          xcodebuild -project DashTerm2.xcodeproj \
+            -scheme DashTerm2 \
+            -configuration Release \
+            -derivedDataPath build/DerivedData \
+            CONFIGURATION_BUILD_DIR=build/Release \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="-" \
+            build
+
+      - name: Update version in app
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "build/Release/DashTerm2.app/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "build/Release/DashTerm2.app/Contents/Info.plist"
+
+      - name: Create DMG
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          DMG_NAME="DashTerm2-$VERSION.dmg"
+
+          # Create staging folder
+          mkdir -p build/dmg_staging
+          cp -R build/Release/DashTerm2.app build/dmg_staging/
+          ln -s /Applications build/dmg_staging/Applications
+
+          # Create DMG
+          hdiutil create -volname "DashTerm2 $VERSION" \
+            -srcfolder build/dmg_staging \
+            -ov -format UDZO \
+            "build/$DMG_NAME"
+
+          echo "DMG_NAME=$DMG_NAME" >> $GITHUB_ENV
+          echo "DMG_PATH=build/$DMG_NAME" >> $GITHUB_ENV
+
+      - name: Sign DMG (if key available)
+        if: env.SPARKLE_PRIVATE_KEY != ''
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          # Create temporary key file
+          echo "$SPARKLE_PRIVATE_KEY" > /tmp/sparkle_key
+
+          # Sign with Sparkle
+          if [[ -x "submodules/Sparkle/bin/sign_update" ]]; then
+            SIGNATURE=$(submodules/Sparkle/bin/sign_update "$DMG_PATH" -f /tmp/sparkle_key)
+            echo "$SIGNATURE" > "$DMG_PATH.signature"
+            echo "SIGNATURE=$SIGNATURE" >> $GITHUB_ENV
+          fi
+
+          # Clean up
+          rm -f /tmp/sparkle_key
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ${{ env.DMG_PATH }}
+            ${{ env.DMG_PATH }}.signature
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update appcast
+        run: |
+          ./scripts/generate-appcast.sh
+
+          # Commit and push appcast if changed
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add appcast.xml
+          git diff --staged --quiet || git commit -m "Update appcast.xml for v${{ steps.version.outputs.VERSION }}"
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

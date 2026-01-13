@@ -1,0 +1,23 @@
+[package]
+name = "dashflow-testing"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Testing utilities for DashFlow applications"
+license = "MIT"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "testing", "mock", "llm", "ai"]
+categories = ["development-tools::testing"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+tokio.workspace = true
+
+[lints]
+workspace = true

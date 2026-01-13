@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>DashTerm2</title>
+        <link>https://github.com/ayates_dbx/dashterm2</link>
+        <description>DashTerm2 Updates</description>
+        <language>en</language>
+        <!--
+        Release entries will be added here by scripts/create-release.sh
+        Each release should include:
+        - sparkle:version (CFBundleVersion)
+        - sparkle:shortVersionString (CFBundleShortVersionString)
+        - url to the signed .zip file
+        - sparkle:edSignature (from sign_update tool)
+        - length (file size in bytes)
+
+        Example:
+        <item>
+            <title>Version 3.6.0</title>
+            <pubDate>Mon, 30 Dec 2025 00:00:00 +0000</pubDate>
+            <sparkle:version>3.6.0</sparkle:version>
+            <sparkle:shortVersionString>3.6.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure
+                url="https://github.com/ayates_dbx/dashterm2/releases/download/v3.6.0/DashTerm2-3.6.0.zip"
+                sparkle:edSignature="SIGNATURE_HERE"
+                length="12345678"
+                type="application/octet-stream"/>
+            <description><![CDATA[
+                <h2>What's New</h2>
+                <ul>
+                    <li>Bug fixes and improvements</li>
+                </ul>
+            ]]></description>
+        </item>
+        -->
+    </channel>
+</rss>

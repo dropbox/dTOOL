@@ -1,0 +1,104 @@
+{
+  "implementation" : "Loop unrolling + fast-path optimizations",
+  "test" : "Pack\/Unpack Micro-Benchmark",
+  "struct_sizes" : {
+    "packed_char_t" : 8,
+    "reduction_percent" : 33.333333333333336,
+    "screen_char_t" : 12
+  },
+  "summary" : {
+    "pack_speedup" : 3.1650939017975932,
+    "baseline_pack_ns" : 4.262458333333333,
+    "baseline_unpack_ns" : 4.1831197916666669,
+    "unpack_speedup" : 3.3456036723540392,
+    "optimized_pack_ns" : 1.3467083333333332,
+    "optimized_unpack_ns" : 1.2503333333333333
+  },
+  "tests" : [
+    {
+      "test" : "Fast path (0% 24-bit)",
+      "baseline" : {
+        "pack_ns_per_char" : 4.3627343749999996,
+        "unpack_ns_per_char" : 4.2738437500000002,
+        "pack_gbps" : 2.7505685582794621,
+        "unpack_gbps" : 1.871851304811974
+      },
+      "num_chars" : 8000000,
+      "percent_24bit" : 0,
+      "optimized" : {
+        "pack_ns_per_char" : 1.3686406250000001,
+        "unpack_ns_per_char" : 1.2748020833333333,
+        "pack_gbps" : 8.7678239128697495,
+        "unpack_gbps" : 6.2754839395004129
+      },
+      "speedup" : {
+        "pack" : 3.1876405648853217,
+        "unpack" : 3.3525547266324023
+      }
+    },
+    {
+      "test" : "Mixed (5% 24-bit)",
+      "baseline" : {
+        "pack_ns_per_char" : 11.045557291666666,
+        "unpack_ns_per_char" : 4.5183906250000003,
+        "pack_gbps" : 1.0864096471667766,
+        "unpack_gbps" : 1.7705419172340815
+      },
+      "num_chars" : 8000000,
+      "percent_24bit" : 0.050000000000000003,
+      "optimized" : {
+        "pack_ns_per_char" : 9.4329218749999999,
+        "unpack_ns_per_char" : 2.0329531250000001,
+        "pack_gbps" : 1.2721402932217118,
+        "unpack_gbps" : 3.935162056429609
+      },
+      "speedup" : {
+        "pack" : 1.1709582076515042,
+        "unpack" : 2.2225749179534082
+      }
+    },
+    {
+      "test" : "Mixed (20% 24-bit)",
+      "baseline" : {
+        "pack_ns_per_char" : 30.836567708333334,
+        "unpack_ns_per_char" : 4.9435052083333328,
+        "pack_gbps" : 0.38914836805125685,
+        "unpack_gbps" : 1.6182849340411924
+      },
+      "num_chars" : 8000000,
+      "percent_24bit" : 0.20000000000000001,
+      "optimized" : {
+        "pack_ns_per_char" : 29.519895833333333,
+        "unpack_ns_per_char" : 4.081203125,
+        "pack_gbps" : 0.40650549946893161,
+        "unpack_gbps" : 1.9602062810828607
+      },
+      "speedup" : {
+        "pack" : 1.0446028631819642,
+        "unpack" : 1.2112862449926045
+      }
+    },
+    {
+      "test" : "Slow path (100% 24-bit)",
+      "baseline" : {
+        "pack_ns_per_char" : 129.90023958333333,
+        "unpack_ns_per_char" : 7.5640572916666668,
+        "pack_gbps" : 0.092378582506784254,
+        "unpack_gbps" : 1.0576334487595185
+      },
+      "num_chars" : 8000000,
+      "percent_24bit" : 1,
+      "optimized" : {
+        "pack_ns_per_char" : 122.19960937499999,
+        "unpack_ns_per_char" : 7.3203333333333331,
+        "pack_gbps" : 0.098199986574220577,
+        "unpack_gbps" : 1.0928464095441921
+      },
+      "speedup" : {
+        "pack" : 1.0630168152559476,
+        "unpack" : 1.0332941065980603
+      }
+    }
+  ],
+  "date" : "2025-12-17 21:36:00 +0000"
+}

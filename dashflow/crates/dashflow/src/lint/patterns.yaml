@@ -1,0 +1,389 @@
+# DashFlow Platform Usage Linter - Pattern Matching Rules
+#
+# This file defines patterns that indicate potential reimplementation of
+# DashFlow platform features. The linter uses these patterns to warn
+# developers (human or AI) when they might be duplicating existing functionality.
+#
+# Pattern Format:
+#   name: Unique identifier for the pattern
+#   category: Grouping for related patterns
+#   severity: warn | error (warn allows continue, error blocks)
+#   triggers: List of regex patterns to match in source code
+#   platform_module: DashFlow module that provides this functionality
+#   message: User-friendly explanation
+#   example_usage: Code snippet showing platform usage
+#   docs_url: Link to documentation (optional)
+#   exceptions: List of paths/patterns where this rule doesn't apply
+
+version: "1.0"
+
+patterns:
+  # ============================================================================
+  # Cost Tracking Patterns
+  # ============================================================================
+  - name: cost_tracking
+    category: observability
+    severity: warn
+    triggers:
+      - "struct\\s+CostTracker"
+      - "struct\\s+.*CostTracker"
+      - "fn\\s+track_cost"
+      - "fn\\s+.*_cost\\("
+      - "api_cost\\s*:"
+      - "token_cost\\s*:"
+      - "cost_per_.*token"
+      - "struct\\s+QueryCostRecord"
+    platform_module: "dashflow_observability::cost"
+    alternate_modules:
+      - "optimize::cost_monitoring"
+    message: "DashFlow has built-in cost tracking with budget enforcement"
+    example_usage: |
+      use dashflow_observability::cost::{CostTracker, ModelPricing};
+
+      let tracker = CostTracker::new(ModelPricing::comprehensive_defaults());
+      tracker.record_call("gpt-4o", input_tokens, output_tokens)?;
+      let summary = tracker.summary();
+    # docs_url removed - external URL does not exist; see crates/dashflow-observability/README.md
+    exceptions:
+      - "*/test*"
+      - "*/examples/cost_*"
+
+  - name: embedding_cost
+    category: observability
+    severity: warn
+    triggers:
+      - "EmbeddingModel\\s*\\{"
+      - "cost_per_million_tokens"
+      - "embedding.*cost"
+    platform_module: "dashflow_observability::cost"
+    message: "Use platform cost tracking for embedding models"
+    example_usage: |
+      // Configure embedding cost in ModelPricing
+      let pricing = ModelPricing::default()
+          .with_embedding_model("text-embedding-3-small", 0.02);
+
+  # ============================================================================
+  # Retriever Patterns
+  # ============================================================================
+  - name: bm25_search
+    category: retrievers
+    severity: warn
+    triggers:
+      - "fn\\s+search_keyword"
+      - "fn\\s+keyword_search"
+      - "fn\\s+bm25_search"
+      - "struct\\s+.*BM25"
+      - "BM25Retriever"
+    platform_module: "dashflow_opensearch::OpenSearchBM25Retriever"
+    alternate_modules:
+      - "core::retrievers::bm25_retriever::Bm25Retriever"
+      - "dashflow_elasticsearch::ElasticsearchBM25Retriever"
+    message: "Use DashFlow's BM25 retriever for keyword search"
+    example_usage: |
+      use dashflow_opensearch::OpenSearchBM25Retriever;
+
+      let retriever = OpenSearchBM25Retriever::from_existing(
+          "my_index",
+          "http://localhost:9200",
+          10,  // k results
+          "content",  // text field
+      ).await?;
+
+      let docs = retriever.get_relevant_documents("query", None).await?;
+    exceptions:
+      - "*/retrievers/bm25*"  # Don't warn on platform implementation
+
+  - name: semantic_search
+    category: retrievers
+    severity: warn
+    triggers:
+      - "fn\\s+search_semantic"
+      - "fn\\s+semantic_search"
+      - "fn\\s+vector_search"
+      - "fn\\s+embedding_search"
+      - "struct\\s+.*SemanticSearcher"
+    platform_module: "dashflow_opensearch::VectorStoreRetriever"
+    alternate_modules:
+      - "core::retrievers::VectorStoreRetriever"
+      - "dashflow_chroma::ChromaVectorStore"
+      - "dashflow_pinecone::PineconeVectorStore"
+    message: "Use DashFlow's vector store retriever for semantic search"
+    example_usage: |
+      use dashflow_opensearch::VectorStoreRetriever;
+
+      let retriever = VectorStoreRetriever::from_existing(
+          vector_store,
+          10,  // k results
+      );
+
+      let docs = retriever.get_relevant_documents("query", None).await?;
+
+  - name: hybrid_search
+    category: retrievers
+    severity: warn
+    triggers:
+      - "struct\\s+HybridSearcher"
+      - "struct\\s+.*HybridSearch"
+      - "fn\\s+hybrid_search"
+      - "fn\\s+search_hybrid"
+      - "merge.*retriever"
+      - "combine.*retriev"
+    platform_module: "core::retrievers::MergerRetriever"
+    alternate_modules:
+      - "dashflow_pinecone::PineconeHybridSearchRetriever"
+      - "dashflow_weaviate::WeaviateHybridSearchRetriever"
+    message: "Use DashFlow's MergerRetriever for hybrid search"
+    example_usage: |
+      use dashflow::core::retrievers::MergerRetriever;
+
+      let hybrid = MergerRetriever::new(vec![
+          Arc::new(bm25_retriever),
+          Arc::new(semantic_retriever),
+      ]);
+
+      let docs = hybrid.get_relevant_documents("query", None).await?;
+
+  - name: self_query
+    category: retrievers
+    severity: warn
+    triggers:
+      - "struct\\s+.*SelfQuery"
+      - "fn\\s+self_query"
+      - "auto.*filter"
+      - "query.*intent.*classif"
+    platform_module: "core::retrievers::self_query::SelfQueryRetriever"
+    message: "Use DashFlow's self-query retriever for automatic filtering"
+    example_usage: |
+      use dashflow::core::retrievers::self_query::SelfQueryRetriever;
+
+  # ============================================================================
+  # Evaluation Framework Patterns
+  # ============================================================================
+  - name: eval_framework
+    category: evaluation
+    severity: warn
+    triggers:
+      - "struct\\s+EvalQuestion"
+      - "struct\\s+EvalCase"
+      - "struct\\s+.*GoldenQA"
+      - "fn\\s+score_answer"
+      - "fn\\s+evaluate_answer"
+      - "eval_dataset"
+      - "golden_qa"
+      - "expected_answer"
+    platform_module: "dashflow_streaming::evals"
+    message: "Use DashFlow's evaluation framework"
+    example_usage: |
+      use dashflow_streaming::evals::{EvalSuite, EvalCase, score_answer, ScoringMethod};
+
+      let suite = EvalSuite::load("data/eval_suite.json")?;
+      let score = score_answer(&expected, &actual, ScoringMethod::Contains);
+    # docs_url removed - external URL does not exist; see crates/dashflow-streaming/README.md
+
+  - name: eval_metrics
+    category: evaluation
+    severity: warn
+    triggers:
+      - "struct\\s+.*EvalMetrics"
+      - "average_correctness"
+      - "precision_at_k"
+      - "recall_at_k"
+      - "ndcg"
+      - "mrr\\s*="
+    platform_module: "dashflow_streaming::evals::metrics"
+    message: "Use DashFlow's evaluation metrics"
+    example_usage: |
+      use dashflow_streaming::evals::metrics::{EvalMetrics, average_correctness};
+
+      let avg = average_correctness(&scores);
+
+  # ============================================================================
+  # Language Model Patterns
+  # ============================================================================
+  - name: llm_wrapper
+    category: models
+    severity: warn
+    triggers:
+      - "struct\\s+.*LLMWrapper"
+      - "struct\\s+.*ChatModel"
+      - "fn\\s+call_openai"
+      - "fn\\s+call_anthropic"
+      - "fn\\s+generate_response"
+      - "openai.*completion"
+      - "anthropic.*message"
+    platform_module: "core::language_models::ChatModel"
+    alternate_modules:
+      - "dashflow_openai::ChatOpenAI"
+      - "dashflow_anthropic::ChatAnthropic"
+      - "dashflow_bedrock::ChatBedrock"
+    message: "Use DashFlow's ChatModel trait for LLM interactions"
+    example_usage: |
+      use dashflow_openai::ChatOpenAI;
+      use dashflow::core::language_models::ChatModel;
+
+      let model = ChatOpenAI::new().with_model("gpt-4o-mini");
+      let response = model.generate(&messages, None, None, None, None).await?;
+    exceptions:
+      - "*/dashflow-openai/*"
+      - "*/dashflow-anthropic/*"
+
+  - name: embedding_wrapper
+    category: models
+    severity: warn
+    triggers:
+      - "fn\\s+get_embeddings"
+      - "fn\\s+embed_text"
+      - "fn\\s+create_embeddings"
+      - "struct\\s+.*Embedder"
+      - "embed.*api"
+    platform_module: "core::embeddings::Embeddings"
+    alternate_modules:
+      - "dashflow_openai::OpenAIEmbeddings"
+      - "dashflow_huggingface::HuggingFaceEmbeddings"
+    message: "Use DashFlow's Embeddings trait for embedding generation"
+    example_usage: |
+      use dashflow_openai::OpenAIEmbeddings;
+      use dashflow::core::embeddings::Embeddings;
+
+      let embedder = OpenAIEmbeddings::new();
+      let vectors = embedder.embed_documents(&texts).await?;
+
+  # ============================================================================
+  # Chat History Patterns
+  # ============================================================================
+  - name: chat_history
+    category: memory
+    severity: warn
+    triggers:
+      - "struct\\s+ChatHistory"
+      - "struct\\s+ConversationHistory"
+      - "struct\\s+MessageHistory"
+      - "fn\\s+add_message"
+      - "fn\\s+get_history"
+      - "conversation_buffer"
+    platform_module: "core::chat_history::ChatMessageHistory"
+    alternate_modules:
+      - "dashflow_memory::InMemoryChatMessageHistory"
+      - "dashflow_redis::RedisChatHistory"
+    message: "Use DashFlow's chat history for conversation management"
+    example_usage: |
+      use dashflow::core::chat_history::ChatMessageHistory;
+
+      let mut history = InMemoryChatMessageHistory::new();
+      history.add_user_message("Hello").await?;
+      history.add_ai_message("Hi there!").await?;
+
+  # ============================================================================
+  # Telemetry Patterns
+  # ============================================================================
+  - name: custom_telemetry
+    category: observability
+    severity: warn
+    triggers:
+      - "struct\\s+.*Telemetry"
+      - "fn\\s+record_metric"
+      - "fn\\s+emit_span"
+      - "prometheus.*counter"
+      - "prometheus.*histogram"
+    platform_module: "dashflow_observability"
+    alternate_modules:
+      - "dashflow_prometheus_exporter"
+    message: "Use DashFlow's observability infrastructure for telemetry"
+    example_usage: |
+      use dashflow_prometheus_exporter::{DashFlowExporter, QueryMetrics};
+
+      let exporter = DashFlowExporter::new();
+      exporter.record_query(QueryMetrics { ... })?;
+    exceptions:
+      - "*/telemetry.rs"  # Allow custom telemetry setup modules
+
+  - name: tracing_setup
+    category: observability
+    severity: info
+    triggers:
+      - "tracing_subscriber.*init"
+      - "EnvFilter.*from_default"
+    platform_module: "dashflow_observability::tracing"
+    message: "Consider using DashFlow's tracing setup for consistency"
+    # This is info-level because apps legitimately configure their own tracing
+
+  # ============================================================================
+  # Document Loading Patterns
+  # ============================================================================
+  - name: document_loader
+    category: loaders
+    severity: warn
+    triggers:
+      - "struct\\s+.*DocumentLoader"
+      - "fn\\s+load_documents"
+      - "fn\\s+parse_pdf"
+      - "fn\\s+parse_docx"
+    platform_module: "core::document_loaders"
+    alternate_modules:
+      - "dashflow_pdf::PdfLoader"
+      - "dashflow_unstructured::UnstructuredLoader"
+    message: "Use DashFlow's document loaders"
+    example_usage: |
+      use dashflow_pdf::PdfLoader;
+
+      let loader = PdfLoader::new(path);
+      let documents = loader.load().await?;
+
+  - name: text_splitter
+    category: loaders
+    severity: warn
+    triggers:
+      - "struct\\s+.*TextSplitter"
+      - "struct\\s+.*Chunker"
+      - "fn\\s+split_text"
+      - "fn\\s+chunk_text"
+      - "chunk_size.*overlap"
+    platform_module: "core::text_splitter"
+    message: "Use DashFlow's text splitters"
+    example_usage: |
+      use dashflow::core::text_splitter::RecursiveCharacterTextSplitter;
+
+      let splitter = RecursiveCharacterTextSplitter::new()
+          .with_chunk_size(1000)
+          .with_chunk_overlap(200);
+      let chunks = splitter.split_text(&text)?;
+
+  # ============================================================================
+  # RAG Pipeline Patterns
+  # ============================================================================
+  - name: rag_chain
+    category: chains
+    severity: warn
+    triggers:
+      - "struct\\s+.*RAGChain"
+      - "struct\\s+.*QAChain"
+      - "fn\\s+create_rag_chain"
+      - "retrieval.*qa"
+    platform_module: "dashflow_chains::retrieval::RetrievalQA"
+    message: "Use DashFlow's RAG chain implementations"
+    example_usage: |
+      use dashflow_chains::retrieval::RetrievalQA;
+
+      let qa_chain = RetrievalQA::new(llm, retriever);
+      let answer = qa_chain.invoke("What is X?").await?;
+
+  - name: answer_synthesis
+    category: chains
+    severity: info
+    triggers:
+      - "struct\\s+AnswerSynthesizer"
+      - "fn\\s+synthesize_answer"
+      - "fn\\s+generate_answer"
+    platform_module: "dashflow_chains::retrieval::StuffDocumentsChain"
+    message: "Consider using DashFlow's document chains for answer synthesis"
+    # Info level because synthesis is often app-specific
+
+# Severity levels:
+#   error: Must use platform feature, blocks CI
+#   warn: Should use platform feature, logs warning
+#   info: Platform feature available, informational only
+
+# Exception patterns support:
+#   - Glob patterns: */test*, */examples/*
+#   - Specific paths: src/custom_impl.rs
+#   - Regex: .*_test\.rs$

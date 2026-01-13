@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dashflow.dev/schemas/introspection-index.schema.json",
+  "title": "DashFlow Introspection Index",
+  "description": "Schema for the DashFlow type introspection index cache file (.dashflow/index/types.json)",
+  "type": "object",
+  "required": ["version", "types", "workspace_root", "created_at"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "description": "Cache format version for forwards compatibility",
+      "minimum": 1,
+      "default": 2
+    },
+    "types": {
+      "type": "array",
+      "description": "All discovered public types in the workspace",
+      "items": {
+        "$ref": "#/definitions/TypeInfo"
+      }
+    },
+    "workspace_root": {
+      "type": "string",
+      "description": "Absolute path to workspace root when cache was created"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO 8601 timestamp when cache was created",
+      "format": "date-time"
+    },
+    "semantic_index": {
+      "$ref": "#/definitions/SemanticIndex",
+      "description": "Optional TF-IDF based semantic index for similarity search (v2+)"
+    }
+  },
+  "definitions": {
+    "TypeInfo": {
+      "type": "object",
+      "description": "Information about a discovered type (struct, trait, enum, function)",
+      "required": ["name", "path", "crate_name", "kind", "description", "documentation", "source_path", "line_number", "is_public", "capability_tags"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Type name (e.g., 'OpenSearchBM25Retriever')"
+        },
+        "path": {
+          "type": "string",
+          "description": "Fully qualified path (e.g., 'dashflow_opensearch::OpenSearchBM25Retriever')"
+        },
+        "crate_name": {
+          "type": "string",
+          "description": "Crate containing this type (e.g., 'dashflow-opensearch')"
+        },
+        "kind": {
+          "type": "string",
+          "description": "Type kind",
+          "enum": ["struct", "enum", "trait", "function", "typealias", "const"]
+        },
+        "description": {
+          "type": "string",
+          "description": "First line/paragraph of doc comment"
+        },
+        "documentation": {
+          "type": "string",
+          "description": "Full doc comment text"
+        },
+        "source_path": {
+          "type": "string",
+          "description": "Relative path to source file from crate root"
+        },
+        "line_number": {
+          "type": "integer",
+          "description": "Line number where type is defined (0 if unknown)",
+          "minimum": 0
+        },
+        "is_public": {
+          "type": "boolean",
+          "description": "Whether the type is publicly visible"
+        },
+        "capability_tags": {
+          "type": "array",
+          "description": "Inferred or explicit capability tags for this type",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            ["retriever", "bm25", "search"],
+            ["embeddings", "vector_store"],
+            ["llm", "chat", "completion"]
+          ]
+        }
+      }
+    },
+    "SemanticIndex": {
+      "type": "object",
+      "description": "TF-IDF based semantic index for similarity search",
+      "required": ["vocabulary", "idf_scores", "document_vectors"],
+      "properties": {
+        "vocabulary": {
+          "type": "object",
+          "description": "Map of term to vocabulary index",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "idf_scores": {
+          "type": "array",
+          "description": "IDF score for each term in vocabulary",
+          "items": {
+            "type": "number"
+          }
+        },
+        "document_vectors": {
+          "type": "array",
+          "description": "TF-IDF vector for each type (same order as types array)",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "description": "[term_index, tfidf_score] pair",
+              "items": [
+                {
+                  "type": "integer",
+                  "description": "Term index in vocabulary"
+                },
+                {
+                  "type": "number",
+                  "description": "TF-IDF score"
+                }
+              ],
+              "minItems": 2,
+              "maxItems": 2
+            }
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "version": 2,
+      "workspace_root": "/Users/dev/dashflow",
+      "created_at": "2025-12-18T10:30:00Z",
+      "types": [
+        {
+          "name": "OpenSearchBM25Retriever",
+          "path": "dashflow_opensearch::OpenSearchBM25Retriever",
+          "crate_name": "dashflow-opensearch",
+          "kind": "struct",
+          "description": "BM25 keyword search retriever for OpenSearch",
+          "documentation": "BM25 keyword search retriever for OpenSearch.\n\nProvides full-text search capabilities using the BM25 algorithm.",
+          "source_path": "src/bm25_retriever.rs",
+          "line_number": 15,
+          "is_public": true,
+          "capability_tags": ["retriever", "bm25", "search"]
+        }
+      ]
+    }
+  ]
+}

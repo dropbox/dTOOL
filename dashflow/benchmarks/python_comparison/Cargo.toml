@@ -1,0 +1,25 @@
+[package]
+name = "python-comparison-benchmarks"
+version = "0.1.0-alpha.1"
+edition = "2021"
+
+[[bin]]
+name = "compare_parsers"
+path = "compare_parsers.rs"
+
+[[bin]]
+name = "compare_text_splitters"
+path = "compare_text_splitters.rs"
+
+[[bin]]
+name = "compare_document_loaders"
+path = "compare_document_loaders.rs"
+
+[dependencies]
+dashflow = { path = "../../crates/dashflow" }
+dashflow-text-splitters = { path = "../../crates/dashflow-text-splitters" }
+tokio = { workspace = true, features = ["full"] }
+serde_json = { workspace = true }
+
+[lints]
+workspace = true

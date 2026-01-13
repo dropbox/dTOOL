@@ -1,0 +1,82 @@
+# DashFlow Helm values for AWS dev environment
+
+global:
+  environment: dev
+  awsRegion: ${aws_region}
+
+# WebSocket Server
+websocketServer:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# Quality Monitor
+qualityMonitor:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# Prometheus Exporter
+prometheusExporter:
+  enabled: true
+  replicaCount: 1
+
+# Redis Configuration
+redis:
+  enabled: false  # Using ElastiCache
+  external:
+    enabled: true
+    host: ${redis_endpoint}
+    port: 6379
+
+# Kafka Configuration
+kafka:
+  enabled: false  # Using MSK
+  external:
+    enabled: true
+    brokers: ${kafka_brokers}
+
+# PostgreSQL Configuration
+postgresql:
+  enabled: false  # Using RDS
+  external:
+    enabled: true
+    host: ${postgres_endpoint}
+    port: 5432
+    database: dashflow
+
+# Observability
+observability:
+  prometheus:
+    enabled: true
+  grafana:
+    enabled: true
+  jaeger:
+    enabled: true
+
+# Ingress
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+# Security
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000

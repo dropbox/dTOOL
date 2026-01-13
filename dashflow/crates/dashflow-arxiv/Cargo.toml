@@ -1,0 +1,28 @@
+[package]
+name = "dashflow-arxiv"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Arxiv research paper search tool integration for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "arxiv", "research", "ai", "tools"]
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+dashflow.workspace = true
+reqwest = { workspace = true }
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+quick-xml = { version = "0.36", features = ["serialize"] }
+urlencoding = "2.1"
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+
+[lints]
+workspace = true

@@ -1,0 +1,50 @@
+#!/bin/bash
+# Lints staged Swift files with SwiftLint and Objective-C/Metal files with clang-format.
+# Install by running: ln -sf ../../tools/git-hooks/pre-commit .git/hooks/pre-commit
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+staged_files=()
+while IFS= read -r -d '' file; do
+  staged_files+=("$file")
+done < <(git diff --cached --name-only -z --diff-filter=ACM)
+
+swift_files=()
+objc_files=()
+for file in "${staged_files[@]}"; do
+  case "$file" in
+    *.swift)
+      if [ -f "$file" ]; then
+        swift_files+=("$file")
+      fi
+      ;;
+    *.m|*.mm|*.h|*.hpp|*.metal)
+      if [ -f "$file" ]; then
+        objc_files+=("$file")
+      fi
+      ;;
+  esac
+done
+
+swiftlint_bin="$(command -v swiftlint || true)"
+clangformat_bin="$(command -v clang-format || true)"
+
+if [ -n "$swiftlint_bin" ] && [ "${#swift_files[@]}" -gt 0 ]; then
+  echo "Running SwiftLint on ${#swift_files[@]} Swift file(s)..."
+  for file in "${swift_files[@]}"; do
+    "$swiftlint_bin" lint --strict --quiet --path "$repo_root/$file"
+  done
+elif [ "${#swift_files[@]}" -gt 0 ]; then
+  echo "warning: SwiftLint not found; install via 'brew install swiftlint'" >&2
+fi
+
+if [ -n "$clangformat_bin" ] && [ "${#objc_files[@]}" -gt 0 ]; then
+  echo "Checking formatting with clang-format for ${#objc_files[@]} Objective-C/Metal file(s)..."
+  "$clangformat_bin" --dry-run --Werror "${objc_files[@]}"
+elif [ "${#objc_files[@]}" -gt 0 ]; then
+  echo "warning: clang-format not found; install via 'brew install clang-format'" >&2
+fi
+
+echo "✓ Lint checks passed"

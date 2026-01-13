@@ -1,0 +1,33 @@
+[package]
+name = "dashflow-chroma"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+description = "Chroma vector store integration for DashFlow"
+
+[dependencies]
+# Workspace dependencies
+dashflow.workspace = true
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+
+# Chroma client
+chromadb = "2.3.0"
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+dashflow-openai.workspace = true
+dashflow-standard-tests.workspace = true
+dashflow-test-utils.workspace = true
+testcontainers = { workspace = true }
+
+[lints]
+workspace = true

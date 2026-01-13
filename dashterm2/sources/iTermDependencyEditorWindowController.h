@@ -1,0 +1,19 @@
+//
+//  iTermDependencyEditorWindowController.h
+//  DashTerm2
+//
+//  Created by George Nachman on 1/12/19.
+//
+
+#import <Cocoa/Cocoa.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface iTermDependencyEditorWindowController : NSWindowController
+
++ (instancetype _Nullable)sharedInstance;
+- (void)open;
+
+@end
+
+NS_ASSUME_NONNULL_END

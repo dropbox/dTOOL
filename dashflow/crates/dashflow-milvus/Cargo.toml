@@ -1,0 +1,35 @@
+[package]
+name = "dashflow-milvus"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Milvus vector database integration for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "milvus", "vector-database", "embeddings", "ai"]
+categories = ["database"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+
+# Milvus client (official SDK, lib name is "milvus")
+milvus-sdk-rust = "0.1.0"
+
+# Async runtime
+tokio.workspace = true
+async-trait = { workspace = true }
+
+# Serialization
+serde.workspace = true
+serde_json = { workspace = true }
+
+# Utilities
+uuid.workspace = true
+
+[dev-dependencies]
+dashflow-standard-tests = { path = "../dashflow-standard-tests" }
+
+[lints]
+workspace = true

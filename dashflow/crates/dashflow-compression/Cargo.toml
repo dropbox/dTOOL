@@ -1,0 +1,34 @@
+[package]
+name = "dashflow-compression"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+description = "Compression support for DashFlow checkpointers"
+
+[dependencies]
+# Compression algorithms
+zstd = { workspace = true, optional = true }
+lz4_flex = { version = "0.11", optional = true }
+snap = { version = "1.1", optional = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+[features]
+default = ["zstd", "lz4", "snappy"]
+zstd = ["dep:zstd"]
+lz4 = ["dep:lz4_flex"]
+snappy = ["dep:snap"]
+
+[dev-dependencies]
+criterion = { workspace = true, features = ["html_reports"] }
+proptest = { workspace = true }
+
+[lints]
+workspace = true

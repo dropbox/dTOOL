@@ -1,0 +1,144 @@
+[package]
+name = "dterm-core-fuzz"
+version = "0.0.0"
+authors = ["Automatically generated"]
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+arbitrary = { version = "1", features = ["derive"] }
+vte = "0.15"
+
+[dependencies.dterm-core]
+path = ".."
+features = ["gpu", "ffi"]
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[profile.release]
+debug = 1
+
+[[bin]]
+name = "parser"
+path = "fuzz_targets/parser.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "grid"
+path = "fuzz_targets/grid.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "search"
+path = "fuzz_targets/search.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "scrollback"
+path = "fuzz_targets/scrollback.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "parser_diff"
+path = "fuzz_targets/parser_diff.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "sixel"
+path = "fuzz_targets/sixel.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "build_corpus"
+path = "build_corpus.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "adversarial_vt"
+path = "fuzz_targets/adversarial_vt.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "resource_exhaustion"
+path = "fuzz_targets/resource_exhaustion.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "terminal"
+path = "fuzz_targets/terminal.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "ui_bridge"
+path = "fuzz_targets/ui_bridge.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "gpu_renderer"
+path = "fuzz_targets/gpu_renderer.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "ffi"
+path = "fuzz_targets/ffi.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "kitty_graphics"
+path = "fuzz_targets/kitty_graphics.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "checkpoint"
+path = "fuzz_targets/checkpoint.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "selection"
+path = "fuzz_targets/selection.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "plugins"
+path = "fuzz_targets/plugins.rs"
+test = false
+doc = false
+bench = false

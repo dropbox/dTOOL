@@ -1,0 +1,32 @@
+[package]
+name = "dashflow-shell-tool"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Shell command execution tool for DashFlow agents"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "llm", "tools", "shell", "command"]
+categories = ["command-line-utilities", "development-tools"]
+
+[dependencies]
+dashflow.workspace = true
+async-trait = { workspace = true }
+tokio.workspace = true
+serde_json = { workspace = true }
+serde = { workspace = true }
+regex = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+shlex = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tokio = { workspace = true }
+dashflow-standard-tests.workspace = true
+async-trait = { workspace = true }
+
+[lints]
+workspace = true

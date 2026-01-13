@@ -1,0 +1,8 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 6c28b0c35ff518cd16a8dba9127b95a7851ec01cb5fa39165e9de8a62ee363e1 # shrinks to text = "a  A0aA0A0", chunk_size = 10
+cc a251eefa06779b152afcc03e42458852615cab0a18da26ba88ec118dc5a20576 # shrinks to text = "AAA aaAa AaAAaa aaa AAA AAaAAA aaA A AAAAaaaAAAaA aaA A aAaAAaa AaaA a", chunk_size = 34, chunk_overlap = 5

@@ -1,0 +1,102 @@
+# DashFlow Prometheus Exporter Deployment
+# Bridges Kafka events to Prometheus metrics
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashflow-prometheus-exporter
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: prometheus-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashflow
+      app.kubernetes.io/component: prometheus-exporter
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dashflow
+        app.kubernetes.io/component: prometheus-exporter
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: dashflow
+      containers:
+        - name: prometheus-exporter
+          image: dashflow/prometheus-exporter:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: metrics
+              containerPort: 9090
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: dashflow-config
+            # Kafka security secrets (SASL/TLS) - create via:
+            #   kubectl create secret generic dashflow-kafka-security \
+            #     --from-literal=KAFKA_SECURITY_PROTOCOL=sasl_ssl \
+            #     --from-literal=KAFKA_SASL_MECHANISM=SCRAM-SHA-256 \
+            #     --from-literal=KAFKA_SASL_USERNAME=user \
+            #     --from-literal=KAFKA_SASL_PASSWORD=password \
+            #     --from-literal=KAFKA_SSL_CA_LOCATION=/etc/kafka/ca.pem
+            # Uncomment below to enable:
+            # - secretRef:
+            #     name: dashflow-kafka-security
+            #     optional: true
+          env:
+            - name: KAFKA_BROKERS
+              value: "kafka:9092"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 9090
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /metrics
+              port: 9090
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-exporter
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: prometheus-exporter
+spec:
+  type: ClusterIP
+  ports:
+    - name: metrics
+      port: 9090
+      targetPort: 9090
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: prometheus-exporter

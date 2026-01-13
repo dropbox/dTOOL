@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- DashTerm2 App Icon with Dropbox Branding -->
+  <!-- Full composite icon for reference/export -->
+
+  <defs>
+    <!-- Dropbox Blue Gradient -->
+    <linearGradient id="dropbox-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0061FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0047B3;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Clip path for rounded corners -->
+    <clipPath id="icon-clip">
+      <rect x="0" y="0" width="1024" height="1024" rx="225" ry="225"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background with Dropbox Blue border -->
+  <g clip-path="url(#icon-clip)">
+    <!-- Dropbox blue outer fill -->
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#dropbox-gradient)"/>
+
+    <!-- Dark terminal inner area -->
+    <rect x="62" y="62" width="900" height="900" rx="155" ry="155" fill="#141821"/>
+
+    <!-- Title bar separator line -->
+    <line x1="62" y1="185" x2="962" y2="185" stroke="#3C4150" stroke-width="1"/>
+
+    <!-- Window control buttons -->
+    <circle cx="125" cy="123" r="20" fill="#FF5F56"/>
+    <circle cx="176" cy="123" r="20" fill="#FFBD2E"/>
+    <circle cx="227" cy="123" r="20" fill="#27C93F"/>
+
+    <!-- Dropbox Logo (centered, in light blue) -->
+    <g fill="#4D94FF" transform="translate(512, 430)">
+      <!-- Top-left diamond -->
+      <polygon points="0,-90 -83,-45 0,0 83,-45"/>
+      <!-- Top-right diamond -->
+      <polygon points="0,-90 83,-45 0,0 -83,-45" transform="translate(166, 0)"/>
+      <!-- Middle-left diamond -->
+      <polygon points="0,-45 -83,0 0,45 83,0" transform="translate(-83, 45)"/>
+      <!-- Middle-right diamond -->
+      <polygon points="0,-45 83,0 0,45 -83,0" transform="translate(83, 45)"/>
+      <!-- Bottom center diamond -->
+      <polygon points="0,-45 -83,0 0,45 83,0" transform="translate(0, 135)"/>
+    </g>
+
+    <!-- Terminal prompt ">" -->
+    <polygon points="144,746 195,795 144,844" fill="#0061FF"/>
+
+    <!-- Block cursor -->
+    <rect x="236" y="751" width="46" height="89" rx="3" ry="3" fill="#FFFFFF"/>
+  </g>
+</svg>

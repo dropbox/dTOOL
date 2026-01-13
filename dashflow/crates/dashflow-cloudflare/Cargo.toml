@@ -1,0 +1,46 @@
+[package]
+name = "dashflow-cloudflare"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+description = "Cloudflare Workers AI integration for DashFlow"
+
+[dependencies]
+dashflow.workspace = true
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+async-stream = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+reqwest = { workspace = true }
+eventsource-stream = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+dashflow-standard-tests.workspace = true
+dashflow-test-utils.workspace = true
+
+[lib]
+path = "src/lib.rs"
+
+[[example]]
+name = "cloudflare_basic"
+path = "examples/cloudflare_basic.rs"
+
+[[example]]
+name = "cloudflare_streaming"
+path = "examples/cloudflare_streaming.rs"
+
+[[example]]
+name = "cloudflare_chat"
+path = "examples/cloudflare_chat.rs"
+
+[lints]
+workspace = true

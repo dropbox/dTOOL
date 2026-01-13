@@ -1,0 +1,107 @@
+# DashStream Prometheus Exporter Dockerfile
+# Multi-stage build with cargo-chef for fast dependency caching
+# Bridges Kafka -> Prometheus by exposing DashStream metrics at :9190/metrics
+#
+# Build time comparison:
+#   - Without caching: ~10-15 minutes
+#   - With cargo-chef (deps cached): ~2-3 minutes
+#   - With cached deps AND source: ~30 seconds
+
+# Stage 1: Chef - prepare recipe for dependency caching
+FROM rustlang/rust:nightly-bookworm-slim AS chef
+RUN cargo install cargo-chef --locked
+WORKDIR /build
+
+# Stage 2: Planner - analyze dependencies
+FROM chef AS planner
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+COPY proto ./proto
+COPY test-utils ./test-utils
+COPY benchmarks ./benchmarks
+COPY examples ./examples
+RUN cargo chef prepare --recipe-path recipe.json
+
+# Stage 3: Builder - build dependencies then source
+FROM chef AS builder
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    ca-certificates \
+    protobuf-compiler \
+    g++ \
+    cmake \
+    zlib1g-dev \
+    libsasl2-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy and build dependencies (cached layer)
+COPY --from=planner /build/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json \
+    --package dashflow-prometheus-exporter
+
+# Now copy source and build (this layer changes with code changes)
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+COPY proto ./proto
+COPY test-utils ./test-utils
+COPY benchmarks ./benchmarks
+COPY examples ./examples
+
+# Accept build args for version tracking
+ARG GIT_COMMIT_SHA=unknown
+ARG BUILD_DATE=unknown
+
+# Build release binary (deps are cached, only recompiles changed code)
+ENV GIT_COMMIT_SHA=${GIT_COMMIT_SHA}
+ENV BUILD_DATE=${BUILD_DATE}
+RUN cargo build --release \
+    --package dashflow-prometheus-exporter
+
+# Stage 4: Runtime environment
+FROM debian:bookworm-slim
+
+# Version metadata (passed via --build-arg)
+ARG GIT_COMMIT_SHA=unknown
+ARG BUILD_DATE=unknown
+LABEL version="${GIT_COMMIT_SHA}"
+LABEL build_date="${BUILD_DATE}"
+LABEL component="prometheus-exporter"
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    libssl3 \
+    libsasl2-2 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN useradd -m -u 1000 dashstream && \
+    mkdir -p /app && \
+    chown -R dashstream:dashstream /app
+
+WORKDIR /app
+USER dashstream
+
+# Copy binary from builder
+COPY --from=builder --chown=dashstream:dashstream \
+    /build/target/release/prometheus-exporter \
+    /app/prometheus-exporter
+
+# Set environment
+ENV RUST_LOG=info
+ENV RUST_BACKTRACE=1
+ENV METRICS_PORT=9190
+
+# Expose metrics endpoint
+EXPOSE 9190
+
+# Health check
+HEALTHCHECK --interval=10s --timeout=3s --start-period=30s \
+    CMD-SHELL curl -f "http://localhost:${METRICS_PORT}/metrics" || exit 1
+
+# Run the prometheus exporter
+ENTRYPOINT ["/app/prometheus-exporter"]

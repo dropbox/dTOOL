@@ -1,0 +1,21 @@
+// DTermCore.xcconfig
+// Configuration for linking dterm-core Rust library
+//
+// IMPORTANT: dterm-core source lives in ~/dterm (separate repo).
+// Run scripts/build-dterm-core.sh to build and copy the library here.
+// Do NOT create copies of dterm-core source inside DashTerm2.
+//
+// To use: In Xcode, go to Project settings > Info > Configurations
+// and add this file to the appropriate configurations.
+
+// Path to the dterm-core static library (built from ~/dterm)
+DTERM_CORE_LIB = $(PROJECT_DIR)/DTermCore/lib
+
+// Header search path for dterm.h
+HEADER_SEARCH_PATHS = $(inherited) $(PROJECT_DIR)/DTermCore/include
+
+// Library search path
+LIBRARY_SEARCH_PATHS = $(inherited) $(DTERM_CORE_LIB)
+
+// Link the library
+OTHER_LDFLAGS = $(inherited) -ldterm_core

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ApplicationDescription</key>
+	<string>DashTerm2 is a free terminal emulator.</string>
+	<key>Connections</key>
+	<array>
+		<dict>
+			<key>IsIncoming</key>
+			<false/>
+			<key>Host</key>
+			<string>raw.githubusercontent.com</string>
+			<key>NetworkProtocol</key>
+			<string>TCP</string>
+			<key>Port</key>
+			<string>443</string>
+			<key>Relevance</key>
+			<string>Default</string>
+			<key>Purpose</key>
+			<string>DashTerm2 connects to GitHub to check for and download software updates.</string>
+			<key>DenyConsequences</key>
+			<string>If you deny this connection, you won't be notified when a new version is released.</string>
+		</dict>
+		<dict>
+			<key>IsIncoming</key>
+			<false/>
+			<key>Host</key>
+			<string>github.com</string>
+			<key>NetworkProtocol</key>
+			<string>TCP</string>
+			<key>Port</key>
+			<string>443</string>
+			<key>Relevance</key>
+			<string>Default</string>
+			<key>Purpose</key>
+			<string>DashTerm2 connects to GitHub to download software updates and submit feedback.</string>
+			<key>DenyConsequences</key>
+			<string>If you deny this connection, you won't be able to download updates or submit feedback.</string>
+		</dict>
+		<dict>
+			<key>IsIncoming</key>
+			<false/>
+			<key>Host</key>
+			<string>api.github.com</string>
+			<key>NetworkProtocol</key>
+			<string>TCP</string>
+			<key>Port</key>
+			<string>443</string>
+			<key>Relevance</key>
+			<string>Default</string>
+			<key>Purpose</key>
+			<string>DashTerm2 uses the GitHub API for feedback and crash reporting.</string>
+			<key>DenyConsequences</key>
+			<string>If you deny this connection, you won't be able to submit feedback or crash reports.</string>
+		</dict>
+		<dict>
+			<key>IsIncoming</key>
+			<false/>
+			<key>Host</key>
+			<string>*</string>
+			<key>NetworkProtocol</key>
+			<string>TCP</string>
+			<key>Purpose</key>
+			<string>Applications running within DashTerm2 may open connections.</string>
+			<key>DenyConsequences</key>
+			<string>The current command will not be able to proceed.</string>
+		</dict>
+	</array>
+</dict>
+</plist>

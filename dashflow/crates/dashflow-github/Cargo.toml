@@ -1,0 +1,32 @@
+[package]
+name = "dashflow-github"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "GitHub integration tools for DashFlow - manage issues, PRs, files, and code search"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+tokio.workspace = true
+serde_json = { workspace = true }
+octocrab = "0.40"
+base64 = { workspace = true }
+reqwest = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tokio = { workspace = true }
+
+[[example]]
+name = "github_operations"
+required-features = []
+
+[lints]
+workspace = true

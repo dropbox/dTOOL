@@ -1,0 +1,27 @@
+# Clang-Format Configuration for DashTerm2
+# Based on existing DashTerm2 code style
+
+Language: ObjC
+BasedOnStyle: LLVM
+IndentWidth: 4
+ObjCBlockIndentWidth: 4
+ObjCSpaceAfterProperty: YES
+ObjCSpaceBeforeProtocolList: YES
+PointerAlignment: Right
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+BreakBeforeBraces: Attach
+ColumnLimit: 120
+IndentCaseLabels: true
+MaxEmptyLinesToKeep: 2
+SortIncludes: false
+SpacesInParentheses: false
+SpacesInAngles: false
+SpaceInEmptyParentheses: false
+SpacesInCStyleCastParentheses: false
+
+# Objective-C specific
+ObjCBinPackProtocolList: Auto

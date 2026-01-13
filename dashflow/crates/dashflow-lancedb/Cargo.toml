@@ -1,0 +1,37 @@
+[package]
+name = "dashflow-lancedb"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "LanceDB vector store integration for DashFlow"
+
+[dependencies]
+# DashFlow core
+dashflow.workspace = true
+
+# LanceDB client
+lancedb = "0.22.2"
+
+# Apache Arrow for data structures (match lancedb's arrow version)
+arrow-array = "56.0"
+arrow-schema = "56.0"
+async-trait.workspace = true
+futures.workspace = true
+serde_json.workspace = true
+
+# Utilities
+uuid.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "test-util"] }
+dashflow-standard-tests = { path = "../dashflow-standard-tests" }
+
+[lints]
+workspace = true

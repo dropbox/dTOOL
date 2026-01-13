@@ -1,0 +1,31 @@
+[package]
+name = "dashflow-youtube"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "YouTube integration for DashFlow - video search and transcript loading"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "youtube", "transcripts", "ai", "tools"]
+categories.workspace = true
+
+[dependencies]
+dashflow.workspace = true
+reqwest = { workspace = true }
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+urlencoding = "2.1"
+quick-xml = { version = "0.36", features = ["serialize"] }
+regex = { workspace = true }
+thiserror = { workspace = true }
+html-escape = "0.2"
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+
+[lints]
+workspace = true

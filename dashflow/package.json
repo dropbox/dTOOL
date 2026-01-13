@@ -1,0 +1,28 @@
+{
+  "name": "dashflow-tests",
+  "version": "1.11.3",
+  "description": "Test utilities for DashFlow observability stack",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "test:visual": "playwright test test-utils/tests/grafana_visual_regression.test.js",
+    "test:visual:update": "playwright test test-utils/tests/grafana_visual_regression.test.js --update-snapshots",
+    "test:dashboard": "ts-node test-utils/tests/dashboard_acceptance.test.ts",
+    "test:grafana": "node test-utils/tests/grafana_dashboard.test.js",
+    "test:all": "npm run test:dashboard && npm run test:grafana",
+    "install:playwright": "playwright install chromium"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.57.0",
+    "playwright": "^1.57.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "@types/node": "^20.0.0",
+    "@types/node-fetch": "^2.6.0"
+  }
+}

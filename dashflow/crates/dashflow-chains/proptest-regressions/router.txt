@@ -1,0 +1,13 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 50e60bcb533c38b34f4cd0457ceb182effd34db7d4a844f0026d0ec8a4963d27 # shrinks to dest = "a", input = "\u{b}"
+cc 4ad753b63a8777fcd15c96c739c6cada10ef71e5a0f0d7071532c9bb3e37df40 # shrinks to dest = "a", input = "\0"
+cc 8c5f9e2d2fc1b3bb2b0c4404416b9768fc0439ea0547054b991a1fc1b0fbcfa9 # shrinks to input = "\u{b}", case_variant = "DEFAULT"
+cc aa0c3328d180ce456d88bf8cc206b98919a193121b3f14da38b8e5533461c508 # shrinks to dest = "a", input = "\0"
+cc 77b359c1f53fb81032c4c4d4f220dde4df3cd31850b0cf61e5cb9c058c07b2e8 # shrinks to dest = "a", input = "\u{b}"
+cc 5a55e67294b6d6e955d48d1d63fdb0996c1976592153494d23719227f8d7c156 # shrinks to custom_default = "AAA", input = "\0"
+cc 15778caaf8e49d2f1a377bb073d37d81a388e13c79eba5d91706efc8c97f5c89 # shrinks to input = "```", case_variant = "DEFAULT"

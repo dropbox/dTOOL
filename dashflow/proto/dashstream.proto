@@ -1,0 +1,610 @@
+syntax = "proto3";
+
+package dashstream.v1;
+
+// DashFlow Streaming - Ultra-Efficient Streaming Telemetry for DashFlow
+// Copyright 2026 Dropbox (created by Andrew Yates <ayates@dropbox.com>)
+// Version: 1.0.0
+
+// ============================================================================
+// Core Message Types
+// ============================================================================
+
+message DashStreamMessage {
+  oneof message {
+    Event event = 1;
+    StateDiff state_diff = 2;
+    TokenChunk token_chunk = 3;
+    ToolExecution tool_execution = 4;
+    Checkpoint checkpoint = 5;
+    Metrics metrics = 6;
+    Error error = 7;
+    EventBatch event_batch = 8;
+    ExecutionTrace execution_trace = 9;
+  }
+}
+
+// ============================================================================
+// Header (Common Metadata)
+// ============================================================================
+
+message Header {
+  // Unique message ID (16 bytes UUID)
+  bytes message_id = 1;
+
+  // Timestamp (microseconds since Unix epoch)
+  int64 timestamp_us = 2;
+
+  // Tenant/organization ID
+  string tenant_id = 3;
+
+  // Session/thread ID
+  string thread_id = 4;
+
+  // Sequence number (monotonically increasing within thread)
+  uint64 sequence = 5;
+
+  // Message type
+  MessageType type = 6;
+
+  // Optional: Parent message ID (for causality tracking)
+  bytes parent_id = 7;
+
+  // Optional: Compression type
+  CompressionType compression = 8;
+
+  // Optional: Schema version (for evolution)
+  uint32 schema_version = 9;
+}
+
+enum MessageType {
+  MESSAGE_TYPE_UNSPECIFIED = 0;
+  MESSAGE_TYPE_EVENT = 1;
+  MESSAGE_TYPE_STATE_DIFF = 2;
+  MESSAGE_TYPE_TOKEN_CHUNK = 3;
+  MESSAGE_TYPE_TOOL_EXECUTION = 4;
+  MESSAGE_TYPE_CHECKPOINT = 5;
+  MESSAGE_TYPE_METRICS = 6;
+  MESSAGE_TYPE_ERROR = 7;
+  MESSAGE_TYPE_EVENT_BATCH = 8;
+  MESSAGE_TYPE_EXECUTION_TRACE = 9;
+}
+
+enum CompressionType {
+  COMPRESSION_NONE = 0;
+  COMPRESSION_ZSTD = 1;
+  COMPRESSION_LZ4 = 2;
+  COMPRESSION_SNAPPY = 3;
+}
+
+// ============================================================================
+// Event Message (Lifecycle Events)
+// ============================================================================
+
+message Event {
+  Header header = 1;
+
+  // Event type
+  EventType event_type = 2;
+
+  // Graph node ID (if applicable)
+  string node_id = 3;
+
+  // Optional: Event-specific attributes
+  map<string, AttributeValue> attributes = 4;
+
+  // Optional: Duration (for *_END events, microseconds)
+  // NOTE: Values saturate to INT64_MAX (~9.2e18 us / ~292,471 years) on overflow.
+  // Consumers should treat INT64_MAX as "duration exceeded representable range".
+  int64 duration_us = 5;
+
+  // Optional: Associated LLM request ID
+  string llm_request_id = 6;
+}
+
+message EventBatch {
+  Header header = 1;
+  repeated Event events = 2;
+}
+
+enum EventType {
+  EVENT_TYPE_UNSPECIFIED = 0;
+
+  // Graph lifecycle
+  EVENT_TYPE_GRAPH_START = 1;
+  EVENT_TYPE_GRAPH_END = 2;
+  EVENT_TYPE_GRAPH_ERROR = 3;
+
+  // Node lifecycle
+  EVENT_TYPE_NODE_START = 10;
+  EVENT_TYPE_NODE_END = 11;
+  EVENT_TYPE_NODE_ERROR = 12;
+
+  // Edge traversal
+  EVENT_TYPE_EDGE_TRAVERSAL = 20;
+  EVENT_TYPE_CONDITIONAL_BRANCH = 21;
+  EVENT_TYPE_PARALLEL_START = 22;
+  EVENT_TYPE_PARALLEL_END = 23;
+
+  // LLM lifecycle
+  EVENT_TYPE_LLM_START = 30;
+  EVENT_TYPE_LLM_END = 31;
+  EVENT_TYPE_LLM_ERROR = 32;
+  EVENT_TYPE_LLM_RETRY = 33;
+
+  // Tool lifecycle
+  EVENT_TYPE_TOOL_START = 40;
+  EVENT_TYPE_TOOL_END = 41;
+  EVENT_TYPE_TOOL_ERROR = 42;
+
+  // Checkpoint lifecycle
+  EVENT_TYPE_CHECKPOINT_SAVE = 50;
+  EVENT_TYPE_CHECKPOINT_LOAD = 51;
+  EVENT_TYPE_CHECKPOINT_DELETE = 52;
+
+  // Memory operations
+  EVENT_TYPE_MEMORY_SAVE = 60;
+  EVENT_TYPE_MEMORY_LOAD = 61;
+
+  // Human-in-the-loop
+  EVENT_TYPE_HUMAN_INTERRUPT = 70;
+  EVENT_TYPE_HUMAN_RESUME = 71;
+
+  // Intra-node telemetry (emitted during node execution)
+  EVENT_TYPE_NODE_PROGRESS = 80;      // Progress updates: attributes["message", "percent"]
+  EVENT_TYPE_NODE_THINKING = 81;      // LLM reasoning: attributes["thought", "step"]
+  EVENT_TYPE_NODE_SUBSTEP = 82;       // Internal steps: attributes["substep_name", "status"]
+  EVENT_TYPE_NODE_WARNING = 83;       // Non-fatal warnings
+
+  // Optimization lifecycle (Phase 7H: Meta-learning telemetry)
+  EVENT_TYPE_OPTIMIZATION_START = 90; // Optimization run started: attributes["optimization_id", "target_node", "target_param", "strategy"]
+  EVENT_TYPE_OPTIMIZATION_END = 91;   // Optimization run completed: attributes["optimization_id", "variants_tested", "improvement_delta", "termination_reason"]
+}
+
+// ============================================================================
+// StateDiff (Diff-Based State Updates)
+// ============================================================================
+
+message StateDiff {
+  Header header = 1;
+
+  // Base checkpoint ID (for incremental diffs)
+  bytes base_checkpoint_id = 2;
+
+  // Diff operations (JSON Patch RFC 6902 style)
+  repeated DiffOperation operations = 3;
+
+  // Full state hash (for validation)
+  bytes state_hash = 4;
+
+  // Optional: Compressed full state (if diff too large)
+  bytes full_state = 5;
+}
+
+message DiffOperation {
+  // Operation type
+  OpType op = 1;
+
+  // JSON pointer path (e.g., "/messages/0/content")
+  string path = 2;
+
+  // Value (encoded as bytes, see ValueEncoding)
+  bytes value = 3;
+
+  // Optional: Source path (for MOVE and COPY)
+  string from = 4;
+
+  // Value encoding type
+  ValueEncoding encoding = 5;
+
+  enum OpType {
+    OP_TYPE_ADD = 0;
+    OP_TYPE_REMOVE = 1;
+    OP_TYPE_REPLACE = 2;
+    OP_TYPE_MOVE = 3;
+    OP_TYPE_COPY = 4;
+    OP_TYPE_TEST = 5;  // Validation
+  }
+
+  enum ValueEncoding {
+    VALUE_ENCODING_JSON = 0;
+    VALUE_ENCODING_MSGPACK = 1;
+    VALUE_ENCODING_PROTOBUF = 2;
+    VALUE_ENCODING_RAW = 3;
+  }
+}
+
+// ============================================================================
+// TokenChunk (LLM Streaming)
+// ============================================================================
+
+message TokenChunk {
+  Header header = 1;
+
+  // LLM request ID
+  string request_id = 2;
+
+  // Token text (UTF-8)
+  string text = 3;
+
+  // Optional: Token IDs (for analysis)
+  repeated uint32 token_ids = 4;
+
+  // Optional: Log probabilities
+  repeated float logprobs = 5;
+
+  // Chunk index (monotonically increasing)
+  uint32 chunk_index = 6;
+
+  // Is this the final chunk?
+  bool is_final = 7;
+
+  // Optional: Finish reason
+  FinishReason finish_reason = 8;
+
+  // Optional: Model name
+  string model = 9;
+
+  // Optional: Token count statistics
+  TokenStats stats = 10;
+
+  enum FinishReason {
+    FINISH_REASON_NONE = 0;
+    FINISH_REASON_STOP = 1;
+    FINISH_REASON_LENGTH = 2;
+    FINISH_REASON_CONTENT_FILTER = 3;
+    FINISH_REASON_TOOL_CALLS = 4;
+    FINISH_REASON_ERROR = 5;
+  }
+}
+
+message TokenStats {
+  uint32 prompt_tokens = 1;
+  uint32 completion_tokens = 2;
+  uint32 total_tokens = 3;
+}
+
+// ============================================================================
+// ToolExecution (Tool Calls)
+// ============================================================================
+
+message ToolExecution {
+  Header header = 1;
+
+  // Tool call ID
+  string call_id = 2;
+
+  // Tool name
+  string tool_name = 3;
+
+  // Execution stage
+  ExecutionStage stage = 4;
+
+  // Arguments (JSON encoded)
+  bytes arguments = 5;
+
+  // Result (if stage == COMPLETED)
+  bytes result = 6;
+
+  // Error message (if stage == FAILED)
+  string error = 7;
+
+  // Error details
+  Error error_details = 8;
+
+  // Duration (microseconds)
+  int64 duration_us = 9;
+
+  // Optional: Retry count
+  uint32 retry_count = 10;
+
+  enum ExecutionStage {
+    EXECUTION_STAGE_UNSPECIFIED = 0;
+    EXECUTION_STAGE_REQUESTED = 1;
+    EXECUTION_STAGE_STARTED = 2;
+    EXECUTION_STAGE_COMPLETED = 3;
+    EXECUTION_STAGE_FAILED = 4;
+    EXECUTION_STAGE_RETRYING = 5;
+  }
+}
+
+// ============================================================================
+// Checkpoint (State Snapshot)
+// ============================================================================
+
+message Checkpoint {
+  Header header = 1;
+
+  // Checkpoint ID (UUID)
+  bytes checkpoint_id = 2;
+
+  // Full state (compressed)
+  bytes state = 3;
+
+  // State type hint (for deserialization)
+  string state_type = 4;
+
+  // Checksum (SHA-256)
+  bytes checksum = 5;
+
+  // Optional: External storage URI (if state too large)
+  string storage_uri = 6;
+
+  // Compression info
+  CompressionInfo compression_info = 7;
+
+  // Metadata
+  map<string, string> metadata = 8;
+}
+
+message CompressionInfo {
+  CompressionType type = 1;
+  uint64 compressed_size = 2;
+  uint64 uncompressed_size = 3;
+  float compression_ratio = 4;
+}
+
+// ============================================================================
+// Metrics (Performance Data)
+// ============================================================================
+
+message Metrics {
+  Header header = 1;
+
+  // Scope (graph, node, llm, tool, etc.)
+  string scope = 2;
+
+  // Scope ID (node_id, request_id, etc.)
+  string scope_id = 3;
+
+  // Metrics
+  map<string, MetricValue> metrics = 4;
+
+  // Optional: Tags
+  map<string, string> tags = 5;
+}
+
+message MetricValue {
+  oneof value {
+    int64 int_value = 1;
+    double float_value = 2;
+    string string_value = 3;
+    bool bool_value = 4;
+    bytes bytes_value = 5;
+  }
+
+  // Unit (seconds, bytes, count, usd, etc.)
+  string unit = 6;
+
+  // Metric type
+  MetricType type = 7;
+
+  enum MetricType {
+    METRIC_TYPE_UNSPECIFIED = 0;
+    METRIC_TYPE_COUNTER = 1;
+    METRIC_TYPE_GAUGE = 2;
+    METRIC_TYPE_HISTOGRAM = 3;
+    METRIC_TYPE_SUMMARY = 4;
+  }
+}
+
+// Common metric names:
+// - duration_us: Execution time (microseconds)
+// - tokens_prompt: Prompt token count
+// - tokens_completion: Completion token count
+// - tokens_total: Total token count
+// - cost_usd: Estimated cost (USD)
+// - memory_bytes: Memory usage (bytes)
+// - cache_hit: Cache hit (boolean)
+// - retry_count: Number of retries
+// - error_count: Error count
+
+// ============================================================================
+// Error (Failure Information)
+// ============================================================================
+
+message Error {
+  Header header = 1;
+
+  // Error code (e.g., "RATE_LIMIT", "TIMEOUT")
+  string error_code = 2;
+
+  // Human-readable message
+  string message = 3;
+
+  // Stack trace (optional)
+  string stack_trace = 4;
+
+  // Error context
+  map<string, string> context = 5;
+
+  // Severity
+  Severity severity = 6;
+
+  // Optional: Original exception type
+  string exception_type = 7;
+
+  // Optional: Suggestions for resolution
+  repeated string suggestions = 8;
+
+  enum Severity {
+    SEVERITY_UNSPECIFIED = 0;
+    SEVERITY_DEBUG = 1;
+    SEVERITY_INFO = 2;
+    SEVERITY_WARNING = 3;
+    SEVERITY_ERROR = 4;
+    SEVERITY_FATAL = 5;
+  }
+}
+
+// ============================================================================
+// Attribute Value (For Generic Attributes)
+// ============================================================================
+
+message AttributeValue {
+  oneof value {
+    string string_value = 1;
+    int64 int_value = 2;
+    double float_value = 3;
+    bool bool_value = 4;
+    bytes bytes_value = 5;
+    AttributeArray array_value = 6;
+    AttributeMap map_value = 7;
+  }
+}
+
+message AttributeArray {
+  repeated AttributeValue values = 1;
+}
+
+message AttributeMap {
+  map<string, AttributeValue> values = 1;
+}
+
+// ============================================================================
+// Embeddings (Compressed Vector Representation)
+// ============================================================================
+
+message Embedding {
+  // Embedding ID
+  string embedding_id = 1;
+
+  // Model name
+  string model = 2;
+
+  // Dimensions
+  uint32 dimensions = 3;
+
+  // Encoding type
+  EmbeddingEncoding encoding = 4;
+
+  // Encoded vector data
+  bytes data = 5;
+
+  enum EmbeddingEncoding {
+    EMBEDDING_ENCODING_FLOAT32 = 0;  // 4 bytes per dimension
+    EMBEDDING_ENCODING_FLOAT16 = 1;  // 2 bytes per dimension
+    EMBEDDING_ENCODING_INT8 = 2;     // 1 byte per dimension (quantized)
+    EMBEDDING_ENCODING_BINARY = 3;   // 1 bit per dimension (binary)
+  }
+}
+
+// ============================================================================
+// Batch Operations (For High Throughput)
+// ============================================================================
+
+message MessageBatch {
+  repeated DashStreamMessage messages = 1;
+  uint32 count = 2;
+}
+
+// ============================================================================
+// Execution Trace (For Self-Improvement / Distributed Reflection)
+// ============================================================================
+
+// Complete execution trace for a graph run.
+// Enables AI agents to review their own execution history for self-improvement.
+message ExecutionTrace {
+  Header header = 1;
+
+  // Thread ID for this execution (if using checkpointing)
+  string thread_id = 2;
+
+  // Unique execution ID for this trace
+  string execution_id = 3;
+
+  // All nodes executed in order
+  repeated NodeExecutionRecord nodes_executed = 4;
+
+  // Total execution duration in milliseconds
+  uint64 total_duration_ms = 5;
+
+  // Total tokens used across all nodes
+  uint64 total_tokens = 6;
+
+  // All errors encountered during execution
+  repeated ErrorRecord errors = 7;
+
+  // Whether execution completed successfully
+  bool completed = 8;
+
+  // Execution start timestamp (ISO 8601)
+  string started_at = 9;
+
+  // Execution end timestamp (ISO 8601)
+  string ended_at = 10;
+
+  // Final state snapshot (JSON encoded)
+  bytes final_state = 11;
+
+  // Custom metadata
+  map<string, bytes> metadata = 12;
+}
+
+// Record of a single node execution within a trace.
+message NodeExecutionRecord {
+  // Node name/ID
+  string node = 1;
+
+  // Execution duration in milliseconds
+  uint64 duration_ms = 2;
+
+  // Token counts
+  uint64 prompt_tokens = 3;
+  uint64 completion_tokens = 4;
+  uint64 total_tokens = 5;
+
+  // Whether this node succeeded
+  bool succeeded = 6;
+
+  // Start and end timestamps (ISO 8601)
+  string started_at = 7;
+  string ended_at = 8;
+
+  // Input data (JSON encoded)
+  bytes input = 9;
+
+  // Output data (JSON encoded)
+  bytes output = 10;
+
+  // Node-specific metadata
+  map<string, string> metadata = 11;
+}
+
+// Record of an error that occurred during execution.
+message ErrorRecord {
+  // Node where error occurred
+  string node = 1;
+
+  // Error message
+  string message = 2;
+
+  // Error code (if available)
+  string error_code = 3;
+
+  // Timestamp when error occurred (ISO 8601)
+  string timestamp = 4;
+
+  // Whether error was recovered from
+  bool recovered = 5;
+
+  // Stack trace (if available)
+  string stack_trace = 6;
+}
+
+// ============================================================================
+// Stream Control
+// ============================================================================
+
+message StreamControl {
+  ControlType type = 1;
+  string thread_id = 2;
+
+  enum ControlType {
+    CONTROL_TYPE_START = 0;
+    CONTROL_TYPE_PAUSE = 1;
+    CONTROL_TYPE_RESUME = 2;
+    CONTROL_TYPE_STOP = 3;
+    CONTROL_TYPE_RESET = 4;
+  }
+}

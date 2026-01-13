@@ -1,0 +1,71 @@
+# DashFlow Registry - Docker Compose
+#
+# Usage:
+#   docker-compose up -d              # Start all services
+#   docker-compose up -d postgres     # Start only PostgreSQL
+#   docker-compose logs -f registry   # View registry logs
+#   docker-compose down               # Stop all services
+#   docker-compose down -v            # Stop and remove volumes
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: dashflow-registry-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-dashflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dashflow_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-dashflow_registry}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dashflow} -d ${POSTGRES_DB:-dashflow_registry}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  registry:
+    build:
+      context: ../..
+      dockerfile: crates/dashflow-registry/Dockerfile
+    container_name: dashflow-registry
+    environment:
+      # Server configuration
+      REGISTRY_HOST: "0.0.0.0"
+      REGISTRY_PORT: "3030"
+
+      # Database configuration
+      DATABASE_URL: "postgres://${POSTGRES_USER:-dashflow}:${POSTGRES_PASSWORD:-dashflow_dev}@postgres:5432/${POSTGRES_DB:-dashflow_registry}"
+
+      # Rate limiting
+      RATE_LIMIT_RPM: "${RATE_LIMIT_RPM:-60}"
+
+      # CORS
+      CORS_ENABLED: "${CORS_ENABLED:-true}"
+      CORS_ORIGINS: "${CORS_ORIGINS:-*}"
+
+      # Logging
+      RUST_LOG: "${RUST_LOG:-dashflow_registry=info,tower_http=info}"
+
+      # Storage backend (S3/R2)
+      STORAGE_URL: "${STORAGE_URL:-file:///data/packages}"
+    ports:
+      - "${REGISTRY_PORT:-3030}:3030"
+    volumes:
+      - registry_data:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3030/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  registry_data:

@@ -1,0 +1,53 @@
+[package]
+name = "dashflow-factories"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+description = "Provider-agnostic factories for LLM, embeddings, and tools"
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords = ["llm", "ai", "factory", "providers", "dashflow"]
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+# Core DashFlow
+dashflow.workspace = true
+
+# Provider crates (all required)
+dashflow-openai.workspace = true
+dashflow-anthropic = { workspace = true, optional = true }
+dashflow-ollama = { workspace = true, optional = true }
+dashflow-bedrock = { workspace = true, optional = true }
+dashflow-groq.workspace = true
+dashflow-mistral.workspace = true
+dashflow-deepseek.workspace = true
+dashflow-fireworks.workspace = true
+dashflow-xai.workspace = true
+dashflow-perplexity.workspace = true
+dashflow-huggingface.workspace = true
+dashflow-tavily.workspace = true
+dashflow-duckduckgo = { workspace = true, optional = true }
+
+# Async runtime
+async-trait = { workspace = true }
+tokio = { workspace = true }
+
+# Error handling
+anyhow = { workspace = true }
+
+[features]
+default = []
+anthropic = ["dashflow-anthropic"]
+ollama = ["dashflow-ollama"]
+bedrock = ["dashflow-bedrock"]
+duckduckgo = ["dashflow-duckduckgo"]
+all-providers = ["anthropic", "ollama", "bedrock"]
+all-tools = ["duckduckgo"]
+
+[dev-dependencies]
+tokio = { workspace = true }
+
+[lints]
+workspace = true

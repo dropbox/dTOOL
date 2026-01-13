@@ -1,0 +1,25 @@
+[package]
+name = "dashflow-perplexity"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["DashFlow Contributors"]
+description = "Perplexity AI provider for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "llm", "perplexity", "ai"]
+categories = ["api-bindings"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+dashflow-openai = { path = "../dashflow-openai" }
+async-openai = { workspace = true }
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+
+[dev-dependencies]
+
+[lints]
+workspace = true

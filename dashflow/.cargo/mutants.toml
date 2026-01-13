@@ -1,0 +1,30 @@
+# Mutation Testing Configuration for LangChain Rust
+# Phase 3A: Baseline Setup (N=712)
+
+# Test timeout settings
+# Baseline tests complete in ~30s, so we set generous multipliers
+timeout_multiplier = 5.0
+minimum_test_timeout = 60  # 1 minute minimum
+
+# Build timeout
+build_timeout_multiplier = 2.0
+
+# Exclude integration tests that require external services
+exclude_globs = [
+    "**/integration_tests.rs",
+    "**/test_external_*",
+]
+
+# Skip calls to common logging/debugging functions that don't affect behavior
+skip_calls = [
+    "std::fmt::Debug::fmt",
+    "std::fmt::Display::fmt",
+    "tracing::debug",
+    "tracing::info",
+    "tracing::warn",
+    "tracing::error",
+    "tracing::trace",
+]
+
+# Test in workspace mode to catch cross-crate issues
+test_workspace = false  # Start with per-package testing for speed

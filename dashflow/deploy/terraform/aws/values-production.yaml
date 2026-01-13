@@ -1,0 +1,130 @@
+# DashFlow Helm values for AWS production environment
+
+global:
+  environment: production
+  awsRegion: ${aws_region}
+
+# WebSocket Server
+websocketServer:
+  enabled: true
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+
+# Quality Monitor
+qualityMonitor:
+  enabled: true
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+
+# Prometheus Exporter
+prometheusExporter:
+  enabled: true
+  replicaCount: 2
+
+# Redis Configuration
+redis:
+  enabled: false  # Using ElastiCache
+  external:
+    enabled: true
+    host: ${redis_endpoint}
+    port: 6379
+    tls: true
+
+# Kafka Configuration
+kafka:
+  enabled: false  # Using MSK
+  external:
+    enabled: true
+    brokers: ${kafka_brokers}
+    tls: true
+    sasl:
+      enabled: true
+      mechanism: SCRAM-SHA-512
+
+# PostgreSQL Configuration
+postgresql:
+  enabled: false  # Using RDS
+  external:
+    enabled: true
+    host: ${postgres_endpoint}
+    port: 5432
+    database: dashflow
+    sslMode: require
+
+# Observability
+observability:
+  prometheus:
+    enabled: true
+    retention: 30d
+  grafana:
+    enabled: true
+  jaeger:
+    enabled: true
+    sampling:
+      param: 0.1  # Sample 10% of traces in production
+
+# Ingress
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/certificate-arn: ""  # Set via terraform
+    alb.ingress.kubernetes.io/wafv2-acl-arn: ""    # Set via terraform
+
+# Security
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+  readOnlyRootFilesystem: true
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+# Node affinity for streaming workloads
+nodeSelector:
+  workload: streaming
+
+tolerations:
+  - key: workload
+    operator: Equal
+    value: streaming
+    effect: NoSchedule
+
+# Anti-affinity for HA
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: dashflow
+        topologyKey: kubernetes.io/hostname

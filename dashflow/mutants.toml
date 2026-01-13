@@ -1,0 +1,76 @@
+# cargo-mutants configuration for DashFlow
+# CQ-006: Mutation testing setup
+#
+# Quick start:
+#   cargo mutants -p dashflow --file "crates/dashflow/src/trace_analysis.rs" -- --lib
+#
+# Full run (takes hours - use CI):
+#   cargo mutants -p dashflow
+#
+# Run on specific module:
+#   cargo mutants -p dashflow --file "crates/dashflow/src/scheduler/*.rs"
+#
+# Stats (as of 2026-01-03):
+#   - Total mutants: ~27,625
+#   - Estimated full run time: 50-100+ hours
+#   - Recommended: run on specific files/modules
+
+# Timeout for each mutant test run (seconds)
+# Increase if tests are timing out
+timeout = 300
+
+# Number of parallel jobs (adjust based on CPU cores)
+jobs = 4
+
+# Skip slow or flaky tests in mutation testing
+[skip_tests]
+# Skip integration tests that involve external resources
+patterns = [
+    "e2e_*",
+    "integration_*",
+    "llm_*",  # Skip LLM tests (require API keys)
+]
+
+# Files to focus mutation testing on (can be overridden with --file flag)
+# Note: These are examined for mutations, but tests from all files will run
+# Prioritized by criticality and test coverage
+[examine_files]
+patterns = [
+    # Critical execution paths
+    "crates/dashflow/src/executor/execution.rs",
+    "crates/dashflow/src/scheduler/mod.rs",
+    "crates/dashflow/src/graph/mod.rs",
+    # Core utilities
+    "crates/dashflow/src/trace_analysis.rs",
+    "crates/dashflow/src/error.rs",
+    "crates/dashflow/src/edge.rs",
+    "crates/dashflow/src/node.rs",
+    # Self-improvement (original focus)
+    "crates/dashflow/src/self_improvement/types.rs",
+    "crates/dashflow/src/self_improvement/storage.rs",
+    "crates/dashflow/src/self_improvement/analyzers.rs",
+    "crates/dashflow/src/self_improvement/consensus.rs",
+    # Quality gates
+    "crates/dashflow/src/quality/mod.rs",
+    # Introspection
+    "crates/dashflow/src/introspection/trace.rs",
+]
+
+# Files to exclude from mutation (tests, configuration, etc.)
+[exclude_files]
+patterns = [
+    "**/tests.rs",
+    "**/testing.rs",
+    "**/test_*.rs",
+    "**/mod.rs",
+    "**/*_proptest.rs",  # Property tests
+    "**/kani_harnesses/*.rs",  # Kani proofs
+]
+
+# Specific functions to skip (display/debug are not critical)
+[skip_functions]
+patterns = [
+    "fmt",
+    "debug_*",
+    "display_*",
+]

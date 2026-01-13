@@ -1,0 +1,78 @@
+Encoding screenshot: examples/apps/document_search/outputs/eval_report_screenshot.png
+Sending request to GPT-4 Vision...
+{
+  "model": "gpt-4o",
+  "improvements": [
+    {
+      "priority": "Critical",
+      "category": "Information Density",
+      "problem": "The report uses excessive whitespace, limiting the amount of data visible at once.",
+      "solution": "Reduce padding and margins to increase the amount of data visible per screen.",
+      "implementation": "In html.rs, adjust CSS styles to reduce padding and margins around sections and elements."
+    },
+    {
+      "priority": "Critical",
+      "category": "Actionability",
+      "problem": "There is no clear indication of the most critical issues that need attention.",
+      "solution": "Add a 'Top Issues' section that highlights the most critical problems and suggested actions.",
+      "implementation": "In html.rs, create a new section at the top with a list of top issues and actions derived from scenario results."
+    },
+    {
+      "priority": "High",
+      "category": "Data Storytelling",
+      "problem": "The narrative flow is unclear, making it hard to quickly grasp key insights.",
+      "solution": "Reorder sections to follow a logical narrative: Executive Summary, Key Metrics, Detailed Analysis.",
+      "implementation": "In html.rs, rearrange the order of sections to improve narrative flow."
+    },
+    {
+      "priority": "High",
+      "category": "Statistical Rigor",
+      "problem": "Charts lack confidence intervals, which are crucial for understanding data variability.",
+      "solution": "Add confidence intervals to the charts to provide more statistical context.",
+      "implementation": "In charts.rs, modify chart rendering to include confidence intervals using error bars."
+    },
+    {
+      "priority": "High",
+      "category": "Visual Design",
+      "problem": "The color scheme lacks contrast, making it difficult to distinguish data points.",
+      "solution": "Enhance color contrast and use a color palette that improves readability and accessibility.",
+      "implementation": "In html.rs, update CSS to use a high-contrast color palette for text and charts."
+    },
+    {
+      "priority": "Medium",
+      "category": "Information Density",
+      "problem": "Charts are too large, reducing the space available for other data.",
+      "solution": "Resize charts to occupy less space while maintaining readability.",
+      "implementation": "In charts.rs, adjust chart dimensions and layout to be more compact."
+    },
+    {
+      "priority": "Medium",
+      "category": "Data Storytelling",
+      "problem": "The executive summary lacks a clear, concise overview of key insights.",
+      "solution": "Revise the executive summary to include a bullet-point list of key insights and recommendations.",
+      "implementation": "In html.rs, update the executive summary section to include a concise list of insights."
+    },
+    {
+      "priority": "Medium",
+      "category": "Statistical Rigor",
+      "problem": "There is no display of data distributions or percentiles.",
+      "solution": "Include histograms or box plots to show data distributions and percentiles.",
+      "implementation": "In charts.rs, add new chart types such as histograms or box plots to visualize distributions."
+    },
+    {
+      "priority": "Medium",
+      "category": "Actionability",
+      "problem": "Recommendations are not prominently displayed or linked to data insights.",
+      "solution": "Highlight recommendations and directly link them to specific data insights.",
+      "implementation": "In html.rs, enhance the recommendations section with links to relevant data points."
+    },
+    {
+      "priority": "Medium",
+      "category": "Visual Design",
+      "problem": "Typography is inconsistent, affecting readability and professionalism.",
+      "solution": "Standardize typography with consistent font sizes and styles for headings and body text.",
+      "implementation": "In html.rs, update CSS to ensure consistent typography across the report."
+    }
+  ],
+  "raw_response": "```json\n[\n    {\n        \"priority\": \"Critical\",\n        \"category\": \"Information Density\",\n        \"problem\": \"The report uses excessive whitespace, limiting the amount of data visible at once.\",\n        \"solution\": \"Reduce padding and margins to increase the amount of data visible per screen.\",\n        \"implementation\": \"In html.rs, adjust CSS styles to reduce padding and margins around sections and elements.\"\n    },\n    {\n        \"priority\": \"Critical\",\n        \"category\": \"Actionability\",\n        \"problem\": \"There is no clear indication of the most critical issues that need attention.\",\n        \"solution\": \"Add a 'Top Issues' section that highlights the most critical problems and suggested actions.\",\n        \"implementation\": \"In html.rs, create a new section at the top with a list of top issues and actions derived from scenario results.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Data Storytelling\",\n        \"problem\": \"The narrative flow is unclear, making it hard to quickly grasp key insights.\",\n        \"solution\": \"Reorder sections to follow a logical narrative: Executive Summary, Key Metrics, Detailed Analysis.\",\n        \"implementation\": \"In html.rs, rearrange the order of sections to improve narrative flow.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Statistical Rigor\",\n        \"problem\": \"Charts lack confidence intervals, which are crucial for understanding data variability.\",\n        \"solution\": \"Add confidence intervals to the charts to provide more statistical context.\",\n        \"implementation\": \"In charts.rs, modify chart rendering to include confidence intervals using error bars.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Visual Design\",\n        \"problem\": \"The color scheme lacks contrast, making it difficult to distinguish data points.\",\n        \"solution\": \"Enhance color contrast and use a color palette that improves readability and accessibility.\",\n        \"implementation\": \"In html.rs, update CSS to use a high-contrast color palette for text and charts.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Information Density\",\n        \"problem\": \"Charts are too large, reducing the space available for other data.\",\n        \"solution\": \"Resize charts to occupy less space while maintaining readability.\",\n        \"implementation\": \"In charts.rs, adjust chart dimensions and layout to be more compact.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Data Storytelling\",\n        \"problem\": \"The executive summary lacks a clear, concise overview of key insights.\",\n        \"solution\": \"Revise the executive summary to include a bullet-point list of key insights and recommendations.\",\n        \"implementation\": \"In html.rs, update the executive summary section to include a concise list of insights.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Statistical Rigor\",\n        \"problem\": \"There is no display of data distributions or percentiles.\",\n        \"solution\": \"Include histograms or box plots to show data distributions and percentiles.\",\n        \"implementation\": \"In charts.rs, add new chart types such as histograms or box plots to visualize distributions.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Actionability\",\n        \"problem\": \"Recommendations are not prominently displayed or linked to data insights.\",\n        \"solution\": \"Highlight recommendations and directly link them to specific data insights.\",\n        \"implementation\": \"In html.rs, enhance the recommendations section with links to relevant data points.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Visual Design\",\n        \"problem\": \"Typography is inconsistent, affecting readability and professionalism.\",\n        \"solution\": \"Standardize typography with consistent font sizes and styles for headings and body text.\",\n        \"implementation\": \"In html.rs, update CSS to ensure consistent typography across the report.\"\n    }\n]\n```"
+}

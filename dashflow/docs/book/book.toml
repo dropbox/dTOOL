@@ -1,0 +1,54 @@
+[book]
+title = "DashFlow Rust Documentation"
+authors = ["DashFlow Rust Contributors"]
+description = "Comprehensive documentation for DashFlow Rust - A high-performance Rust implementation of DashFlow"
+language = "en"
+multilingual = false
+src = "src"
+
+[build]
+build-dir = "book"
+create-missing = true
+
+[output.html]
+default-theme = "rust"
+preferred-dark-theme = "navy"
+git-repository-url = "https://github.com/dropbox/dTOOL/dashflow"
+edit-url-template = "https://github.com/dropbox/dTOOL/dashflow/edit/main/docs/book/{path}"
+site-url = "/dashflow-rust/"
+cname = ""
+smart-punctuation = true
+mathjax-support = true
+copy-fonts = true
+no-section-label = false
+
+[output.html.fold]
+enable = true
+level = 1
+
+[output.html.playground]
+editable = true
+copyable = true
+copy-js = true
+line-numbers = true
+runnable = true
+
+[output.html.search]
+enable = true
+limit-results = 30
+teaser-word-count = 30
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 1
+boost-paragraph = 1
+expand = true
+heading-split-level = 3
+
+[output.html.redirect]
+# Add redirects as needed
+
+[preprocessor.links]
+# Enable link checking
+
+[preprocessor.index]
+# Enable index generation

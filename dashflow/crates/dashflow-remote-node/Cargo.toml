@@ -1,0 +1,58 @@
+[package]
+name = "dashflow-remote-node"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Remote node execution for distributed DashFlow workflows via gRPC"
+
+[dependencies]
+# Core DashFlow
+dashflow.workspace = true
+
+# gRPC support
+tonic = "0.12"
+prost = { workspace = true }
+prost-types = "0.13"
+
+# Async runtime
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time"] }
+tokio-stream = "0.1"
+async-trait = { workspace = true }
+futures = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+bincode = { workspace = true }
+
+# Retry logic
+tokio-retry = { workspace = true }
+
+# Tracing
+tracing = { workspace = true }
+
+# UUID
+uuid = { workspace = true }
+thiserror.workspace = true
+
+# CPU time tracking
+cpu-time = "1.0"
+
+# Memory tracking
+memory-stats = "1.2"
+
+[build-dependencies]
+tonic-build = "0.12"
+prost-build = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+
+[lints]
+workspace = true

@@ -1,0 +1,1270 @@
+{
+  "title": "DashFlow Quality Agent - Production Monitoring",
+  "tags": [
+    "dashflow",
+    "quality",
+    "llm",
+    "production"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 2,
+  "refresh": "30s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Success Rate (Target: ≥90%)",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "expr": "(100 * sum(rate(dashstream_quality_monitor_queries_passed_total[5m])) / clamp_min(sum(rate(dashstream_quality_monitor_queries_total[5m])), 0.000000001)) or vector(0)",
+          "legendFormat": "Success Rate"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "red"
+              },
+              {
+                "value": 85,
+                "color": "yellow"
+              },
+              {
+                "value": 90,
+                "color": "green"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Current Quality Score (Target: ≥0.90)",
+      "type": "stat",
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "expr": "avg(dashstream_quality_monitor_quality_score) or vector(0)",
+          "legendFormat": "Avg Quality"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 3,
+          "min": 0,
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "red"
+              },
+              {
+                "value": 0.85,
+                "color": "yellow"
+              },
+              {
+                "value": 0.9,
+                "color": "green"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Average Retries (Target: <1.5)",
+      "type": "stat",
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "expr": "(sum(dashstream_quality_retry_count_sum) / clamp_min(sum(dashstream_quality_retry_count_count), 1)) or vector(0)",
+          "legendFormat": "Avg Retries"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 1.5,
+                "color": "yellow"
+              },
+              {
+                "value": 2.5,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "mean"
+          ]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "Request Rate (QPS)",
+      "type": "graph",
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_total[1m])) or vector(0)",
+          "legendFormat": "Total Requests"
+        },
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_passed_total[1m])) or vector(0)",
+          "legendFormat": "Successful Requests"
+        },
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_failed_total[1m])) or vector(0)",
+          "legendFormat": "Failed Requests"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "reqps",
+          "label": "Requests/sec"
+        },
+        {
+          "format": "short"
+        }
+      ],
+      "legend": {
+        "show": true,
+        "alignAsTable": true,
+        "rightSide": false
+      }
+    },
+    {
+      "id": 6,
+      "title": "Quality Components (Accuracy, Relevance, Completeness)",
+      "type": "graph",
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "dashstream_quality_accuracy or vector(0)",
+          "legendFormat": "Accuracy"
+        },
+        {
+          "expr": "dashstream_quality_relevance or vector(0)",
+          "legendFormat": "Relevance"
+        },
+        {
+          "expr": "dashstream_quality_completeness or vector(0)",
+          "legendFormat": "Completeness"
+        },
+        {
+          "expr": "dashstream_quality_monitor_quality_score or vector(0)",
+          "legendFormat": "Overall Quality"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Quality Score",
+          "min": 0,
+          "max": 1
+        },
+        {
+          "format": "short"
+        }
+      ],
+      "legend": {
+        "show": true,
+        "alignAsTable": true,
+        "rightSide": false
+      }
+    },
+    {
+      "id": 7,
+      "title": "Model Usage Distribution",
+      "type": "piechart",
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 8,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_queries_by_model_total{model=\"gpt-4o-mini\"}[5m])) or vector(0)",
+          "legendFormat": "Fast Model (gpt-4o-mini)"
+        },
+        {
+          "expr": "sum(rate(dashstream_queries_by_model_total{model=\"gpt-4\"}[5m])) or vector(0)",
+          "legendFormat": "Premium Model (gpt-4)"
+        }
+      ],
+      "options": {
+        "pieType": "pie",
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "show": true,
+          "placement": "right"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Latency Distribution (P50/P95/P99)",
+      "type": "graph",
+      "gridPos": {
+        "x": 8,
+        "y": 10,
+        "w": 8,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "(histogram_quantile(0.50, sum(rate(dashstream_query_latency_ms_bucket[5m])) by (le)) and on() (sum(rate(dashstream_query_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P50 Latency"
+        },
+        {
+          "expr": "(histogram_quantile(0.95, sum(rate(dashstream_query_latency_ms_bucket[5m])) by (le)) and on() (sum(rate(dashstream_query_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P95 Latency"
+        },
+        {
+          "expr": "(histogram_quantile(0.99, sum(rate(dashstream_query_latency_ms_bucket[5m])) by (le)) and on() (sum(rate(dashstream_query_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P99 Latency"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "ms",
+          "label": "Latency"
+        },
+        {
+          "format": "short"
+        }
+      ],
+      "legend": {
+        "show": true,
+        "alignAsTable": true,
+        "rightSide": false
+      }
+    },
+    {
+      "id": 9,
+      "title": "Retry Count Percentiles",
+      "type": "graph",
+      "gridPos": {
+        "x": 16,
+        "y": 10,
+        "w": 8,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "(histogram_quantile(0.50, sum(rate(dashstream_quality_retry_count_bucket[5m])) by (le)) and on() (sum(rate(dashstream_quality_retry_count_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P50 Retries"
+        },
+        {
+          "expr": "(histogram_quantile(0.90, sum(rate(dashstream_quality_retry_count_bucket[5m])) by (le)) and on() (sum(rate(dashstream_quality_retry_count_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P90 Retries"
+        },
+        {
+          "expr": "(histogram_quantile(0.99, sum(rate(dashstream_quality_retry_count_bucket[5m])) by (le)) and on() (sum(rate(dashstream_quality_retry_count_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P99 Retries"
+        },
+        {
+          "expr": "(sum(dashstream_quality_retry_count_sum) / clamp_min(sum(dashstream_quality_retry_count_count), 1)) or vector(0)",
+          "legendFormat": "Average"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Count"
+        },
+        {
+          "format": "short"
+        }
+      ],
+      "legend": {
+        "show": true,
+        "alignAsTable": true,
+        "rightSide": false
+      },
+      "stack": true
+    },
+    {
+      "id": 10,
+      "title": "Quality Score Trend (6h)",
+      "type": "graph",
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "avg(dashstream_quality_monitor_quality_score) or vector(0)",
+          "legendFormat": "Average Quality"
+        },
+        {
+          "expr": "0.90",
+          "legendFormat": "Target (0.90)"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Quality Score",
+          "min": 0,
+          "max": 1
+        },
+        {
+          "format": "short"
+        }
+      ],
+      "legend": {
+        "show": true,
+        "alignAsTable": true,
+        "rightSide": false
+      },
+      "alert": {
+        "name": "Quality Score Below Target",
+        "conditions": [
+          {
+            "evaluator": {
+              "type": "lt",
+              "params": [
+                0.9
+              ]
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "type": "avg"
+            }
+          }
+        ],
+        "frequency": "1m",
+        "for": "5m",
+        "message": "Quality score has been below 0.90 for 5 minutes",
+        "noDataState": "no_data",
+        "executionErrorState": "alerting"
+      }
+    },
+    {
+      "id": 12,
+      "title": "Failure Breakdown by Category",
+      "type": "graph",
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_failed_total{category=\"Simple\"}[5m])) or vector(0)",
+          "legendFormat": "Simple Failures"
+        },
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_failed_total{category=\"Medium\"}[5m])) or vector(0)",
+          "legendFormat": "Medium Failures"
+        },
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_failed_total{category=\"Complex\"}[5m])) or vector(0)",
+          "legendFormat": "Complex Failures"
+        },
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_failed_total{category=\"Edge\"}[5m])) or vector(0)",
+          "legendFormat": "Edge Failures"
+        },
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_failed_total{category=\"Unknown\"}[5m])) or vector(0)",
+          "legendFormat": "Unknown Failures"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Failures/sec"
+        },
+        {
+          "format": "short"
+        }
+      ],
+      "legend": {
+        "show": true,
+        "alignAsTable": true,
+        "rightSide": false
+      },
+      "stack": true
+    },
+    {
+      "id": 13,
+      "title": "Quality Judge Usage",
+      "type": "graph",
+      "gridPos": {
+        "x": 12,
+        "y": 22,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_quality_monitor_queries_total[5m])) or vector(0)",
+          "legendFormat": "Total Judge Calls"
+        }
+      ],
+      "xaxis": {
+        "mode": "time"
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": "Calls/sec"
+        },
+        {
+          "format": "short"
+        }
+      ],
+      "legend": {
+        "show": true,
+        "alignAsTable": true,
+        "rightSide": false
+      }
+    },
+    {
+      "id": 14,
+      "title": "Overall Failure Rate",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 28,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "expr": "(100 * sum(rate(dashstream_quality_monitor_queries_failed_total[5m])) / clamp_min(sum(rate(dashstream_quality_monitor_queries_total[5m])), 0.000000001)) or vector(0)",
+          "legendFormat": "Failure Rate %"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 1,
+                "color": "yellow"
+              },
+              {
+                "value": 5,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      },
+      "alert": {
+        "name": "High Query Failure Rate",
+        "conditions": [
+          {
+            "evaluator": {
+              "type": "gt",
+              "params": [
+                1.0
+              ]
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "type": "avg"
+            }
+          }
+        ],
+        "frequency": "1m",
+        "for": "5m",
+        "message": "Query failure rate above 1% for 5 minutes - quality threshold breach",
+        "noDataState": "ok",
+        "executionErrorState": "alerting"
+      }
+    },
+    {
+      "id": 16,
+      "title": "Retry Rate (p99)",
+      "type": "stat",
+      "gridPos": {
+        "x": 16,
+        "y": 28,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "expr": "(histogram_quantile(0.99, sum(rate(dashstream_quality_retry_count_bucket[5m])) by (le)) and on() (sum(rate(dashstream_quality_retry_count_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "p99 Retry Count"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 2,
+                "color": "yellow"
+              },
+              {
+                "value": 5,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      }
+    },
+    {
+      "id": 17,
+      "title": "Sequence Gaps (Message Loss Detection)",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "rate(dashstream_sequence_gaps_total[5m]) or (0 * dashstream_sequence_gaps_total)",
+          "legendFormat": "Gaps/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 0.001,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "last",
+            "max",
+            "sum"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 18,
+      "title": "Duplicate Message Rate",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 32,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "rate(dashstream_sequence_duplicates_total[5m]) or (0 * dashstream_sequence_duplicates_total)",
+          "legendFormat": "Duplicates/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 0.1,
+                "color": "yellow"
+              },
+              {
+                "value": 0.5,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "last",
+            "max",
+            "sum"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 19,
+      "title": "Out-of-Order Message Rate",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 38,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "rate(dashstream_sequence_reorders_total[5m]) or (0 * dashstream_sequence_reorders_total)",
+          "legendFormat": "Reorders/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 0.1,
+                "color": "yellow"
+              },
+              {
+                "value": 0.5,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "last",
+            "max",
+            "sum"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 20,
+      "title": "DLQ Write Rate by Error Type",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 38,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "rate(websocket_dlq_sends_total[5m]) or (0 * websocket_dlq_sends_total)",
+          "legendFormat": "{{error_type}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 50,
+            "stacking": {
+              "mode": "normal"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 0.1,
+                "color": "yellow"
+              },
+              {
+                "value": 1,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "last",
+            "max",
+            "sum"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 21,
+      "title": "DLQ Health (Send Failures)",
+      "type": "stat",
+      "gridPos": {
+        "x": 0,
+        "y": 44,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "expr": "rate(websocket_dlq_send_failures_total[5m]) or (0 * websocket_dlq_send_failures_total)",
+          "legendFormat": "DLQ Failures/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 3,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 0.001,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "text": {
+          "titleSize": 18,
+          "valueSize": 24
+        }
+      }
+    },
+    {
+      "id": 22,
+      "title": "Redis Connection Errors",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 48,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "rate(dashstream_rate_limiter_redis_errors_total[5m]) or (0 * dashstream_rate_limiter_redis_errors_total)",
+          "legendFormat": "rate_limiter/{{operation}}"
+        },
+        {
+          "expr": "rate(dashstream_websocket_redis_errors_total[5m]) or vector(0)",
+          "legendFormat": "websocket"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 0.01,
+                "color": "yellow"
+              },
+              {
+                "value": 0.1,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "last",
+            "max",
+            "sum"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 23,
+      "title": "Redis Operation Latency (p95)",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 12,
+        "y": 48,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "((histogram_quantile(0.95, rate(dashstream_rate_limiter_redis_latency_ms_bucket[5m])) and (rate(dashstream_rate_limiter_redis_latency_ms_count[5m]) > 0)) or (0 * dashstream_rate_limiter_redis_latency_ms_count))",
+          "legendFormat": "rate_limiter p95 - {{operation}}"
+        },
+        {
+          "expr": "((histogram_quantile(0.95, rate(dashstream_websocket_redis_latency_ms_bucket[5m])) and (rate(dashstream_websocket_redis_latency_ms_count[5m]) > 0)) or (0 * dashstream_websocket_redis_latency_ms_count))",
+          "legendFormat": "websocket p95 - {{operation}}"
+        },
+        {
+          "expr": "((histogram_quantile(0.50, rate(dashstream_rate_limiter_redis_latency_ms_bucket[5m])) and (rate(dashstream_rate_limiter_redis_latency_ms_count[5m]) > 0)) or (0 * dashstream_rate_limiter_redis_latency_ms_count))",
+          "legendFormat": "rate_limiter p50 - {{operation}}"
+        },
+        {
+          "expr": "((histogram_quantile(0.50, rate(dashstream_websocket_redis_latency_ms_bucket[5m])) and (rate(dashstream_websocket_redis_latency_ms_count[5m]) > 0)) or (0 * dashstream_websocket_redis_latency_ms_count))",
+          "legendFormat": "websocket p50 - {{operation}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 10,
+                "color": "yellow"
+              },
+              {
+                "value": 50,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "last",
+            "mean",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 24,
+      "title": "Kafka Consumer Lag by Partition (M-428)",
+      "description": "Consumer lag = high_watermark - current_offset. High lag indicates the WebSocket server is falling behind Kafka producers. Alert thresholds: >10K (high), >100K (critical).",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 0,
+        "y": 54,
+        "w": 12,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "websocket_kafka_consumer_lag or vector(0)",
+          "legendFormat": "Partition {{partition}}"
+        },
+        {
+          "expr": "max(websocket_kafka_consumer_lag) or vector(0)",
+          "legendFormat": "Max (all partitions)"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 10000,
+                "color": "yellow"
+              },
+              {
+                "value": 100000,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "last",
+            "max",
+            "mean"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    },
+    {
+      "id": 25,
+      "title": "Consumer Lag Stats",
+      "description": "Current max consumer lag across all partitions. Green <10K, Yellow 10K-100K, Red >100K messages behind.",
+      "type": "stat",
+      "gridPos": {
+        "x": 12,
+        "y": 54,
+        "w": 6,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "max(websocket_kafka_consumer_lag) or vector(0)",
+          "legendFormat": "Max Lag"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": 0,
+                "color": "green"
+              },
+              {
+                "value": 10000,
+                "color": "yellow"
+              },
+              {
+                "value": 100000,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ]
+        }
+      }
+    },
+    {
+      "id": 26,
+      "title": "Consumer Lag Rate of Change",
+      "description": "Rate of change in consumer lag. Positive = falling further behind, negative = catching up.",
+      "type": "timeseries",
+      "gridPos": {
+        "x": 18,
+        "y": 54,
+        "w": 6,
+        "h": 6
+      },
+      "targets": [
+        {
+          "expr": "deriv(max(websocket_kafka_consumer_lag)[5m:1m]) or vector(0)",
+          "legendFormat": "Lag change/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "fillOpacity": 10
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "value": -1000,
+                "color": "green"
+              },
+              {
+                "value": 0,
+                "color": "yellow"
+              },
+              {
+                "value": 1000,
+                "color": "red"
+              }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "last",
+            "min",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      }
+    }
+  ],
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": [
+      {
+        "name": "Deployments",
+        "datasource": "Prometheus",
+        "enable": true,
+        "expr": "changes(dashflow_build_info[5m]) > 0",
+        "iconColor": "blue",
+        "titleFormat": "Deployment"
+      }
+    ]
+  },
+  "uid": "dashstream-quality"
+}

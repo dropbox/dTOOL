@@ -1,0 +1,108 @@
+[package]
+name = "dashflow-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["Andrew Yates <ayates@dropbox.com>", "Dropbox"]
+description = "Unified DashFlow CLI - streaming telemetry, prompt optimization, evaluation, and training"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license = "UNLICENSED"
+
+[[bin]]
+name = "dashflow"
+path = "src/main.rs"
+doc = false  # Prevent doc collision with dashflow library crate
+
+[dependencies]
+# DashFlow core (for optimization, evaluation, training)
+# Note: dashstream feature enables GRPO optimizer for train rl command
+dashflow = { workspace = true, features = ["dashstream", "mcp-server"] }
+
+# DashFlow OpenAI (for distillation with ChatOpenAI models)
+dashflow-openai = { path = "../dashflow-openai" }
+
+# DashFlow Evals (for baseline management and regression checking)
+dashflow-evals = { path = "../dashflow-evals" }
+
+# DashFlow module discovery (for mcp-server auto-discovery)
+dashflow-module-discovery = { path = "../dashflow-module-discovery" }
+
+# DashFlow Streaming protocol
+dashflow-streaming.workspace = true
+
+# DashFlow Package Registry
+dashflow-registry = { path = "../dashflow-registry" }
+
+# CLI framework
+clap = { workspace = true, features = ["derive", "cargo", "env"] }
+
+# Output formatting
+colored = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+bincode = { workspace = true }
+comfy-table = "7.1"
+
+# Kafka consumer
+rdkafka = { workspace = true }
+
+# HTTP client for OpenAI API calls
+reqwest = { workspace = true, features = ["multipart"] }
+
+# Async runtime
+tokio = { workspace = true }
+
+# Error handling
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+# Time handling
+chrono = { workspace = true }
+
+# UUID
+uuid.workspace = true
+
+# Hex encoding
+hex = { workspace = true }
+
+# Protobuf
+prost = { workspace = true }
+
+# JSON Patch
+json-patch = { workspace = true }
+
+# CSV parsing for dataset conversion
+csv = { workspace = true }
+
+# TUI for watch command
+ratatui = "0.28"
+crossterm = { version = "0.28", features = ["event-stream"] }
+futures = { workspace = true }
+
+# Flamegraph generation
+inferno = "0.12"
+
+# Browser opening for visualize command
+webbrowser = "1.0"
+
+# Directory utilities for package cache
+dirs = "5.0"
+toml.workspace = true
+flate2.workspace = true
+tar.workspace = true
+
+# Documentation audit (for introspect health --docs)
+walkdir = { workspace = true }
+regex = { workspace = true }
+
+# Full-text search index for documentation
+tantivy = "0.22"
+
+[dev-dependencies]
+tempfile = { workspace = true }
+
+[lints]
+workspace = true

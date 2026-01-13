@@ -1,0 +1,29 @@
+[package]
+name = "dashflow-openapi"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "OpenAPI tool for DashFlow - execute API operations from OpenAPI/Swagger specifications"
+homepage = "https://github.com/dropbox/dTOOL/dashflow"
+keywords.workspace = true
+categories.workspace = true
+repository.workspace = true
+
+[dependencies]
+dashflow.workspace = true
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+serde_yml = { workspace = true }
+reqwest = { workspace = true }
+tokio = { workspace = true }
+openapiv3 = "2.2"
+url = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "time"] }
+
+[lints]
+workspace = true

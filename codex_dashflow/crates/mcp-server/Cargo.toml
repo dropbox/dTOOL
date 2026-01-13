@@ -1,0 +1,39 @@
+[package]
+name = "codex-dashflow-mcp-server"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "MCP server implementation for Codex DashFlow - exposes the coding agent as an MCP tool"
+
+[dependencies]
+# Core dependency for agent execution
+codex-dashflow-core = { path = "../core" }
+
+# Async runtime
+tokio.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+
+# Error handling
+thiserror.workspace = true
+anyhow.workspace = true
+
+# Logging
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+# MCP SDK
+rmcp = { workspace = true, features = ["server", "transport-io"] }
+
+# Async utilities
+async-trait.workspace = true
+futures.workspace = true
+
+# UUID for session IDs
+uuid.workspace = true
+
+[dev-dependencies]
+pretty_assertions.workspace = true
+tokio = { workspace = true, features = ["test-util", "macros"] }

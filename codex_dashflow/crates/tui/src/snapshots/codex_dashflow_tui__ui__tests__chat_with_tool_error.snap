@@ -1,0 +1,14 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"┌ Chat ────────────────────────────────────────────────────────────────────────┐"
+"│System: Welcome to Codex DashFlow. Using OPENAI_API_KEY from environment.     │"
+"│Permission denied                                                             │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"└──────────────────────────────────────────────────────────────────────────────┘"

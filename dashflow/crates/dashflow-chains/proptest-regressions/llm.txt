@@ -1,0 +1,8 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 23306380c67ec5a7c8616741a7d44cc34fe0da0436517f1d779eb4c81bbdc3a2 # shrinks to var_name = "a0"
+cc 4107de9ff3915d6545034c1106be009052c93906ce4265d28dbb2f8476e0c614 # shrinks to (template_str, var_names) = ("Prompt: {e} and {a} and {e}", ["e", "a", "e"]), val1 = "&⩙//\\:=\u{b5722}%\u{d0da7}\u{fa2ad}<\u{7505d}Ⱥ\\Ⱥ'\u{10c8d5}'ÞѨ\\:𠮪\u{b}{�\u{7f}\u{6c1f0}䔆SȺ\u{4f7ef}*O\u{82738}\u{fef56}j\u{7f}\u{65c06}\u{5241f}`<\u{202e}/\"$\u{b4bce}\u{1}\u{abb2c}w\u{202e}:\u{6d609}\r\t\u{100a09}\"Ü.&\u{feff}\u{4236b}\u{e538a}Û\u{85dde}{", val2 = "𑋰\u{8}Ẍ\u{1b}ȺѨU\u{8537a}+\u{6c4af}\tF'%\u{4926e}Ѩ\u{c9d90}\u{4038e}<\u{840d8}*/Ⱥ&\u{feff}?\u{b}<&%\tQq/\"Ѩd¥\u{3be76}¥$\\\\\0Þ.\u{3}\u{feff}\u{62034}\u{e51a1}\u{ef85a}{IÍ\u{1b}L\u{1b}{𬩎$'_)\u{3e667}\r\r7🕴7?�\u{e789b}U\t", val3 = "s\u{69bc8} c<*5\u{ccbbc}🕴\u{9f81b}¥/:\u{55aac}m6`Ѩ\u{b5b5f}�\u{feff}&\r$k\u{6f4bd}/?n\u{5c1c1}🕴\0:\0\0Ⱥ\u{b}�\\\u{748e3}\u{10f795}Z\u{47c82}Px:🕴@Ѩ\"\u{16608}*\u{202e}\u{e535}\u{3}pĿ({O?\u{202e}l\u{d5602}.%l\u{f1603}\u{9c}'<N<?\u{a6188}<\0\0\u{4}\u{fb97f}🕴\u{f6e2f}F¡\u{b}Gရ\"𑈢.\u{9afc4}\u{ec2ba}"

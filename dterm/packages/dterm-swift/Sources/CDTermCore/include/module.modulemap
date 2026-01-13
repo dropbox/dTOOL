@@ -1,0 +1,4 @@
+module CDTermCore {
+    header "dterm.h"
+    export *
+}

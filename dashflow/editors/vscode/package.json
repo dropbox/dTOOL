@@ -1,0 +1,195 @@
+{
+  "name": "dashflow",
+  "displayName": "DashFlow",
+  "description": "VS Code extension for DashFlow - high-performance Rust agent orchestration framework",
+  "version": "1.11.3",
+  "publisher": "dashflow",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dropbox/dTOOL/dashflow"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Debuggers",
+    "Visualization"
+  ],
+  "keywords": [
+    "dashflow",
+    "rust",
+    "llm",
+    "ai",
+    "agents",
+    "orchestration",
+    "langchain"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/Cargo.toml",
+    "onCommand:dashflow.visualize",
+    "onCommand:dashflow.debug",
+    "onCommand:dashflow.runAnalyze"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dashflow.visualize",
+        "title": "DashFlow: Visualize Graph",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "dashflow.visualizeSelection",
+        "title": "DashFlow: Visualize Selected Mermaid",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "dashflow.debug",
+        "title": "DashFlow: Start Debug Server",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "dashflow.runAnalyze",
+        "title": "DashFlow: Analyze Workflow",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "dashflow.runTests",
+        "title": "DashFlow: Run Tests",
+        "icon": "$(testing-run-icon)"
+      },
+      {
+        "command": "dashflow.openDashboard",
+        "title": "DashFlow: Open Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "dashflow.generateGraph",
+        "title": "DashFlow: Generate Graph Code",
+        "icon": "$(code)"
+      },
+      {
+        "command": "dashflow.showDocs",
+        "title": "DashFlow: Show Documentation",
+        "icon": "$(book)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "dashflow.visualizeSelection",
+          "when": "editorHasSelection",
+          "group": "dashflow@1"
+        },
+        {
+          "command": "dashflow.generateGraph",
+          "when": "resourceLangId == rust",
+          "group": "dashflow@2"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "dashflow.visualize",
+          "when": "resourceLangId == rust || resourceExtname == .mermaid || resourceExtname == .mmd",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "DashFlow",
+      "properties": {
+        "dashflow.cliPath": {
+          "type": "string",
+          "default": "dashflow",
+          "description": "Path to the DashFlow CLI binary"
+        },
+        "dashflow.visualizer.port": {
+          "type": "number",
+          "default": 8765,
+          "description": "Port for the visualization server"
+        },
+        "dashflow.debugger.port": {
+          "type": "number",
+          "default": 8766,
+          "description": "Port for the debug server"
+        },
+        "dashflow.dashboard.port": {
+          "type": "number",
+          "default": 8767,
+          "description": "Port for the dashboard server"
+        },
+        "dashflow.autoDetectGraphs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect graph definitions in Rust files"
+        },
+        "dashflow.showInlineHints": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inline hints for DashFlow types and functions"
+        }
+      }
+    },
+    "snippets": [
+      {
+        "language": "rust",
+        "path": "./snippets/dashflow.json"
+      }
+    ],
+    "languages": [
+      {
+        "id": "mermaid",
+        "aliases": ["Mermaid", "mermaid"],
+        "extensions": [".mermaid", ".mmd"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mermaid",
+        "scopeName": "source.mermaid",
+        "path": "./syntaxes/mermaid.tmLanguage.json"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "dashflowGraphs",
+          "name": "DashFlow Graphs",
+          "when": "workspaceContains:**/Cargo.toml"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dashflow",
+          "title": "DashFlow",
+          "icon": "resources/dashflow-icon.svg"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^2.22.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  }
+}

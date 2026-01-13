@@ -1,0 +1,26 @@
+[package]
+name = "dashflow-graphql"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "GraphQL tool for DashFlow - Execute GraphQL queries and mutations"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "graphql", "api", "tools"]
+categories = ["api-bindings", "web-programming"]
+license.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+reqwest = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
+wiremock = { workspace = true }
+
+[lints]
+workspace = true

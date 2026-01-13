@@ -1,0 +1,59 @@
+[package]
+name = "dashflow-prometheus-exporter"
+version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["Andrew Yates <ayates@dropbox.com>", "Dropbox"]
+description = "Prometheus metrics exporter for LangStream telemetry (Kafka → Prometheus bridge)"
+
+[dependencies]
+# Prometheus metrics
+prometheus = { workspace = true }
+
+# HTTP server for /metrics endpoint
+axum = { workspace = true }
+tokio.workspace = true
+tower = "0.4"  # Keep at 0.4 for compatibility (workspace has 0.5)
+tower-http = { workspace = true }
+
+# Kafka consumer
+rdkafka = { workspace = true }
+
+# Protobuf support
+prost = { workspace = true }
+prost-types = "0.13"
+
+# LangStream protocol
+dashflow-streaming = { path = "../dashflow-streaming" }
+
+# Error handling
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+# Serialization
+serde.workspace = true
+serde_json = { workspace = true }
+
+[dev-dependencies]
+# Testing
+tokio-test = { workspace = true }
+reqwest = { workspace = true }
+mockall = "0.13"
+uuid.workspace = true
+chrono = { workspace = true }
+
+[[bin]]
+name = "prometheus-exporter"
+path = "src/main.rs"
+
+[lints]
+workspace = true

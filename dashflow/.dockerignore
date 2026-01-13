@@ -1,0 +1,41 @@
+# Build artifacts
+target/
+target_*/
+
+# Git
+.git/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Test artifacts
+test-output/
+coverage/
+*.profraw
+
+# Documentation
+docs/_build/
+
+# Local development
+.env.local
+*.local
+
+# Worker logs
+worker_logs/
+
+# Node modules (if any)
+node_modules/
+
+# Large binary files
+*.so
+*.dylib
+*.dll
+
+# Temporary files
+tmp/
+temp/
+*.tmp

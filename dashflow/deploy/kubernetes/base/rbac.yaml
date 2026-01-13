@@ -1,0 +1,96 @@
+# DashFlow RBAC Configuration
+# Service accounts and permissions for DashFlow components
+
+---
+# DashFlow Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dashflow
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+---
+# Prometheus Service Account (for service discovery)
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: prometheus
+---
+# ClusterRole for Prometheus service discovery
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dashflow-prometheus
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: prometheus
+rules:
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - nodes/proxy
+      - services
+      - endpoints
+      - pods
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources:
+      - configmaps
+    verbs: ["get"]
+  - nonResourceURLs: ["/metrics"]
+    verbs: ["get"]
+---
+# ClusterRoleBinding for Prometheus
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dashflow-prometheus
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: prometheus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dashflow-prometheus
+subjects:
+  - kind: ServiceAccount
+    name: prometheus
+    namespace: dashflow
+---
+# NetworkPolicy: Allow ingress to DashFlow services
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dashflow-allow-internal
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: dashflow
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    # Allow traffic from within the namespace
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: dashflow
+    # Allow traffic from Prometheus for scraping
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/component: prometheus
+      ports:
+        - protocol: TCP
+          port: 9090
+  egress:
+    # Allow all egress (for external API calls like OpenAI)
+    - {}

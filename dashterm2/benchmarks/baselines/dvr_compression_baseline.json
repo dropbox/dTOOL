@@ -1,0 +1,99 @@
+
+{
+  "benchmark": "DVR LZ4 Compression",
+  "timestamp": "2025-12-17 22:04:57 +0000",
+  "results": [
+    {
+      "screen": "Small (80x24)",
+      "content": "Empty Screen",
+      "uncompressed_bytes": 38400,
+      "compressed_bytes": 310,
+      "compression_ratio": 123.87,
+      "compress_ms": 0.002,
+      "decompress_ms": 0.012,
+      "compress_mbps": 16019.5,
+      "decompress_mbps": 3245.5
+    },
+    {
+      "screen": "Small (80x24)",
+      "content": "Typical Shell",
+      "uncompressed_bytes": 38400,
+      "compressed_bytes": 958,
+      "compression_ratio": 40.08,
+      "compress_ms": 0.005,
+      "decompress_ms": 0.001,
+      "compress_mbps": 8354.6,
+      "decompress_mbps": 35901.8
+    },
+    {
+      "screen": "Small (80x24)",
+      "content": "Code Editor",
+      "uncompressed_bytes": 38400,
+      "compressed_bytes": 1352,
+      "compression_ratio": 28.40,
+      "compress_ms": 0.005,
+      "decompress_ms": 0.001,
+      "compress_mbps": 7708.3,
+      "decompress_mbps": 30486.3
+    },
+    {
+      "screen": "Small (80x24)",
+      "content": "Random ASCII",
+      "uncompressed_bytes": 38400,
+      "compressed_bytes": 7802,
+      "compression_ratio": 4.92,
+      "compress_ms": 0.017,
+      "decompress_ms": 0.005,
+      "compress_mbps": 2238.7,
+      "decompress_mbps": 8191.3
+    },
+    {
+      "screen": "Small (80x24)",
+      "content": "Unicode Text",
+      "uncompressed_bytes": 38400,
+      "compressed_bytes": 19320,
+      "compression_ratio": 1.99,
+      "compress_ms": 0.048,
+      "decompress_ms": 0.012,
+      "compress_mbps": 808.1,
+      "decompress_mbps": 3215.2
+    },
+    {
+      "screen": "Small (80x24)",
+      "content": "High Entropy",
+      "uncompressed_bytes": 38400,
+      "compressed_bytes": 37748,
+      "compression_ratio": 1.02,
+      "compress_ms": 0.033,
+      "decompress_ms": 0.005,
+      "compress_mbps": 1171.2,
+      "decompress_mbps": 8398.0
+    },
+    {
+      "screen": "Medium (120x40)",
+      "content": "Empty Screen",
+      "uncompressed_bytes": 96000,
+      "compressed_bytes": 684,
+      "compression_ratio": 140.35,
+      "compress_ms": 0.004,
+      "decompress_ms": 0.019,
+      "compress_mbps": 22973.4,
+      "decompress_mbps": 4929.9
+    },
+    {
+      "screen": "Medium (120x40)",
+      "content": "Typical Shell",
+      "uncompressed_bytes": 96000,
+      "compressed_bytes": 1628,
+      "compression_ratio": 58.97,
+      "compress_ms": 0.007,
+      "decompress_ms": 0.002,
+      "compress_mbps": 12917.0,
+      "decompress_mbps": 41777.0
+    },
+    {
+      "screen": "Medium (120x40)",
+      "content": "Code Editor",
+      "uncompressed_bytes": 96000,
+      "compressed_bytes": 2195,
+      "compression_ratio": 43.74,

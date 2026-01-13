@@ -1,0 +1,67 @@
+#!/bin/bash
+# Pre-commit hook: Comprehensive validation
+# 1. Protect critical files from deletion
+# 2. Check all tests compile (including ignored tests)
+# 3. Run basic validation
+#
+# Bypass with: git commit --no-verify (NOT RECOMMENDED)
+
+# Get list of staged files
+STAGED_FILES=$(git diff --cached --name-only)
+
+# Check if only documentation files changed
+if echo "$STAGED_FILES" | grep -v -E '^(docs/|reports/|[^/]+\.(md|txt)$)' > /dev/null; then
+    # Code changes detected
+    echo "🔍 Code changes detected - running validation..."
+else
+    # Only docs changed - skip validation
+    echo "📝 Documentation-only changes detected - skipping validation"
+    echo "   Changed files:"
+    echo "$STAGED_FILES" | sed 's/^/     - /'
+    echo ""
+    echo "✅ Pre-commit checks passed (docs-only mode)"
+    exit 0
+fi
+
+# Step 1: Critical file protection
+echo ""
+echo "Step 1/2: Checking critical file protection..."
+if bash scripts/protect_critical_files.sh; then
+    echo "✅ Critical file protection passed"
+else
+    echo ""
+    echo "❌ Critical file protection failed!"
+    echo ""
+    exit 1
+fi
+
+# Step 2: Check all tests compile (including ignored tests)
+echo ""
+echo "Step 2/2: Checking all tests compile (including ignored)..."
+if ! cargo test --workspace --all-targets --no-run 2>&1 | grep -q "Finished"; then
+    echo ""
+    echo "❌ Test compilation failed!"
+    echo ""
+    echo "Some tests (possibly ignored tests) have compilation errors."
+    echo ""
+    echo "This prevents commits with broken tests."
+    echo "Tests marked #[ignore] must still COMPILE, even if they don't run."
+    echo ""
+    echo "To diagnose:"
+    echo "  cargo test --workspace --all-targets --no-run"
+    echo ""
+    echo "To bypass (NOT RECOMMENDED):"
+    echo "  git commit --no-verify"
+    echo ""
+    exit 1
+fi
+echo "✅ All tests compile successfully (including ignored tests)"
+
+echo ""
+echo "✅ PRE-COMMIT CHECKS PASSED"
+echo ""
+echo "Safe to commit:"
+echo "  - Critical files protected"
+echo "  - All tests compile (including ignored tests)"
+echo ""
+exit 0

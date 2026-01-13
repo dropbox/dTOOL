@@ -1,0 +1,107 @@
+0x1000d0b48 [0x10002ce80 - 0x100038218]  45976 objc class 0 NSString(Terminal) :: NSString
+0x1000d1850 [0x10003d338 - 0x10003d780]   1096 objc class 1 NSColor(Terminal) :: NSColor
+0x1000d36b0 [0x100014478 - 0x100014478]      0 objc class 2 NSTabView(TTTabExtension) :: NSTabView
+0x1000d4318 [0x100049434 - 0x1000497c8]    916 objc class 3 NSURL(TTTerminalURLValidation) :: NSURL
+0x1000d75a8 [0x10000cc1c - 0x100064e0c] 360944 objc class 4 NSCursor(Terminal) :: NSCursor
+0x1000d9b30 [0x1000721fc - 0x1000721fc]      0 objc class 5 NSAppleEventDescriptor(Terminal) :: NSAppleEventDescriptor
+0x1000d9b70 [0x100024b94 - 0x100072254] 317120 objc class 6 NSNumber(Terminal) :: NSNumber
+0x1000d9bb0 [0x100024aac - 0x100024aac]      0 objc class 7 NSArray(Terminal) :: NSArray
+0x1000db328 [0x1000323fc - 0x1000323fc]      0 objc class 8 NSNetService(TerminalAdditions) :: NSNetService
+0x1000dbe58 [0x100077138 - 0x100077138]      0 objc class 9 NSData(Terminal) :: NSData
+0x1000dbe98 [0x10001fd30 - 0x10007abcc] 372380 objc class 10 NSEvent(TTMenuEvent) :: NSEvent
+0x1000dc198 [0x10007b6b8 - 0x10007ba14]    860 objc class 11 NSAttributedString(Terminal) :: NSAttributedString
+0x1000dc1d8 [0x100028e78 - 0x100028e78]      0 objc class 12 NSIndexSet(Terminal) :: NSIndexSet
+0x1000e4bc0 [0x1000340a4 - 0x100034af8]   2644 objc class 13 TTProcessInfo :: NSObject
+0x1000e4c10 [0x1000091a4 - 0x100037368] 188868 objc class 14 TTShell :: NSObject
+0x1000e4c60 [0x100006684 - 0x10009d654] 618448 objc class 15 TTWindowController :: NSWindowController
+0x1000e4c88 [0x10003af9c - 0x10003b048]    172 objc class 16 TTDataDetectorsSoftLinking :: NSObject
+0x1000e4cd8 [0x10003b098 - 0x10003b170]    216 objc class 17 TTLookupSoftLinking :: NSObject
+0x1000e4d50 [0x100009484 - 0x10009d604] 606592 objc class 18 TTEncodingConverter :: NSObject
+0x1000e4dc8 [0x100002710 - 0x10009c720] 630800 objc class 19 TTProfile :: NSObject
+0x1000e4df0 [0x100002964 - 0x10003caf4] 237968 objc class 20 TTBuiltinProfile :: TTProfile, TTProfile
+0x1000e4e18 [0x100024db4 - 0x10003cb84]  97744 objc class 21 TTFontToStringTransformer :: NSValueTransformer
+0x1000e4e90 [0x100001818 - 0x10003d278] 244320 objc class 22 TTMappedKeysToSortedTransformer :: NSValueTransformer
+0x1000e4eb8 [0x100025b00 - 0x10003d2e0]  96224 objc class 23 TTNoWarnProcessesTransformer :: NSValueTransformer
+0x1000e4f08 [0x100025a74 - 0x10003d2f4]  96384 objc class 24 TTNilToEmptyStringTransformer :: NSValueTransformer
+0x1000e4f58 [0x100025ae0 - 0x10003d314]  96308 objc class 25 TTBookmarkDataToURLTransformer :: NSValueTransformer
+0x1000e4fa8 [0x10003d7c4 - 0x10003eb0c]   4936 objc class 26 TTTermFileConverter :: NSObject
+0x1000e5020 [0x1000092c0 - 0x10009c720] 603232 objc class 27 TTUUID :: NSObject
+0x1000e5070 [0x100001ae0 - 0x10009c690] 633776 objc class 28 TTWorkspace :: NSObject
+0x1000e50c0 [0x100041458 - 0x10009c6cc] 373364 objc class 29 TTAXTabCloseButton :: NSAccessibilityElement
+0x1000e5110 [0x10000fb10 - 0x10004266c] 207708 objc class 30 TTTabViewItem :: NSTabViewItem
+0x1000e5160 [0x1000428e8 - 0x1000428e8]      0 objc class 31 TTTabAlertAnimation :: TTTabAnimation, TTTabAnimation
+0x1000e51b0 [0x10000ffc4 - 0x100042978] 207284 objc class 32 TTTabAnimation :: NSAnimation
+0x1000e5200 [0x1000429c8 - 0x100042abc]    244 objc class 33 TTTabEditField :: NSTextField
+0x1000e5250 [0x100006d88 - 0x1000459f8] 257136 objc class 34 TTTabView :: NSTabView
+0x1000e52a0 [0x100045b10 - 0x100045b10]      0 objc class 35 TTTabReorderAnimation :: TTTabAnimation, TTTabAnimation
+0x1000e52f0 [0x100007ac0 - 0x100071d2c] 434796 objc class 36 TTTabController :: NSObject
+0x1000e5340 [0x10004877c - 0x10004877c]      0 objc class 37 TTTabSpringBackAnimation :: TTTabAnimation, TTTabAnimation
+0x1000e5390 [0x100006848 - 0x100070e68] 435744 objc class 38 TTWindow :: NSWindow
+0x1000e53e0 [0x10002f554 - 0x100049200] 105644 objc class 39 TTShellReaper :: NSObject
+0x1000e5430 [0x1000059d0 - 0x10004942c] 277084 objc class 40 TTBlinker :: NSObject
+0x1000e5480 [0x100008744 - 0x1000705bc] 425592 objc class 41 TTLogicalScreen :: NSObject
+0x1000e54d0 [0x100008c1c - 0x10004bf14] 275192 objc class 42 TTMultiLineBuffer :: NSObject
+0x1000e5520 [0x10004c2cc - 0x10004c6c8]   1020 objc class 43 TTInsertBookmarkSheetController :: NSWindowController
+0x1000e5570 [0x10000cba8 - 0x10004c6d8] 260912 objc class 44 TTViewVisualBellAnimation :: NSAnimation
+0x1000e5598 [0x10004c740 - 0x10009d538] 331256 objc class 45 TTPreviewItem :: NSObject
+0x1000e5610 [0x10004c8f4 - 0x10004c9cc]    216 objc class 46 TTTouchBarFnKeysStackView :: NSStackView
+0x1000e5688 [0x100009a68 - 0x10009d550] 604904 objc class 47 TTView :: TTAccessibleView, TTAccessibleView
+0x1000e56b0 [0x10006145c - 0x100061824]    968 objc class 48 TTViewAttributedString :: NSAttributedString
+0x1000e5700 [0x100008f98 - 0x100061ab4] 363292 objc class 49 TTActiveTextStorage :: NSObject
+0x1000e5750 [0x100009074 - 0x100061cb0] 363580 objc class 50 TTAttributedString :: NSObject
+0x1000e57a0 [0x10000b7f8 - 0x10009d5c8] 597456 objc class 51 TTVT100Emulator :: NSObject
+0x1000e57f0 [0x1000089bc - 0x100064784] 376264 objc class 52 TTScrollbackTextStorage :: NSObject
+0x1000e5840 [0x100025c94 - 0x10006553c] 260264 objc class 53 TTKeyMappingsController :: NSObject
+0x1000e5890 [0x10002512c - 0x1000655e0] 263348 objc class 54 TTKeyMapTextEscaper :: NSObject
+0x1000e58e0 [0x1000657e8 - 0x100065ed8]   1776 objc class 55 RawTextView :: NSTextView
+0x1000e5908 [0x1000e5908 - 0x1000e5908]      0 objc class 56 RawTextField :: NSTextField
+0x1000e5980 [0x100024690 - 0x1000660bc] 268844 objc class 57 RawTextPanel :: NSPanel
+0x1000e59d0 [0x100066718 - 0x100066864]    332 objc class 58 TTAccessibleView :: NSView
+0x1000e5a20 [0x1000669e0 - 0x100066a58]    120 objc class 59 TTBackgroundColorWell :: NSColorWell
+0x1000e5a70 [0x100025c2c - 0x100066c54] 266280 objc class 60 TTANSIColorWell :: NSColorWell
+0x1000e5ac0 [0x100066cc4 - 0x100066fdc]    792 objc class 61 TTLinkButton :: NSButton
+0x1000e5b10 [0x1000240c0 - 0x100067a20] 276832 objc class 62 TTAppPrefsController :: NSWindowController
+0x1000e5b38 [0x100067b30 - 0x100067b30]      0 objc class 63 TTEditingArrayController :: NSArrayController
+0x1000e5bb0 [0x100024568 - 0x1000688b8] 279376 objc class 64 TTProfileArrayController :: TTEditingArrayController, TTEditingArrayController
+0x1000e5c00 [0x100024480 - 0x100069218] 282008 objc class 65 TTWorkspaceArrayController :: NSArrayController
+0x1000e5c50 [0x1000692dc - 0x1000692dc]      0 objc class 66 TTNoWarnProcessesController :: TTEditingArrayController, TTEditingArrayController
+0x1000e5c78 [0x1000256b8 - 0x10006937c] 277700 objc class 67 TTStartupActionIsUseWindowSettingsTransformer :: NSValueTransformer
+0x1000e5cc8 [0x100025710 - 0x100069390] 277632 objc class 68 TTStartupActionIsUseWindowGroupTransformer :: NSValueTransformer
+0x1000e5d40 [0x100001478 - 0x1000720d8] 461920 objc class 69 TTApplication :: NSApplication
+0x1000e5db8 [0x100028154 - 0x100070780] 296492 objc class 70 TTLogicalScreenString :: NSString
+0x1000e5de0 [0x1000707b4 - 0x1000708ac]    248 objc class 71 TTLogicalScreenAttributedString :: NSAttributedString
+0x1000e5e08 [0x100072120 - 0x100072120]      0 objc class 72 TTDoScriptCommand :: NSScriptCommand
+0x1000e5ea8 [0x1000249e0 - 0x100072448] 318056 objc class 73 TTEncodingBindingEntry :: NSObject
+0x1000e5ed0 [0x100024730 - 0x100072690] 319328 objc class 74 TTEncodingController :: NSObject
+0x1000e5f20 [0x1000726e4 - 0x1000727fc]    280 objc class 75 TTClipView :: NSClipView
+0x1000e5f70 [0x1000020a0 - 0x1000738ac] 464908 objc class 76 TTProfileManager :: NSObject
+0x1000e5fc0 [0x100073950 - 0x1000748b0]   3936 objc class 77 TTGenericSavePanel :: NSWindowController
+0x1000e6010 [0x10007494c - 0x1000751a4]   2136 objc class 78 TTGenericPickerPanel :: NSWindowController
+0x1000e6060 [0x100075278 - 0x100075bf0]   2424 objc class 79 TTFindPanel :: NSPanel
+0x1000e60b0 [0x100009de0 - 0x100075ef0] 442640 objc class 80 TTIOManager :: NSObject
+0x1000e6100 [0x10002c1c8 - 0x100075f40] 302456 objc class 81 TTRunCommandPanelController :: NSWindowController
+0x1000e6150 [0x1000310fc - 0x100076110] 282644 objc class 82 ConnectToService :: NSObject
+0x1000e61a0 [0x100030b3c - 0x100076bcc] 286864 objc class 83 ServiceBrowser :: NSObject
+0x1000e61f0 [0x1000053a4 - 0x100077020] 466044 objc class 84 TTWorkspaceManager :: NSObject
+0x1000e6240 [0x10007acb4 - 0x10007af40]    652 objc class 85 TTProfileSaveViewController :: NSViewController
+0x1000e6290 [0x10007b210 - 0x10007b264]     84 objc class 86 TTWorkspaceSaveViewController :: NSViewController
+0x1000e62b8 [0x10007b400 - 0x10007b544]    324 objc class 87 Quarantine :: NSObject
+0x1000e6330 [0x100020060 - 0x10009c6a8] 509512 objc class 88 TTInspectorController :: NSWindowController
+0x1000e6380 [0x10002af5c - 0x10007c7d0] 333940 objc class 89 TTSettingsThumbnailArrayController :: NSArrayController
+0x1000e63d0 [0x10007c7e0 - 0x10007c978]    408 objc class 90 TTCustomBackgroundColorWell :: NSColorWell
+0x1000e6420 [0x100026bc8 - 0x10007c9e8] 351776 objc class 91 TTPopUpButtonCell :: NSPopUpButtonCell
+0x1000e6470 [0x100026a2c - 0x10007cae0] 352436 objc class 92 TTTableView :: NSTableView
+0x1000e64c0 [0x10007d2c0 - 0x10007d354]    148 objc class 93 TTTemporaryProfile :: TTProfile, TTProfile
+0x1000e64e8 [0x100006104 - 0x100006104]      0 objc class 94 TTProfileMenuItem :: NSMenuItem
+0x1000e6538 [0x10000fa00 - 0x10007d41c] 449052 objc class 95 TTResizeView :: NSView
+0x1000e65b0 [0x10000c074 - 0x10009c8c0] 591948 objc class 96 TTPane :: TTAccessibleView, TTAccessibleView
+0x1000e6600 [0x10000bff8 - 0x10007e498] 468128 objc class 97 TTSplitView :: NSSplitView
+0x1000e6628 [0x10002bab0 - 0x10002bab0]      0 objc class 98 TTSettingsPickerSourceCell :: TTSettingsSourceCell, TTSettingsSourceCell
+0x1000e66a0 [0x100024260 - 0x10007e6b8] 369752 objc class 99 TTSettingsSourceCell :: NSTextFieldCell
+0x1000e66c8 [0x10007e8bc - 0x10007e8c8]     12 objc class 100 TTProcessInfoToDisplayNameTransformer :: NSValueTransformer
+0x1000e6718 [0x10007ee24 - 0x10007ee30]     12 objc class 101 TTProcessInfoToColorTransformer :: NSValueTransformer
+0x1000e6768 [0x10007ef44 - 0x10007ef50]     12 objc class 102 TTProcessStatusToStringTransformer :: NSValueTransformer
+0x1000e67b8 [0x10007f0b8 - 0x10007f0c4]     12 objc class 103 TTBoolToStringTransformer :: NSValueTransformer
+0x1000e6830 [0x10007f16c - 0x1000802b0]   4420 objc class 104 TTProcessTableViewController :: NSViewController
+0x1000e6858 [0x100080340 - 0x100080340]      0 objc class 105 TTProcessDisplayNameCell :: NSTextFieldCell
+0x1000e68a8 [0x1000809ac - 0x1000809bc]     16 objc class 106 TTTableColumnMenuItem :: NSMenuItem

@@ -1,0 +1,7 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"┌Input [Ctrl+Enter:send Enter:newline Esc:normal] (200 chars)──────────────────┐"
+"│◀aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa▶│"
+"└──────────────────────────────────────────────────────────────────────────────┘"

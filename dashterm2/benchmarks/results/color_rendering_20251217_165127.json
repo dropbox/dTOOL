@@ -1,0 +1,7 @@
+{
+  "benchmark_type": "color_rendering",
+  "timestamp": "20251217_165127",
+  "terminal": {"name": "iTerm.app", "version": "3.6.6"},
+  "system": {"chip": "Apple M3 Max", "cores": 16, "memory": "64GB"},
+  "results": [{"name":"plain_11_lines","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"plain_100_lines","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"256color_11_lines","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"256color_100_lines","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"24bit_11_lines","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"24bit_100_lines","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"mixed_11_lines","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"gen_256_11","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"gen_24bit_11","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0},{"name":"shell_256_11","mean_ms":,"stddev_ms":,"min_ms":999999999,"max_ms":0}]
+}

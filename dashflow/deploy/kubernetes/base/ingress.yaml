@@ -1,0 +1,107 @@
+# DashFlow Ingress Configuration
+# Routes external traffic to DashFlow services
+# Supports both Nginx Ingress Controller and standard Ingress
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashflow-ingress
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: ingress
+  annotations:
+    # Nginx Ingress Controller annotations
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "60"
+    # WebSocket support
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$remote_addr"
+    # SSL redirect (uncomment for production)
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # Rate limiting (optional)
+    # nginx.ingress.kubernetes.io/limit-rps: "100"
+spec:
+  ingressClassName: nginx
+  # Uncomment for TLS (production)
+  # tls:
+  #   - hosts:
+  #       - dashflow.example.com
+  #     secretName: dashflow-tls
+  rules:
+    - host: dashflow.example.com
+      http:
+        paths:
+          # WebSocket Server - real-time streaming
+          - path: /ws
+            pathType: Prefix
+            backend:
+              service:
+                name: websocket-server
+                port:
+                  number: 3002
+          # Quality Monitor API
+          - path: /api/quality
+            pathType: Prefix
+            backend:
+              service:
+                name: quality-monitor
+                port:
+                  number: 3003
+          # Grafana UI
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 3000
+          # Jaeger UI
+          - path: /jaeger
+            pathType: Prefix
+            backend:
+              service:
+                name: jaeger
+                port:
+                  number: 16686
+          # Prometheus UI
+          - path: /prometheus
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus
+                port:
+                  number: 9090
+---
+# Optional: WebSocket-specific Ingress for sticky sessions
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashflow-websocket-ingress
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: websocket-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/upstream-hash-by: "$remote_addr"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "dashflow-ws-session"
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ws.dashflow.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: websocket-server
+                port:
+                  number: 3002

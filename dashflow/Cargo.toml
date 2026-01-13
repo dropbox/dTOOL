@@ -1,0 +1,319 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/dashflow-openai",
+    "crates/dashflow-azure-openai",  # Azure OpenAI provider with Azure-specific endpoints and auth
+    "crates/dashflow-anthropic", "crates/dashflow-ollama", "crates/dashflow-bedrock", "crates/dashflow-text-splitters", "crates/dashflow-chroma", "crates/dashflow-qdrant", "crates/dashflow-pinecone", "crates/dashflow-elasticsearch", "crates/dashflow-opensearch", "crates/dashflow-pgvector", "crates/dashflow-supabase", "crates/dashflow-mongodb", "crates/dashflow-weaviate", "crates/dashflow-lancedb", "crates/dashflow-typesense", "crates/dashflow-clickhouse", "crates/dashflow-usearch", "crates/dashflow-neo4j", "crates/dashflow-cassandra", "crates/dashflow-sqlitevss", "crates/dashflow-timescale", "crates/dashflow-hnsw", "crates/dashflow-annoy", "crates/dashflow-groq", "crates/dashflow-fireworks", "crates/dashflow-deepseek", "crates/dashflow-xai", "crates/dashflow-perplexity", "crates/dashflow-mistral", "crates/dashflow-huggingface", "crates/dashflow-nomic", "crates/dashflow-cohere", "crates/dashflow-together", "crates/dashflow-replicate", "crates/dashflow-jina", "crates/dashflow-exa", "crates/dashflow-tavily", "crates/dashflow-brave", "crates/dashflow-bing", "crates/dashflow-serper", "crates/dashflow-webscrape", "crates/dashflow-wikipedia", "crates/dashflow-arxiv", "crates/dashflow-youtube", "crates/dashflow-google-search", "crates/dashflow-duckduckgo", "crates/dashflow-pubmed", "crates/dashflow-wolfram", "crates/dashflow-calculator", "crates/dashflow-openweathermap", "crates/dashflow-langsmith", "crates/dashflow-benchmarks", "crates/dashflow", "crates/dashflow-derive", "crates/dashflow-macros", "crates/dashflow-standard-tests", "crates/dashflow-langserve", "crates/dashflow-memory", "benchmarks/memory_profiling", "benchmarks/python_comparison", "crates/dashflow-json", "crates/dashflow-json-tool", "crates/dashflow-human-tool", "crates/dashflow-file-tool", "crates/dashflow-shell-tool", "crates/dashflow-github", "crates/dashflow-slack", "crates/dashflow-sql-database", "crates/dashflow-http-requests", "crates/dashflow-graphql", "crates/dashflow-stackexchange", "crates/dashflow-reddit", "crates/dashflow-jira",
+    # dashflow-milvus moved to exclude due to RUSTSEC-2024-0336 (rustls HIGH DoS) + RUSTSEC-2025-0009 (ring AES panic)
+    "crates/dashflow-gemini",  # Google Gemini provider implementation
+    "crates/dashflow-voyage",  # Voyage AI embeddings integration
+    "crates/dashflow-cloudflare",  # Cloudflare Workers AI provider implementation
+    "crates/dashflow-gmail",  # ToolInput API fixed, integration complete
+    "crates/dashflow-office365",  # Office 365 tool integration complete
+    "crates/dashflow-clickup",  # ClickUp tool integration
+    "crates/dashflow-redis",  # Redis vector store
+    "crates/dashflow-chains",  # Document combining chains (Stuff, MapReduce, Refine)
+    "crates/dashflow-gitlab",
+    "crates/dashflow-openapi",
+    "crates/dashflow-wasm-executor",
+    "crates/dashflow-document-compressors",
+    "test-utils",
+    "crates/dashflow-file-management",
+    "crates/dashflow-postgres-checkpointer",  # PostgreSQL checkpointer for DashFlow
+    "crates/dashflow-redis-checkpointer",  # Redis checkpointer for DashFlow
+    "crates/dashflow-s3-checkpointer",  # S3 checkpointer for DashFlow
+    "crates/dashflow-dynamodb-checkpointer",  # DynamoDB checkpointer for DashFlow
+    "crates/dashflow-streaming",  # DashFlow Streaming ultra-efficient telemetry protocol
+    "crates/dashflow-cli", "crates/dashflow-compression",  # Unified DashFlow CLI - streaming, optimize, eval, train
+    "crates/dashflow-remote-node", "crates/dashflow-observability",  # Remote node execution for distributed DashFlow
+    "crates/dashflow-prometheus-exporter",  # Prometheus metrics exporter for DashFlow Streaming events
+    "crates/dashflow-module-discovery",  # Zero-marker auto-discovery of DashFlow modules
+    "crates/dashflow-factories",  # Provider-agnostic factories for LLM, embeddings, tools
+    "crates/dashflow-registry",  # AI-native package registry with CAS, semantic search, trust verification
+    "crates/dashflow-evals",  # Evaluation framework for agent quality testing (golden datasets, LLM-as-judge)
+    "crates/dashflow-context",  # Context window management - token counting, truncation, budget tracking
+    "crates/dashflow-git-tool",  # Git integration - repository detection, commits, diffs, context
+    "crates/dashflow-project",  # Project context discovery for coding agents
+    "crates/dashflow-prompts",  # Prompt management - versioning, registry, performance tracking
+    "crates/dashflow-testing",  # Testing utilities - MockChatModel, MockTool, GraphTestHarness
+    # Sample Applications (unmaintained examples removed - see git history to restore)
+    "examples/apps/common",  # Common test utilities (LLM-as-Judge quality evaluation)
+    "examples/apps/librarian",  # Superhuman Librarian - Ultimate RAG paragon
+    "examples/apps/codex-dashflow",  # Codex DashFlow - AI-powered code generation
+]
+exclude = [
+    "crates/dashflow-faiss",  # Send/Sync blocker confirmed - faiss::Index not Send - deferred to v2.0.0 (requires upstream fix)
+    "crates/dashflow-milvus",  # RUSTSEC-2024-0336 (rustls 0.20.9 HIGH DoS) + RUSTSEC-2025-0009 (ring 0.16.20 AES panic) - awaiting milvus-sdk-rust tonic update
+    "crates/dashflow-playwright",  # RUSTSEC-2020-0071 (time 0.1.45 segfault MEDIUM) - awaiting playwright update or alternative
+]
+
+[workspace.package]
+version = "1.11.3"
+edition = "2021"
+rust-version = "1.80"
+authors = ["Andrew Yates <ayates@dropbox.com>", "Dropbox"]
+repository = "https://github.com/dropbox/dTOOL/dashflow"
+homepage = "https://github.com/dropbox/dTOOL/dashflow"
+keywords = ["llm", "ai", "dashflow", "language-model", "openai"]
+categories = ["api-bindings", "asynchronous"]
+license = "Apache-2.0"
+
+# Workspace-wide lint configuration
+# Crates must opt-in with: [lints] workspace = true
+# See: ROADMAP_CURRENT.md Phase 0.8 (Pattern Enforcement)
+[workspace.lints.rust]
+# These are warnings, not errors - allow gradual adoption
+unsafe_code = "warn"
+missing_docs = { level = "allow", priority = -1 }  # M-283: 201 remaining (was 488)
+# Allow kani cfg for Kani model checker harnesses (KANI-001)
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(kani)'] }
+
+[workspace.lints.clippy]
+# Code quality
+unwrap_used = "warn"
+expect_used = "warn"
+panic = "warn"
+todo = "warn"
+unimplemented = "warn"
+
+# Performance
+large_enum_variant = "warn"
+large_stack_arrays = "warn"
+box_collection = "warn"
+
+# Style
+needless_pass_by_value = "warn"
+redundant_clone = "warn"
+clone_on_ref_ptr = "warn"
+
+# Correctness
+float_cmp = "warn"
+lossy_float_literal = "warn"
+
+# MSRV Compatibility (Rust 1.80)
+# Clippy suggests is_none_or() but that requires Rust 1.82.0
+# Our MSRV-compatible pattern: .map_or(true, |x| ...)
+unnecessary_map_or = "allow"
+
+[workspace.dependencies]
+# Async runtime
+tokio = { version = "1.38", features = ["full"] }
+async-trait = "0.1"
+futures = "0.3"
+async-stream = "0.3"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+json-patch = "3.0"
+serde_yml = "0.0.12"
+toml = "0.8"
+ini = "1.3"
+schemars = { version = "1.1", features = ["chrono04", "uuid1"] }
+jsonschema = "0.29"  # JSON Schema validation for tool input validation
+
+# Encoding
+base64 = "0.22"
+
+# Archive formats
+zip = "2.2"
+tar = "0.4"
+
+# HTML tree
+ego-tree = "0.10"
+flate2 = "1.0"
+
+# Error handling
+thiserror = "2.0"
+anyhow = "1.0"
+
+# HTTP client
+reqwest = { version = "0.12", features = ["json", "stream"] }
+eventsource-stream = "0.2"
+
+# Utilities
+uuid = { version = "1.8", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+tokio-retry = "0.3"
+dashmap = "6.1"
+parking_lot = "0.12"
+notify = "6.1"
+lru = "0.12"
+rayon = "1.10"
+regex = "1.11"
+scraper = "0.22"
+qdrant-client = "1.15"
+shlex = "1.3"
+
+# Logging and tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+opentelemetry = "0.31"
+opentelemetry-otlp = { version = "0.31", features = ["tonic", "grpc-tonic"] }
+tracing-opentelemetry = "0.32"
+opentelemetry_sdk = { version = "0.31", features = ["rt-tokio"] }
+opentelemetry-stdout = "0.31"
+
+# Metrics
+prometheus = { version = "0.13", features = ["process"] }
+metrics = "0.23"
+metrics-exporter-prometheus = { version = "0.15", default-features = false, features = ["http-listener"] }
+
+# HTTP server (for metrics endpoint)
+axum = { version = "0.7", features = ["ws"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace", "fs"] }
+tokio-stream = { version = "0.1", features = ["sync"] }
+
+# Serialization (binary)
+bincode = "1.3"
+
+# Template engine
+tera = "1.20"
+
+# Tokenization
+tiktoken-rs = "0.6"
+
+# Graph data structures
+petgraph = "0.6"
+
+# Database clients (for memory backends)
+redis = { version = "0.32", features = ["tokio-comp", "connection-manager", "script"] }
+mongodb = "3.1"
+tokio-postgres = { version = "0.7", features = ["with-serde_json-1"] }
+aws-sdk-dynamodb = "1.97"
+aws-sdk-s3 = "1.63"
+aws-sdk-bedrockruntime = "1.56"
+aws-config = { version = "1.5", features = ["behavior-version-latest"] }
+scylla = "0.14"
+
+# Protocol buffers
+prost = "0.13"
+prost-build = "0.13"
+
+# URL handling
+url = "2.5"
+
+# Testing
+mockall = "0.13"
+insta = { version = "1.39", features = ["json", "yaml"] }
+criterion = "0.5"
+proptest = "1.5"
+tempfile = "3.15"
+wiremock = "0.6"
+testcontainers = "0.25"
+
+# Analytics storage formats (WAL compaction)
+arrow = "56.2.0"
+parquet = "56.2.0"
+tokio-test = "0.4"
+
+# Internal workspace crates (for cross-crate dependencies)
+dashflow = { path = "crates/dashflow" }
+dashflow-anthropic = { path = "crates/dashflow-anthropic" }
+dashflow-bedrock = { path = "crates/dashflow-bedrock" }
+dashflow-deepseek = { path = "crates/dashflow-deepseek" }
+dashflow-derive = { path = "crates/dashflow-derive" }
+dashflow-duckduckgo = { path = "crates/dashflow-duckduckgo" }
+dashflow-fireworks = { path = "crates/dashflow-fireworks" }
+dashflow-groq = { path = "crates/dashflow-groq" }
+dashflow-huggingface = { path = "crates/dashflow-huggingface" }
+dashflow-langsmith = { path = "crates/dashflow-langsmith" }
+dashflow-macros = { path = "crates/dashflow-macros" }
+dashflow-mistral = { path = "crates/dashflow-mistral" }
+dashflow-module-discovery = { path = "crates/dashflow-module-discovery" }
+dashflow-observability = { path = "crates/dashflow-observability" }
+dashflow-ollama = { path = "crates/dashflow-ollama" }
+dashflow-openai = { path = "crates/dashflow-openai" }
+dashflow-perplexity = { path = "crates/dashflow-perplexity" }
+dashflow-standard-tests = { path = "crates/dashflow-standard-tests" }
+dashflow-streaming = { path = "crates/dashflow-streaming" }
+dashflow-tavily = { path = "crates/dashflow-tavily" }
+dashflow-test-utils = { path = "test-utils" }
+dashflow-text-splitters = { path = "crates/dashflow-text-splitters" }
+dashflow-xai = { path = "crates/dashflow-xai" }
+
+# HTTP
+hyper = "1"
+
+# LLM clients
+async-openai = "0.25"
+
+# Kafka
+rdkafka = { version = "0.36", features = ["tokio"] }
+
+# Utilities (continued)
+hex = "0.4"
+rand = "0.8"  # Keep at 0.8 for ed25519-dalek compatibility (uses rand_core 0.6)
+bytes = "1.0"
+
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+
+# Cryptographic hashing
+sha2 = "0.10"
+
+# Compression
+zstd = "0.13"
+
+# Database
+rusqlite = { version = "0.33", features = ["bundled"] }
+
+# File system
+walkdir = "2.5"
+
+# Console output
+colored = "2.1"
+
+# Data parsing
+csv = "1.3"
+
+# Versioning
+semver = { version = "1.0", features = ["serde"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+debug = true
+
+[profile.dev]
+opt-level = 0
+
+[profile.test]
+opt-level = 1
+
+# Security vulnerability documentation (N=1114)
+#
+# NOTE: The following security vulnerabilities exist in optional dependencies:
+#
+# 1. RUSTSEC-2024-0336: rustls 0.20.9 - Infinite loop DoS (HIGH 7.5/10)
+#    - Affects: dashflow-milvus → milvus-sdk-rust v0.1.0 → tonic 0.8.3 → tokio-rustls 0.23.4
+#    - Status: Waiting for milvus-sdk-rust update to tonic >=0.10.0 (which uses safe rustls)
+#    - Mitigation: dashflow-milvus moved to optional feature (not enabled by default)
+#
+# 2. RUSTSEC-2025-0009: ring 0.16.20 - AES panic vulnerability
+#    - Affects: Same dependency chain as above (milvus)
+#    - Status: Same as above - will be fixed when milvus-sdk-rust updates tonic
+#    - Mitigation: dashflow-milvus optional
+#
+# 3. RUSTSEC-2020-0071: time 0.1.45 - Potential segfault (MEDIUM 6.2/10)
+#    - Affects: dashflow-chains → dashflow-playwright → playwright 0.0.20 → zip 0.5.13
+#    - Status: Waiting for playwright crate update (currently at 0.0.20, unmaintained)
+#    - Mitigation: dashflow-playwright moved to optional feature (not enabled by default)
+#
+# 4. RUSTSEC-2023-0071: rsa 0.9.8 - Marvin timing attack (MEDIUM 5.9/10)
+#    - Affects: dashflow-sql-database (sqlx), dashflow-lancedb (opendal)
+#    - Status: NO FIX AVAILABLE - upstream rsa crate issue
+#    - Mitigation: Documented in SECURITY.md, does not affect most use cases
+#
+# 5. RUSTSEC-2025-0012: backoff 0.4.0 - unmaintained (WARNING)
+#    - Affects: async-openai v0.25.0 (most LLM providers), neo4rs v0.8.0
+#    - Status: async-openai v0.31.0-alpha.4 and neo4rs v0.9.0-rc.8 available but may have breaking changes
+#    - Mitigation: Low immediate risk (no known CVEs, just unmaintained)
+#    - Action: Monitor for stable releases of async-openai v0.31.0+ and neo4rs v0.9.0+
+#    - Note: backoff crate is used for retry logic - consider migrating to backon crate in v1.7.0
+#
+# To use optional vector stores with known vulnerabilities (at your own risk):
+# cargo add dashflow-milvus --features milvus
+# cargo add dashflow-chains --features playwright

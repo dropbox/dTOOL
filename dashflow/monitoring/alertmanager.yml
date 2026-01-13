@@ -1,0 +1,66 @@
+# AlertManager Configuration for DashFlow Streaming
+#
+# This configures how alerts are routed and delivered.
+# For production, configure your actual notification channels (Slack, PagerDuty, etc.)
+
+global:
+  resolve_timeout: 5m
+
+route:
+  # Default receiver for all alerts
+  receiver: 'default-receiver'
+
+  # Group alerts by these labels
+  group_by: ['alertname', 'severity', 'tenant_id']
+
+  # Wait 30s before sending initial notification (allows grouping)
+  group_wait: 30s
+
+  # Send updates every 5 minutes if alert continues
+  group_interval: 5m
+
+  # Resend notifications every 4 hours if alert is still firing
+  repeat_interval: 4h
+
+  # Route critical alerts differently
+  routes:
+    - match:
+        severity: critical
+      receiver: 'critical-receiver'
+      repeat_interval: 1h  # More frequent notifications for critical issues
+
+receivers:
+  # Default receiver (logs alerts to console)
+  - name: 'default-receiver'
+    webhook_configs:
+      - url: 'http://localhost:9093/api/v1/alerts'
+        send_resolved: true
+
+  # Critical receiver (for production, configure Slack/PagerDuty here)
+  - name: 'critical-receiver'
+    webhook_configs:
+      - url: 'http://localhost:9093/api/v1/alerts'
+        send_resolved: true
+    # PRODUCTION CONFIG (uncomment and configure):
+    # slack_configs:
+    #   - api_url: 'YOUR_SLACK_WEBHOOK_URL'
+    #     channel: '#dashstream-critical-alerts'
+    #     title: 'CRITICAL: {{ .GroupLabels.alertname }}'
+    #     text: '{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}'
+    # pagerduty_configs:
+    #   - service_key: 'YOUR_PAGERDUTY_SERVICE_KEY'
+    #     description: '{{ .GroupLabels.alertname }}'
+
+inhibit_rules:
+  # Inhibit lower severity alerts when higher severity is firing
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'high'
+    equal: ['alertname', 'tenant_id']
+
+  - source_match:
+      severity: 'high'
+    target_match:
+      severity: 'medium'
+    equal: ['alertname', 'tenant_id']

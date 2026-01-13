@@ -1,0 +1,111 @@
+# Example Codex DashFlow Configuration
+#
+# Copy this file to ~/.codex-dashflow/config.toml to use
+#
+# All settings have sensible defaults, so an empty config file works fine.
+# Only include settings you want to customize.
+
+# LLM model to use (default: gpt-4o-mini)
+model = "gpt-4"
+
+# OpenAI API base URL (for custom endpoints or Azure OpenAI)
+# api_base = "https://api.openai.com/v1"
+
+# Maximum agent turns before stopping (0 = unlimited, default: 0)
+max_turns = 10
+
+# Collect training data from successful agent runs (default: false)
+# When enabled, successful interactions are saved to ~/.codex-dashflow/training.toml
+# Use `codex-dashflow optimize` commands to view and optimize prompts
+collect_training = false
+
+# Default working directory for file operations
+# working_dir = "/path/to/your/project"
+
+# Sandbox mode for command execution:
+#   - "read-only": Read filesystem, no writes, no network (default)
+#   - "workspace-write": Write within workspace, no network
+#   - "danger-full-access": No restrictions (only for isolated environments)
+# sandbox_mode = "read-only"
+
+# DashFlow orchestration settings
+[dashflow]
+# Enable streaming telemetry for real-time agent visibility (default: true)
+streaming_enabled = true
+
+# Enable checkpointing for session persistence (default: false)
+checkpointing_enabled = false
+
+# Path for file-based checkpointing (optional, uses memory if not set)
+# checkpoint_path = "/tmp/codex-dashflow-checkpoints"
+
+# Auto-resume the most recent session on startup (default: false)
+# When enabled with checkpointing, the TUI will automatically resume
+# your last session instead of starting fresh. This maintains conversation
+# continuity across restarts.
+# auto_resume = true
+
+# Maximum age in seconds for auto-resume sessions (default: no limit)
+# When set, auto-resume will skip sessions older than this many seconds.
+# This prevents resuming very stale sessions that may no longer be relevant.
+# Examples: 86400 = 24 hours, 604800 = 7 days
+# auto_resume_max_age_secs = 86400
+
+# Enable AI introspection (default: true)
+# When enabled, the agent's graph structure is included in the system prompt,
+# allowing the LLM to understand its own workflow (nodes, edges, tools).
+# Disable to reduce system prompt size (~1KB) if introspection isn't needed.
+# introspection_enabled = true
+
+# PostgreSQL checkpointing for production deployments (optional)
+# Requires compiling with --features postgres
+# postgres_connection_string = "postgresql://user:password@localhost/codex"
+
+# Execution policy configuration
+[policy]
+# Approval mode for tool execution:
+#   - "never": Auto-approve all tools
+#   - "on_first_use": Approve first use of each tool
+#   - "on_dangerous": Require approval for dangerous operations (default)
+#   - "always": Require approval for every tool call
+approval_mode = "on_dangerous"
+
+# Include default dangerous patterns (rm -rf, sudo, etc.) (default: true)
+include_dangerous_patterns = true
+
+# Custom policy rules (evaluated in order, first match wins)
+# [[policy.rules]]
+# pattern = "read_file"
+# decision = "allow"
+#
+# [[policy.rules]]
+# pattern = "shell"
+# args_pattern = "rm.*-rf"
+# decision = "forbidden"
+# reason = "Recursive force delete is not allowed"
+
+# MCP (Model Context Protocol) server configurations
+# Connect external tools via MCP servers
+
+# Example: Filesystem MCP server
+# [[mcp_servers]]
+# name = "filesystem"
+# type = "stdio"
+# command = "mcp-server-filesystem"
+# args = ["/home/user/projects"]
+
+# Example: Git MCP server
+# [[mcp_servers]]
+# name = "git"
+# type = "stdio"
+# command = "mcp-server-git"
+# args = []
+
+# Example: Remote HTTP MCP server with authentication
+# [[mcp_servers]]
+# name = "remote-api"
+# type = "http"
+# url = "https://mcp.example.com/api"
+# bearer_token = "your-api-token"  # optional
+# [mcp_servers.headers]
+# X-Custom-Header = "value"  # optional custom headers

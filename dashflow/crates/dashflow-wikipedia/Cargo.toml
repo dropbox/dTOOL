@@ -1,0 +1,25 @@
+[package]
+name = "dashflow-wikipedia"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Wikipedia search tool integration for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "wikipedia", "search", "ai", "tools"]
+categories.workspace = true
+
+[dependencies]
+dashflow.workspace = true
+wikipedia = "0.5"
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+
+[lints]
+workspace = true

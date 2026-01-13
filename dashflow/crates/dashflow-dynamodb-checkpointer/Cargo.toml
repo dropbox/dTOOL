@@ -1,0 +1,39 @@
+[package]
+name = "dashflow-dynamodb-checkpointer"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["DashFlow Contributors"]
+description = "DynamoDB checkpointer for DashFlow state persistence"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "dynamodb", "checkpointer", "dashflow", "persistence"]
+categories = ["database"]
+license.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+dashflow-compression = { path = "../dashflow-compression", optional = true }
+aws-sdk-dynamodb = { workspace = true }
+aws-config = { workspace = true }
+async-trait = { workspace = true }
+bincode = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+
+[features]
+default = []
+compression = ["dashflow-compression"]
+
+[dev-dependencies]
+tokio = { workspace = true }
+serde = { workspace = true }
+tracing-subscriber = { workspace = true }
+testcontainers = { workspace = true }
+testcontainers-modules = { version = "0.13", features = ["localstack"] }
+
+[lints]
+workspace = true

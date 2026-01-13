@@ -1,0 +1,7 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"┌ Input [Ctrl+Enter:send Enter:newline Esc:normal] ────────────────────────────┐"
+"│Type a message... (/ for commands, Ctrl+Enter to send)                        │"
+"└──────────────────────────────────────────────────────────────────────────────┘"

@@ -1,0 +1,78 @@
+Encoding screenshot: examples/apps/document_search/outputs/eval_report_screenshot.png
+Sending request to GPT-4 Vision...
+{
+  "model": "gpt-4o",
+  "improvements": [
+    {
+      "priority": "Critical",
+      "category": "Information Density",
+      "problem": "The report uses excessive whitespace, reducing data visibility.",
+      "solution": "Condense the layout by reducing padding and margins.",
+      "implementation": "In html.rs, adjust CSS styles to reduce padding and margins for all sections."
+    },
+    {
+      "priority": "Critical",
+      "category": "Statistical Rigor",
+      "problem": "No confidence intervals or distributions are shown for key metrics.",
+      "solution": "Add confidence intervals and distribution charts for pass rates and quality scores.",
+      "implementation": "In charts.rs, add new chart types to display confidence intervals and distributions."
+    },
+    {
+      "priority": "High",
+      "category": "Actionability",
+      "problem": "There is no clear indication of next steps or actions.",
+      "solution": "Include a dedicated section for actionable insights and recommended actions.",
+      "implementation": "In html.rs, add a new section below 'Recommendations' with specific action items."
+    },
+    {
+      "priority": "High",
+      "category": "Data Storytelling",
+      "problem": "The narrative flow is unclear, making it hard to follow the data story.",
+      "solution": "Reorganize sections to follow a logical narrative flow from summary to details.",
+      "implementation": "In html.rs, reorder sections to start with executive summary, followed by key metrics, then detailed analysis."
+    },
+    {
+      "priority": "High",
+      "category": "Visual Design",
+      "problem": "The color scheme lacks contrast, affecting readability.",
+      "solution": "Enhance color contrast for better readability and accessibility.",
+      "implementation": "In html.rs, update CSS to use a higher contrast color palette."
+    },
+    {
+      "priority": "Medium",
+      "category": "Information Density",
+      "problem": "Charts are not fully utilized to show trends over time.",
+      "solution": "Add trend lines to existing charts to show changes over time.",
+      "implementation": "In charts.rs, modify chart configurations to include trend lines."
+    },
+    {
+      "priority": "Medium",
+      "category": "Visual Design",
+      "problem": "Typography is inconsistent, affecting the professional polish.",
+      "solution": "Standardize font styles and sizes across the report.",
+      "implementation": "In html.rs, update CSS to use consistent typography settings."
+    },
+    {
+      "priority": "Medium",
+      "category": "Data Storytelling",
+      "problem": "Insights are not prominently highlighted.",
+      "solution": "Use callouts or highlights to emphasize key insights.",
+      "implementation": "In html.rs, add CSS classes for callouts and apply them to key insights."
+    },
+    {
+      "priority": "Medium",
+      "category": "Statistical Rigor",
+      "problem": "Percentiles are not shown for latency metrics.",
+      "solution": "Include percentile information for latency metrics to provide more context.",
+      "implementation": "In charts.rs, add percentile calculations and display them in the latency section."
+    },
+    {
+      "priority": "Medium",
+      "category": "Actionability",
+      "problem": "Problem areas are not easily identifiable.",
+      "solution": "Use color coding or icons to highlight problem areas in the scenario results.",
+      "implementation": "In html.rs, add conditional formatting to apply color coding or icons based on performance thresholds."
+    }
+  ],
+  "raw_response": "```json\n[\n    {\n        \"priority\": \"Critical\",\n        \"category\": \"Information Density\",\n        \"problem\": \"The report uses excessive whitespace, reducing data visibility.\",\n        \"solution\": \"Condense the layout by reducing padding and margins.\",\n        \"implementation\": \"In html.rs, adjust CSS styles to reduce padding and margins for all sections.\"\n    },\n    {\n        \"priority\": \"Critical\",\n        \"category\": \"Statistical Rigor\",\n        \"problem\": \"No confidence intervals or distributions are shown for key metrics.\",\n        \"solution\": \"Add confidence intervals and distribution charts for pass rates and quality scores.\",\n        \"implementation\": \"In charts.rs, add new chart types to display confidence intervals and distributions.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Actionability\",\n        \"problem\": \"There is no clear indication of next steps or actions.\",\n        \"solution\": \"Include a dedicated section for actionable insights and recommended actions.\",\n        \"implementation\": \"In html.rs, add a new section below 'Recommendations' with specific action items.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Data Storytelling\",\n        \"problem\": \"The narrative flow is unclear, making it hard to follow the data story.\",\n        \"solution\": \"Reorganize sections to follow a logical narrative flow from summary to details.\",\n        \"implementation\": \"In html.rs, reorder sections to start with executive summary, followed by key metrics, then detailed analysis.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Visual Design\",\n        \"problem\": \"The color scheme lacks contrast, affecting readability.\",\n        \"solution\": \"Enhance color contrast for better readability and accessibility.\",\n        \"implementation\": \"In html.rs, update CSS to use a higher contrast color palette.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Information Density\",\n        \"problem\": \"Charts are not fully utilized to show trends over time.\",\n        \"solution\": \"Add trend lines to existing charts to show changes over time.\",\n        \"implementation\": \"In charts.rs, modify chart configurations to include trend lines.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Visual Design\",\n        \"problem\": \"Typography is inconsistent, affecting the professional polish.\",\n        \"solution\": \"Standardize font styles and sizes across the report.\",\n        \"implementation\": \"In html.rs, update CSS to use consistent typography settings.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Data Storytelling\",\n        \"problem\": \"Insights are not prominently highlighted.\",\n        \"solution\": \"Use callouts or highlights to emphasize key insights.\",\n        \"implementation\": \"In html.rs, add CSS classes for callouts and apply them to key insights.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Statistical Rigor\",\n        \"problem\": \"Percentiles are not shown for latency metrics.\",\n        \"solution\": \"Include percentile information for latency metrics to provide more context.\",\n        \"implementation\": \"In charts.rs, add percentile calculations and display them in the latency section.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Actionability\",\n        \"problem\": \"Problem areas are not easily identifiable.\",\n        \"solution\": \"Use color coding or icons to highlight problem areas in the scenario results.\",\n        \"implementation\": \"In html.rs, add conditional formatting to apply color coding or icons based on performance thresholds.\"\n    }\n]\n```"
+}

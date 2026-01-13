@@ -1,0 +1,25 @@
+[package]
+name = "dashflow-deepseek"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "DeepSeek integration for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+dashflow.workspace = true
+dashflow-openai.workspace = true
+async-openai = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+tokio = { workspace = true }
+
+[dev-dependencies]
+
+[lints]
+workspace = true

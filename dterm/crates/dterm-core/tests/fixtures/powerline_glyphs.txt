@@ -1,0 +1,81 @@
+# Powerline Glyphs Test Fixture
+# Private Use Area characters U+E0A0-U+E0D7
+# Used by: oh-my-zsh, Powerlevel10k, Starship, airline, powerline
+# Use: Feed to terminal, verify non-empty vertex output for each
+
+# Core Powerline symbols (U+E0A0-U+E0A3)
+ U+E0A0 POWERLINE BRANCH (git branch icon)
+ U+E0A1 POWERLINE LINE NUMBER
+ U+E0A2 POWERLINE LOCK (read-only/locked indicator)
+ U+E0A3 POWERLINE COLUMN NUMBER
+
+# Arrow separators (U+E0B0-U+E0B3) - MOST COMMONLY USED
+ U+E0B0 POWERLINE RIGHT ARROW SOLID (right-pointing filled triangle)
+ U+E0B1 POWERLINE RIGHT ARROW OUTLINE (right-pointing hollow triangle)
+ U+E0B2 POWERLINE LEFT ARROW SOLID (left-pointing filled triangle)
+ U+E0B3 POWERLINE LEFT ARROW OUTLINE (left-pointing hollow triangle)
+
+# Rounded/soft separators (U+E0B4-U+E0B7)
+ U+E0B4 POWERLINE RIGHT SEMICIRCLE
+ U+E0B5 POWERLINE RIGHT SEMICIRCLE OUTLINE
+ U+E0B6 POWERLINE LEFT SEMICIRCLE
+ U+E0B7 POWERLINE LEFT SEMICIRCLE OUTLINE
+
+# Triangle separators (U+E0B8-U+E0BF)
+ U+E0B8 POWERLINE LOWER LEFT TRIANGLE
+ U+E0B9 POWERLINE BACKSLASH SEPARATOR
+ U+E0BA POWERLINE LOWER RIGHT TRIANGLE
+ U+E0BB POWERLINE FORWARDSLASH SEPARATOR
+ U+E0BC POWERLINE UPPER LEFT TRIANGLE
+ U+E0BD POWERLINE FORWARDSLASH SEPARATOR ALT
+ U+E0BE POWERLINE UPPER RIGHT TRIANGLE
+ U+E0BF POWERLINE BACKSLASH SEPARATOR ALT
+
+# Flame separators (U+E0C0-U+E0C7)
+ U+E0C0 POWERLINE FLAME RIGHT
+ U+E0C1 POWERLINE FLAME RIGHT OUTLINE
+ U+E0C2 POWERLINE FLAME LEFT
+ U+E0C3 POWERLINE FLAME LEFT OUTLINE
+ U+E0C4 POWERLINE PIXELATED RIGHT SOLID
+ U+E0C5 POWERLINE PIXELATED RIGHT OUTLINE
+ U+E0C6 POWERLINE PIXELATED LEFT SOLID
+ U+E0C7 POWERLINE PIXELATED LEFT OUTLINE
+
+# Ice/pixel separators (U+E0C8-U+E0CF)
+ U+E0C8 POWERLINE ICE WAVEFORM RIGHT
+ U+E0CA POWERLINE ICE WAVEFORM LEFT
+ U+E0CC POWERLINE HONEYCOMB RIGHT
+ U+E0CD POWERLINE HONEYCOMB RIGHT OUTLINE
+ U+E0CE POWERLINE HONEYCOMB LEFT
+ U+E0CF POWERLINE HONEYCOMB LEFT OUTLINE
+
+# Misc separators (U+E0D0-U+E0D7)
+ U+E0D0 POWERLINE TRAPEZOID RIGHT
+ U+E0D1 POWERLINE TRAPEZOID RIGHT OUTLINE
+ U+E0D2 POWERLINE TRAPEZOID LEFT
+ U+E0D4 POWERLINE ARROW RIGHT THIN
+
+# ============================================================
+# Visual test patterns - Common prompt configurations
+# ============================================================
+
+# Basic Powerline prompt (arrow separators)
+ user@host  ~/project  main
+
+# Powerlevel10k style (with semicircles)
+ user@host  ~/project  main
+
+# Rounded style
+ user  ~/project   main
+
+# With triangular separators
+user ~/project  main
+
+# Common status line patterns
+ INSERT   file.txt  utf-8  ln:42 col:10
+
+# git status with branch indicator
+  main  +2 ~1 -0
+
+# Full powerline prompt simulation
+ user  host  ~  project   main  12:34

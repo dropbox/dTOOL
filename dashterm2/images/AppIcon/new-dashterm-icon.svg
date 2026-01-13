@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- DashTerm2 App Icon - iTerm2 style with Dropbox logo -->
+
+  <defs>
+    <!-- Dark gradient like iTerm2 -->
+    <linearGradient id="dark-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2D2D2D"/>
+      <stop offset="100%" style="stop-color:#1A1A1A"/>
+    </linearGradient>
+
+    <!-- Subtle edge highlight -->
+    <linearGradient id="edge-highlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A4A4A"/>
+      <stop offset="2%" style="stop-color:#2D2D2D"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Main rounded square - iOS style (224px radius for 1024) -->
+  <rect x="0" y="0" width="1024" height="1024" rx="224" ry="224" fill="url(#dark-gradient)"/>
+
+  <!-- Top edge highlight for depth -->
+  <rect x="0" y="0" width="1024" height="80" rx="224" ry="224" fill="url(#edge-highlight)"/>
+  <rect x="0" y="60" width="1024" height="20" fill="#2D2D2D"/>
+
+  <!-- White Dropbox logo - centered -->
+  <g fill="#FFFFFF" transform="translate(512, 512) scale(14)">
+    <!-- Centered at origin, then translated -->
+    <g transform="translate(-12, -12)">
+      <path d="M6 1.807L0 5.629l6 3.822 6.001-3.822L6 1.807zM18 1.807l-6 3.822 6 3.822 6-3.822-6-3.822zM0 13.274l6 3.822 6.001-3.822L6 9.452l-6 3.822zM18 9.452l-6 3.822 6 3.822 6-3.822-6-3.822zM6 18.371l6.001 3.822 6-3.822-6-3.822L6 18.371z"/>
+    </g>
+  </g>
+</svg>

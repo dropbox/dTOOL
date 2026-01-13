@@ -1,0 +1,199 @@
+{
+  "name": "librarian_classics",
+  "description": "Golden Q&A dataset for evaluating the Superhuman Librarian's search and retrieval capabilities over classic literature",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "pride_001",
+      "query": "What is Mr. Darcy's first name?",
+      "expected_answer": "Fitzwilliam",
+      "metadata": {
+        "book": "Pride and Prejudice",
+        "difficulty": "easy",
+        "source": "Chapter 61"
+      }
+    },
+    {
+      "id": "pride_002",
+      "query": "How many daughters do Mr. and Mrs. Bennet have?",
+      "expected_answer": "Five",
+      "metadata": {
+        "book": "Pride and Prejudice",
+        "difficulty": "easy",
+        "source": "Chapter 1"
+      }
+    },
+    {
+      "id": "pride_003",
+      "query": "Who does Jane Bennet marry?",
+      "expected_answer": "Mr. Bingley",
+      "metadata": {
+        "book": "Pride and Prejudice",
+        "difficulty": "easy",
+        "source": "Chapter 55"
+      }
+    },
+    {
+      "id": "moby_001",
+      "query": "What is Captain Ahab's ship called?",
+      "expected_answer": "The Pequod",
+      "metadata": {
+        "book": "Moby Dick",
+        "difficulty": "easy",
+        "source": "Chapter 16"
+      }
+    },
+    {
+      "id": "moby_002",
+      "query": "Who is the narrator of Moby Dick?",
+      "expected_answer": "Ishmael",
+      "metadata": {
+        "book": "Moby Dick",
+        "difficulty": "easy",
+        "source": "Chapter 1"
+      }
+    },
+    {
+      "id": "moby_003",
+      "query": "What color is Moby Dick?",
+      "expected_answer": "White",
+      "metadata": {
+        "book": "Moby Dick",
+        "difficulty": "easy"
+      }
+    },
+    {
+      "id": "frank_001",
+      "query": "Who created Frankenstein's monster?",
+      "expected_answer": "Victor Frankenstein",
+      "metadata": {
+        "book": "Frankenstein",
+        "difficulty": "easy",
+        "source": "Chapter 5"
+      }
+    },
+    {
+      "id": "frank_002",
+      "query": "Where does Victor Frankenstein study?",
+      "expected_answer": "University of Ingolstadt",
+      "metadata": {
+        "book": "Frankenstein",
+        "difficulty": "easy",
+        "source": "Chapter 3"
+      }
+    },
+    {
+      "id": "alice_001",
+      "query": "What does the White Rabbit carry?",
+      "expected_answer": "A pocket watch",
+      "metadata": {
+        "book": "Alice's Adventures in Wonderland",
+        "difficulty": "easy"
+      }
+    },
+    {
+      "id": "alice_002",
+      "query": "What game does the Queen of Hearts play?",
+      "expected_answer": "Croquet",
+      "metadata": {
+        "book": "Alice's Adventures in Wonderland",
+        "difficulty": "easy",
+        "source": "Chapter 8"
+      }
+    },
+    {
+      "id": "sherlock_001",
+      "query": "Where does Sherlock Holmes live?",
+      "expected_answer": "221B Baker Street",
+      "metadata": {
+        "book": "The Adventures of Sherlock Holmes",
+        "difficulty": "easy"
+      }
+    },
+    {
+      "id": "sherlock_002",
+      "query": "Who is Holmes's companion and chronicler?",
+      "expected_answer": "Doctor John Watson",
+      "metadata": {
+        "book": "The Adventures of Sherlock Holmes",
+        "difficulty": "easy"
+      }
+    },
+    {
+      "id": "tale_001",
+      "query": "What are the two cities in A Tale of Two Cities?",
+      "expected_answer": "London and Paris",
+      "metadata": {
+        "book": "A Tale of Two Cities",
+        "difficulty": "easy",
+        "source": "Book 1"
+      }
+    },
+    {
+      "id": "tale_002",
+      "query": "What is the famous opening line of A Tale of Two Cities?",
+      "expected_answer": "It was the best of times, it was the worst of times",
+      "metadata": {
+        "book": "A Tale of Two Cities",
+        "difficulty": "easy",
+        "source": "Book 1, Chapter 1"
+      }
+    },
+    {
+      "id": "tom_001",
+      "query": "Who is Tom Sawyer's best friend?",
+      "expected_answer": "Huckleberry Finn",
+      "metadata": {
+        "book": "The Adventures of Tom Sawyer",
+        "difficulty": "easy"
+      }
+    },
+    {
+      "id": "dracula_001",
+      "query": "Who is the narrator at the beginning of Dracula?",
+      "expected_answer": "Jonathan Harker",
+      "metadata": {
+        "book": "Dracula",
+        "difficulty": "easy"
+      }
+    },
+    {
+      "id": "dracula_002",
+      "query": "Who leads the hunt against Dracula?",
+      "expected_answer": "Professor Abraham Van Helsing",
+      "metadata": {
+        "book": "Dracula",
+        "difficulty": "easy"
+      }
+    },
+    {
+      "id": "prince_001",
+      "query": "According to Machiavelli, is it better to be feared or loved?",
+      "expected_answer": "It is better to be feared than loved",
+      "metadata": {
+        "book": "The Prince",
+        "difficulty": "medium",
+        "source": "Chapter 17"
+      }
+    },
+    {
+      "id": "war_001",
+      "query": "What happens at the end of War and Peace?",
+      "expected_answer": "Pierre and Natasha marry",
+      "metadata": {
+        "book": "War and Peace",
+        "difficulty": "hard"
+      }
+    },
+    {
+      "id": "hamlet_001",
+      "query": "Who is Hamlet's father's killer?",
+      "expected_answer": "Claudius",
+      "metadata": {
+        "book": "Hamlet",
+        "difficulty": "easy",
+        "source": "Act 1, Scene 5"
+      }
+    }
+  ]
+}

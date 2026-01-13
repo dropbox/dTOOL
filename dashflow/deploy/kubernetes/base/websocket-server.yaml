@@ -1,0 +1,112 @@
+# DashFlow WebSocket Server Deployment
+# Real-time streaming server for dashboard updates
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashflow-websocket-server
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: websocket-server
+spec:
+  # M-415 FIX: WebSocket server must be single replica.
+  # Multiple replicas with shared KAFKA_GROUP_ID causes partial streams - Kafka
+  # distributes partitions across group members, so clients see only a subset of
+  # events depending on which pod they connect to.
+  # For HA: Use external load balancer with sticky sessions, or implement a
+  # shared backplane (Redis pub/sub) before scaling to multiple replicas.
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashflow
+      app.kubernetes.io/component: websocket-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dashflow
+        app.kubernetes.io/component: websocket-server
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3002"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: dashflow
+      containers:
+        - name: websocket-server
+          image: dashflow/websocket-server:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: websocket
+              containerPort: 3002
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: dashflow-config
+            - secretRef:
+                name: dashflow-secrets
+            # Kafka security secrets (SASL/TLS) - create via:
+            #   kubectl create secret generic dashflow-kafka-security \
+            #     --from-literal=KAFKA_SECURITY_PROTOCOL=sasl_ssl \
+            #     --from-literal=KAFKA_SASL_MECHANISM=SCRAM-SHA-256 \
+            #     --from-literal=KAFKA_SASL_USERNAME=user \
+            #     --from-literal=KAFKA_SASL_PASSWORD=password \
+            #     --from-literal=KAFKA_SSL_CA_LOCATION=/etc/kafka/ca.pem
+            # Uncomment below to enable:
+            # - secretRef:
+            #     name: dashflow-kafka-security
+            #     optional: true
+          env:
+            - name: KAFKA_BROKERS
+              value: "kafka:9092"
+            - name: REDIS_URL
+              value: "redis://redis:6379"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3002
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3002
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: websocket-server
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: websocket-server
+spec:
+  type: ClusterIP
+  ports:
+    - name: websocket
+      port: 3002
+      targetPort: 3002
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: websocket-server

@@ -1,0 +1,34 @@
+[package]
+name = "dashflow-standard-tests"
+version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Standard conformance tests for DashFlow providers"
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+tokio.workspace = true
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+futures = { workspace = true }
+serde.workspace = true
+schemars = "1.1"
+
+[dev-dependencies]
+dashflow-openai = { path = "../dashflow-openai" }
+dashflow-macros = { path = "../dashflow-macros" }
+dashflow-tavily = { path = "../dashflow-tavily" }
+uuid.workspace = true
+dotenvy = "0.15"
+
+[features]
+dashstream = ["dashflow/dashstream"]
+
+[lints]
+workspace = true

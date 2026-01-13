@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+  <!-- DashTerm2 Menu Bar Icon - Dropbox logo template -->
+  <!-- macOS will tint this automatically -->
+
+  <!-- Dropbox logo - scaled to fit 22x22 -->
+  <g fill="black" transform="translate(11, 11) scale(0.42)">
+    <g transform="translate(-12, -12)">
+      <path d="M6 1.807L0 5.629l6 3.822 6.001-3.822L6 1.807zM18 1.807l-6 3.822 6 3.822 6-3.822-6-3.822zM0 13.274l6 3.822 6.001-3.822L6 9.452l-6 3.822zM18 9.452l-6 3.822 6 3.822 6-3.822-6-3.822zM6 18.371l6.001 3.822 6-3.822-6-3.822L6 18.371z"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+# DashFlow AWS Terraform Configuration Example
+# Copy this file to terraform.tfvars and customize for your environment
+
+# General Settings
+project_name = "dashflow"
+environment  = "dev"  # Options: dev, staging, production
+aws_region   = "us-west-2"
+
+# VPC Configuration
+vpc_cidr           = "10.0.0.0/16"
+enable_nat_gateway = true
+
+# EKS Configuration
+eks_cluster_version = "1.28"
+
+# Node groups - adjust sizing based on environment
+eks_node_groups = {
+  general = {
+    instance_types = ["m5.large"]
+    min_size       = 2
+    max_size       = 10
+    desired_size   = 3
+    disk_size      = 50
+    labels         = { "workload" = "general" }
+    taints         = []
+  }
+  streaming = {
+    instance_types = ["m5.xlarge"]
+    min_size       = 1
+    max_size       = 5
+    desired_size   = 2
+    disk_size      = 100
+    labels         = { "workload" = "streaming" }
+    taints = [{
+      key    = "workload"
+      value  = "streaming"
+      effect = "NO_SCHEDULE"
+    }]
+  }
+}
+
+# Redis Configuration
+enable_redis    = true
+redis_node_type = "cache.t3.medium"  # Use cache.r6g.large for production
+
+# Kafka Configuration
+enable_kafka               = true
+kafka_version              = "3.5.1"
+kafka_broker_instance_type = "kafka.m5.large"  # Use kafka.m5.2xlarge for production
+
+# PostgreSQL Configuration
+enable_postgres       = true
+rds_instance_class    = "db.t3.medium"  # Use db.r6g.large for production
+rds_allocated_storage = 20               # Increase for production
+rds_username          = "dashflow_admin"
+rds_password          = "CHANGE_ME_SECURE_PASSWORD"  # Use secrets manager in production
+
+# Observability
+enable_xray = true
+
+# DashFlow Application
+dashflow_namespace = "dashflow"
+dashflow_version   = "1.11.1"

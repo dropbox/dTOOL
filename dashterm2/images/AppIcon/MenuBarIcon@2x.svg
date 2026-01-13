@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+  <!-- DashTerm2 Menu Bar Icon @2x - Template image (black on transparent) -->
+  <!-- macOS will automatically tint this white in dark mode -->
+
+  <!-- Terminal window outline -->
+  <rect x="4" y="8" width="36" height="28" rx="4" ry="4"
+        fill="none" stroke="black" stroke-width="3"/>
+
+  <!-- Title bar line -->
+  <line x1="4" y1="15" x2="40" y2="15" stroke="black" stroke-width="2"/>
+
+  <!-- Terminal prompt ">" -->
+  <polyline points="10,22 16,27 10,32"
+            fill="none" stroke="black" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Cursor block -->
+  <rect x="20" y="24" width="8" height="10" rx="1" fill="black"/>
+</svg>

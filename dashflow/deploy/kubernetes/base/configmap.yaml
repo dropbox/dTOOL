@@ -1,0 +1,29 @@
+# DashFlow ConfigMap
+# Contains non-sensitive configuration for DashFlow services
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashflow-config
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: config
+data:
+  # Logging configuration
+  RUST_LOG: "info"
+  RUST_BACKTRACE: "1"
+
+  # Kafka configuration
+  KAFKA_AUTO_OFFSET_RESET: "earliest"
+
+  # WebSocket configuration
+  WEBSOCKET_HOST: "0.0.0.0"
+  WEBSOCKET_PORT: "3002"
+
+  # Prometheus exporter
+  METRICS_PORT: "9090"
+  KAFKA_TOPIC: "dashstream-quality"
+
+  # OpenTelemetry configuration
+  OTEL_SERVICE_NAME: "dashflow"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"

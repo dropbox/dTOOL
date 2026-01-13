@@ -1,0 +1,3672 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "Highlightr",
+    "printedName": "Highlightr",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "Highlightr",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "AppKit",
+        "printedName": "AppKit",
+        "declKind": "Import",
+        "moduleName": "Highlightr"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "HighlightDelegate",
+        "printedName": "HighlightDelegate",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "shouldHighlight",
+            "printedName": "shouldHighlight(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "_NSRange",
+                "printedName": "Foundation._NSRange",
+                "usr": "c:@S@_NSRange"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@Highlightr@objc(pl)HighlightDelegate(im)shouldHighlight:",
+            "mangledName": "$s10Highlightr17HighlightDelegateP06shouldB0ySbSo8_NSRangeVF",
+            "moduleName": "Highlightr",
+            "genericSig": "<τ_0_0 where τ_0_0 : Highlightr.HighlightDelegate>",
+            "sugared_genericSig": "<Self where Self : Highlightr.HighlightDelegate>",
+            "protocolReq": true,
+            "declAttributes": [
+              "Optional",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "didHighlight",
+            "printedName": "didHighlight(_:success:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "_NSRange",
+                "printedName": "Foundation._NSRange",
+                "usr": "c:@S@_NSRange"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@Highlightr@objc(pl)HighlightDelegate(im)didHighlight:success:",
+            "mangledName": "$s10Highlightr17HighlightDelegateP03didB0_7successySo8_NSRangeV_SbtF",
+            "moduleName": "Highlightr",
+            "genericSig": "<τ_0_0 where τ_0_0 : Highlightr.HighlightDelegate>",
+            "sugared_genericSig": "<Self where Self : Highlightr.HighlightDelegate>",
+            "protocolReq": true,
+            "declAttributes": [
+              "Optional",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "c:@M@Highlightr@objc(pl)HighlightDelegate",
+        "mangledName": "$s10Highlightr17HighlightDelegateP",
+        "moduleName": "Highlightr",
+        "genericSig": "<τ_0_0 : AnyObject>",
+        "sugared_genericSig": "<Self : AnyObject>",
+        "declAttributes": [
+          "AccessControl",
+          "ObjC",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "CodeAttributedString",
+        "printedName": "CodeAttributedString",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "highlightr",
+            "printedName": "highlightr",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Highlightr",
+                "printedName": "Highlightr.Highlightr",
+                "usr": "s:10HighlightrAAC"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10Highlightr20CodeAttributedStringC10highlightrA2ACvp",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC10highlightrA2ACvp",
+            "moduleName": "Highlightr",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Highlightr",
+                    "printedName": "Highlightr.Highlightr",
+                    "usr": "s:10HighlightrAAC"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr20CodeAttributedStringC10highlightrA2ACvg",
+                "mangledName": "$s10Highlightr20CodeAttributedStringC10highlightrA2ACvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "highlightDelegate",
+            "printedName": "highlightDelegate",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "(any Highlightr.HighlightDelegate)?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "HighlightDelegate",
+                    "printedName": "any Highlightr.HighlightDelegate",
+                    "usr": "c:@M@Highlightr@objc(pl)HighlightDelegate"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10Highlightr20CodeAttributedStringC17highlightDelegateAA09HighlightF0_pSgvp",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC17highlightDelegateAA09HighlightF0_pSgvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "(any Highlightr.HighlightDelegate)?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "HighlightDelegate",
+                        "printedName": "any Highlightr.HighlightDelegate",
+                        "usr": "c:@M@Highlightr@objc(pl)HighlightDelegate"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr20CodeAttributedStringC17highlightDelegateAA09HighlightF0_pSgvg",
+                "mangledName": "$s10Highlightr20CodeAttributedStringC17highlightDelegateAA09HighlightF0_pSgvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "(any Highlightr.HighlightDelegate)?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "HighlightDelegate",
+                        "printedName": "any Highlightr.HighlightDelegate",
+                        "usr": "c:@M@Highlightr@objc(pl)HighlightDelegate"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr20CodeAttributedStringC17highlightDelegateAA09HighlightF0_pSgvs",
+                "mangledName": "$s10Highlightr20CodeAttributedStringC17highlightDelegateAA09HighlightF0_pSgvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr20CodeAttributedStringC17highlightDelegateAA09HighlightF0_pSgvM",
+                "mangledName": "$s10Highlightr20CodeAttributedStringC17highlightDelegateAA09HighlightF0_pSgvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(highlightr:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Highlightr",
+                "printedName": "Highlightr.Highlightr",
+                "hasDefaultArg": true,
+                "usr": "s:10HighlightrAAC"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:10Highlightr20CodeAttributedStringC10highlightrAc2AC_tcfc",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC10highlightrAc2AC_tcfc",
+            "moduleName": "Highlightr",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)init",
+            "mangledName": "$s10Highlightr20CodeAttributedStringCACycfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(coder:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSCoder",
+                "printedName": "Foundation.NSCoder",
+                "usr": "c:objc(cs)NSCoder"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithCoder:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC5coderACSgSo7NSCoderC_tcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "objc_name": "initWithCoder:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "AccessControl",
+              "Required",
+              "RawDocComment"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(pasteboardPropertyList:ofType:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ProtocolComposition",
+                "printedName": "Any"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "PasteboardType",
+                "printedName": "AppKit.NSPasteboard.PasteboardType",
+                "usr": "c:@T@NSPasteboardType"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithPasteboardPropertyList:ofType:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC22pasteboardPropertyList6ofTypeACSgyp_So012NSPasteboardI0atcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "objc_name": "initWithPasteboardPropertyList:ofType:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "AccessControl",
+              "Required",
+              "RawDocComment"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "language",
+            "printedName": "language",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10Highlightr20CodeAttributedStringC8languageSSSgvp",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC8languageSSSgvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr20CodeAttributedStringC8languageSSSgvg",
+                "mangledName": "$s10Highlightr20CodeAttributedStringC8languageSSSgvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr20CodeAttributedStringC8languageSSSgvs",
+                "mangledName": "$s10Highlightr20CodeAttributedStringC8languageSSSgvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr20CodeAttributedStringC8languageSSSgvM",
+                "mangledName": "$s10Highlightr20CodeAttributedStringC8languageSSSgvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "string",
+            "printedName": "string",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(py)string",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC6stringSSvp",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "isOpen": true,
+            "objc_name": "string",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)string",
+                "mangledName": "$s10Highlightr20CodeAttributedStringC6stringSSvg",
+                "moduleName": "Highlightr",
+                "overriding": true,
+                "isOpen": true,
+                "objc_name": "string",
+                "declAttributes": [
+                  "Dynamic",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "attributes",
+            "printedName": "attributes(at:effectiveRange:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Foundation.NSAttributedString.Key : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Key",
+                    "printedName": "Foundation.NSAttributedString.Key",
+                    "usr": "c:@T@NSAttributedStringKey"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "usr": "s:SD"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.UnsafeMutablePointer<Foundation._NSRange>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UnsafeMutablePointer",
+                    "printedName": "Swift.UnsafeMutablePointer<Foundation._NSRange>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "_NSRange",
+                        "printedName": "Foundation._NSRange",
+                        "usr": "c:@S@_NSRange"
+                      }
+                    ],
+                    "usr": "s:Sp"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)attributesAtIndex:effectiveRange:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC10attributes2at14effectiveRangeSDySo012NSAttributedD3KeyaypGSi_SpySo8_NSRangeVGSgtF",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "isOpen": true,
+            "objc_name": "attributesAtIndex:effectiveRange:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "replaceCharacters",
+            "printedName": "replaceCharacters(in:with:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "_NSRange",
+                "printedName": "Foundation._NSRange",
+                "usr": "c:@S@_NSRange"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)replaceCharactersInRange:withString:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC17replaceCharacters2in4withySo8_NSRangeV_SStF",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "isOpen": true,
+            "objc_name": "replaceCharactersInRange:withString:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "setAttributes",
+            "printedName": "setAttributes(_:range:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "[Foundation.NSAttributedString.Key : Any]?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Foundation.NSAttributedString.Key : Any]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Key",
+                        "printedName": "Foundation.NSAttributedString.Key",
+                        "usr": "c:@T@NSAttributedStringKey"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProtocolComposition",
+                        "printedName": "Any"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "_NSRange",
+                "printedName": "Foundation._NSRange",
+                "usr": "c:@S@_NSRange"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)setAttributes:range:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC13setAttributes_5rangeySDySo012NSAttributedD3KeyaypGSg_So8_NSRangeVtF",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "isOpen": true,
+            "objc_name": "setAttributes:range:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "processEditing",
+            "printedName": "processEditing()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)processEditing",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC14processEditingyyF",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "isOpen": true,
+            "objc_name": "processEditing",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(url:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithURL:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC3url18documentAttributesACSg10Foundation3URLV_SAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "deprecated": true,
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "10.0",
+            "objc_name": "initWithURL:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "Available"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(path:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithPath:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC4path18documentAttributesACSgSS_SAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "deprecated": true,
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "10.0",
+            "objc_name": "initWithPath:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "Available"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(rtf:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithRTF:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC3rtf18documentAttributesACSg10Foundation4DataV_SAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithRTF:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(rtfd:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithRTFD:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC4rtfd18documentAttributesACSg10Foundation4DataV_SAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithRTFD:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(html:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithHTML:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC4html18documentAttributesACSg10Foundation4DataV_SAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithHTML:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(html:baseURL:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithHTML:baseURL:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC4html7baseURL18documentAttributesACSg10Foundation4DataV_AH0G0VSAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithHTML:baseURL:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(docFormat:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithDocFormat:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC9docFormat18documentAttributesACSg10Foundation4DataV_SAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithDocFormat:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(html:options:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Foundation.NSAttributedString.DocumentReadingOptionKey : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentReadingOptionKey",
+                    "printedName": "Foundation.NSAttributedString.DocumentReadingOptionKey",
+                    "usr": "c:@T@NSAttributedStringDocumentReadingOptionKey"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:SD"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithHTML:options:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC4html7options18documentAttributesACSg10Foundation4DataV_SDySo012NSAttributedD24DocumentReadingOptionKeyaypGSAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithHTML:options:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(rtfdFileWrapper:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.CodeAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CodeAttributedString",
+                    "printedName": "Highlightr.CodeAttributedString",
+                    "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "FileWrapper",
+                "printedName": "Foundation.FileWrapper",
+                "usr": "c:objc(cs)NSFileWrapper"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithRTFDFileWrapper:documentAttributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC15rtfdFileWrapper18documentAttributesACSgSo06NSFileG0C_SAySo12NSDictionaryCSgGSgtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithRTFDFileWrapper:documentAttributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(url:options:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Foundation.NSAttributedString.DocumentReadingOptionKey : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentReadingOptionKey",
+                    "printedName": "Foundation.NSAttributedString.DocumentReadingOptionKey",
+                    "usr": "c:@T@NSAttributedStringDocumentReadingOptionKey"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:SD"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithURL:options:documentAttributes:error:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC3url7options18documentAttributesAC10Foundation3URLV_SDySo012NSAttributedD24DocumentReadingOptionKeyaypGSAySo12NSDictionaryCSgGSgtKcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "10.4",
+            "objc_name": "initWithURL:options:documentAttributes:error:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "Available"
+            ],
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(data:options:documentAttributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Foundation.NSAttributedString.DocumentReadingOptionKey : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentReadingOptionKey",
+                    "printedName": "Foundation.NSAttributedString.DocumentReadingOptionKey",
+                    "usr": "c:@T@NSAttributedStringDocumentReadingOptionKey"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:SD"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AutoreleasingUnsafeMutablePointer",
+                    "printedName": "Swift.AutoreleasingUnsafeMutablePointer<Foundation.NSDictionary?>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Foundation.NSDictionary?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "NSDictionary",
+                            "printedName": "Foundation.NSDictionary",
+                            "usr": "c:objc(cs)NSDictionary"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ],
+                    "usr": "s:SA"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithData:options:documentAttributes:error:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC4data7options18documentAttributesAC10Foundation4DataV_SDySo012NSAttributedD24DocumentReadingOptionKeyaypGSAySo12NSDictionaryCSgGSgtKcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "10.0",
+            "objc_name": "initWithData:options:documentAttributes:error:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "Available"
+            ],
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(__format:options:locale:arguments:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSAttributedString",
+                "printedName": "Foundation.NSAttributedString",
+                "usr": "c:objc(cs)NSAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "__NSAttributedStringFormattingOptions",
+                "printedName": "Foundation.__NSAttributedStringFormattingOptions",
+                "hasDefaultArg": true,
+                "usr": "c:@E@NSAttributedStringFormattingOptions"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.Locale?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Locale",
+                    "printedName": "Foundation.Locale",
+                    "usr": "s:10Foundation6LocaleV"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CVaListPointer",
+                "printedName": "Swift.CVaListPointer",
+                "usr": "s:s14CVaListPointerV"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:10Highlightr20CodeAttributedStringC8__format7options6locale9argumentsACSo012NSAttributedD0C_So0iD17FormattingOptionsV10Foundation6LocaleVSgs14CVaListPointerVtcfc",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC8__format7options6locale9argumentsACSo012NSAttributedD0C_So0iD17FormattingOptionsV10Foundation6LocaleVSgs14CVaListPointerVtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "12.0",
+            "declAttributes": [
+              "NonObjC",
+              "Override",
+              "Available"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(__format:options:locale:context:arguments:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSAttributedString",
+                "printedName": "Foundation.NSAttributedString",
+                "usr": "c:objc(cs)NSAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "__NSAttributedStringFormattingOptions",
+                "printedName": "Foundation.__NSAttributedStringFormattingOptions",
+                "hasDefaultArg": true,
+                "usr": "c:@E@NSAttributedStringFormattingOptions"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.Locale?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Locale",
+                    "printedName": "Foundation.Locale",
+                    "usr": "s:10Foundation6LocaleV"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Foundation.NSAttributedStringFormattingContextKey : Any]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSAttributedStringFormattingContextKey",
+                    "printedName": "Foundation.NSAttributedStringFormattingContextKey",
+                    "usr": "c:@T@NSAttributedStringFormattingContextKey"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProtocolComposition",
+                    "printedName": "Any"
+                  }
+                ],
+                "usr": "s:SD"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CVaListPointer",
+                "printedName": "Swift.CVaListPointer",
+                "usr": "s:s14CVaListPointerV"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:10Highlightr20CodeAttributedStringC8__format7options6locale7context9argumentsACSo012NSAttributedD0C_So0jD17FormattingOptionsV10Foundation6LocaleVSgSDySo0jdK10ContextKeyaypGs14CVaListPointerVtcfc",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC8__format7options6locale7context9argumentsACSo012NSAttributedD0C_So0jD17FormattingOptionsV10Foundation6LocaleVSgSDySo0jdK10ContextKeyaypGs14CVaListPointerVtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "14.0",
+            "declAttributes": [
+              "NonObjC",
+              "Override",
+              "Available"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(__contentsOfMarkdownFileAt:options:baseURL:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "URL",
+                "printedName": "Foundation.URL",
+                "usr": "s:10Foundation3URLV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.__NSAttributedStringMarkdownParsingOptions?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NSAttributedStringMarkdownParsingOptions",
+                    "printedName": "Foundation.__NSAttributedStringMarkdownParsingOptions",
+                    "usr": "c:objc(cs)NSAttributedStringMarkdownParsingOptions"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.URL?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "URL",
+                    "printedName": "Foundation.URL",
+                    "usr": "s:10Foundation3URLV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithContentsOfMarkdownFileAtURL:options:baseURL:error:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC26__contentsOfMarkdownFileAt7options7baseURLAC10Foundation0L0V_So012NSAttributeddG14ParsingOptionsCSgAISgtKcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "12.0",
+            "objc_name": "initWithContentsOfMarkdownFileAtURL:options:baseURL:error:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "Available"
+            ],
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(__markdown:options:baseURL:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.__NSAttributedStringMarkdownParsingOptions?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NSAttributedStringMarkdownParsingOptions",
+                    "printedName": "Foundation.__NSAttributedStringMarkdownParsingOptions",
+                    "usr": "c:objc(cs)NSAttributedStringMarkdownParsingOptions"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.URL?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "URL",
+                    "printedName": "Foundation.URL",
+                    "usr": "s:10Foundation3URLV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithMarkdown:options:baseURL:error:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC10__markdown7options7baseURLAC10Foundation4DataV_So012NSAttributedD22MarkdownParsingOptionsCSgAG0H0VSgtKcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "12.0",
+            "objc_name": "initWithMarkdown:options:baseURL:error:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "Available"
+            ],
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(__markdownString:options:baseURL:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.__NSAttributedStringMarkdownParsingOptions?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "__NSAttributedStringMarkdownParsingOptions",
+                    "printedName": "Foundation.__NSAttributedStringMarkdownParsingOptions",
+                    "usr": "c:objc(cs)NSAttributedStringMarkdownParsingOptions"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.URL?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "URL",
+                    "printedName": "Foundation.URL",
+                    "usr": "s:10Foundation3URLV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithMarkdownString:options:baseURL:error:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC010__markdownD07options7baseURLACSS_So012NSAttributedD22MarkdownParsingOptionsCSg10Foundation0H0VSgtKcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "intro_Macosx": "12.0",
+            "objc_name": "initWithMarkdownString:options:baseURL:error:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override",
+              "Available"
+            ],
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(string:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithString:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC6stringACSS_tcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithString:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(string:attributes:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "[Foundation.NSAttributedString.Key : Any]?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Foundation.NSAttributedString.Key : Any]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Key",
+                        "printedName": "Foundation.NSAttributedString.Key",
+                        "usr": "c:@T@NSAttributedStringKey"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProtocolComposition",
+                        "printedName": "Any"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithString:attributes:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC6string10attributesACSS_SDySo012NSAttributedD3KeyaypGSgtcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithString:attributes:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(attributedString:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CodeAttributedString",
+                "printedName": "Highlightr.CodeAttributedString",
+                "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSAttributedString",
+                "printedName": "Foundation.NSAttributedString",
+                "usr": "c:objc(cs)NSAttributedString"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString(im)initWithAttributedString:",
+            "mangledName": "$s10Highlightr20CodeAttributedStringC010attributedD0ACSo012NSAttributedD0C_tcfc",
+            "moduleName": "Highlightr",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "initWithAttributedString:",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@Highlightr@objc(cs)CodeAttributedString",
+        "mangledName": "$s10Highlightr20CodeAttributedStringC",
+        "moduleName": "Highlightr",
+        "isOpen": true,
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment",
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSTextStorage",
+        "superclassNames": [
+          "AppKit.NSTextStorage",
+          "Foundation.NSMutableAttributedString",
+          "Foundation.NSAttributedString",
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "Highlightr",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "AppKit",
+        "printedName": "AppKit",
+        "declKind": "Import",
+        "moduleName": "Highlightr"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "Theme",
+        "printedName": "Theme",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "codeFont",
+            "printedName": "codeFont",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ImplicitlyUnwrappedOptional",
+                "printedName": "AppKit.NSFont?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSFont",
+                    "printedName": "AppKit.NSFont",
+                    "usr": "c:objc(cs)NSFont"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10Highlightr5ThemeC8codeFontSo6NSFontCSgvp",
+            "mangledName": "$s10Highlightr5ThemeC8codeFontSo6NSFontCSgvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AppKit.NSFont?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSFont",
+                        "printedName": "AppKit.NSFont",
+                        "usr": "c:objc(cs)NSFont"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC8codeFontSo6NSFontCSgvg",
+                "mangledName": "$s10Highlightr5ThemeC8codeFontSo6NSFontCSgvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AppKit.NSFont?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSFont",
+                        "printedName": "AppKit.NSFont",
+                        "usr": "c:objc(cs)NSFont"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC8codeFontSo6NSFontCSgvs",
+                "mangledName": "$s10Highlightr5ThemeC8codeFontSo6NSFontCSgvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC8codeFontSo6NSFontCSgvM",
+                "mangledName": "$s10Highlightr5ThemeC8codeFontSo6NSFontCSgvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "boldCodeFont",
+            "printedName": "boldCodeFont",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ImplicitlyUnwrappedOptional",
+                "printedName": "AppKit.NSFont?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSFont",
+                    "printedName": "AppKit.NSFont",
+                    "usr": "c:objc(cs)NSFont"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10Highlightr5ThemeC12boldCodeFontSo6NSFontCSgvp",
+            "mangledName": "$s10Highlightr5ThemeC12boldCodeFontSo6NSFontCSgvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AppKit.NSFont?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSFont",
+                        "printedName": "AppKit.NSFont",
+                        "usr": "c:objc(cs)NSFont"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC12boldCodeFontSo6NSFontCSgvg",
+                "mangledName": "$s10Highlightr5ThemeC12boldCodeFontSo6NSFontCSgvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AppKit.NSFont?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSFont",
+                        "printedName": "AppKit.NSFont",
+                        "usr": "c:objc(cs)NSFont"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC12boldCodeFontSo6NSFontCSgvs",
+                "mangledName": "$s10Highlightr5ThemeC12boldCodeFontSo6NSFontCSgvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC12boldCodeFontSo6NSFontCSgvM",
+                "mangledName": "$s10Highlightr5ThemeC12boldCodeFontSo6NSFontCSgvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "italicCodeFont",
+            "printedName": "italicCodeFont",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ImplicitlyUnwrappedOptional",
+                "printedName": "AppKit.NSFont?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSFont",
+                    "printedName": "AppKit.NSFont",
+                    "usr": "c:objc(cs)NSFont"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10Highlightr5ThemeC14italicCodeFontSo6NSFontCSgvp",
+            "mangledName": "$s10Highlightr5ThemeC14italicCodeFontSo6NSFontCSgvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AppKit.NSFont?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSFont",
+                        "printedName": "AppKit.NSFont",
+                        "usr": "c:objc(cs)NSFont"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC14italicCodeFontSo6NSFontCSgvg",
+                "mangledName": "$s10Highlightr5ThemeC14italicCodeFontSo6NSFontCSgvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AppKit.NSFont?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSFont",
+                        "printedName": "AppKit.NSFont",
+                        "usr": "c:objc(cs)NSFont"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC14italicCodeFontSo6NSFontCSgvs",
+                "mangledName": "$s10Highlightr5ThemeC14italicCodeFontSo6NSFontCSgvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC14italicCodeFontSo6NSFontCSgvM",
+                "mangledName": "$s10Highlightr5ThemeC14italicCodeFontSo6NSFontCSgvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "themeBackgroundColor",
+            "printedName": "themeBackgroundColor",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ImplicitlyUnwrappedOptional",
+                "printedName": "AppKit.NSColor?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSColor",
+                    "printedName": "AppKit.NSColor",
+                    "usr": "c:objc(cs)NSColor"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10Highlightr5ThemeC20themeBackgroundColorSo7NSColorCSgvp",
+            "mangledName": "$s10Highlightr5ThemeC20themeBackgroundColorSo7NSColorCSgvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AppKit.NSColor?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSColor",
+                        "printedName": "AppKit.NSColor",
+                        "usr": "c:objc(cs)NSColor"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC20themeBackgroundColorSo7NSColorCSgvg",
+                "mangledName": "$s10Highlightr5ThemeC20themeBackgroundColorSo7NSColorCSgvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "AppKit.NSColor?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSColor",
+                        "printedName": "AppKit.NSColor",
+                        "usr": "c:objc(cs)NSColor"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC20themeBackgroundColorSo7NSColorCSgvs",
+                "mangledName": "$s10Highlightr5ThemeC20themeBackgroundColorSo7NSColorCSgvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10Highlightr5ThemeC20themeBackgroundColorSo7NSColorCSgvM",
+                "mangledName": "$s10Highlightr5ThemeC20themeBackgroundColorSo7NSColorCSgvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(themeString:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Theme",
+                "printedName": "Highlightr.Theme",
+                "usr": "s:10Highlightr5ThemeC"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:10Highlightr5ThemeC11themeStringACSS_tcfc",
+            "mangledName": "$s10Highlightr5ThemeC11themeStringACSS_tcfc",
+            "moduleName": "Highlightr",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "setCodeFont",
+            "printedName": "setCodeFont(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSFont",
+                "printedName": "AppKit.NSFont",
+                "usr": "c:objc(cs)NSFont"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:10Highlightr5ThemeC11setCodeFontyySo6NSFontCF",
+            "mangledName": "$s10Highlightr5ThemeC11setCodeFontyySo6NSFontCF",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:10Highlightr5ThemeC",
+        "mangledName": "$s10Highlightr5ThemeC",
+        "moduleName": "Highlightr",
+        "isOpen": true,
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "Highlightr"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "Highlightr",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "AppKit",
+        "printedName": "AppKit",
+        "declKind": "Import",
+        "moduleName": "Highlightr"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "Highlightr",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "JavaScriptCore",
+        "printedName": "JavaScriptCore",
+        "declKind": "Import",
+        "moduleName": "Highlightr"
+      },
+      {
+        "kind": "Import",
+        "name": "AppKit",
+        "printedName": "AppKit",
+        "declKind": "Import",
+        "moduleName": "Highlightr"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "Highlightr",
+        "printedName": "Highlightr",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "theme",
+            "printedName": "theme",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ImplicitlyUnwrappedOptional",
+                "printedName": "Highlightr.Theme?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Theme",
+                    "printedName": "Highlightr.Theme",
+                    "usr": "s:10Highlightr5ThemeC"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10HighlightrAAC5themeAA5ThemeCSgvp",
+            "mangledName": "$s10HighlightrAAC5themeAA5ThemeCSgvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "Highlightr.Theme?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Theme",
+                        "printedName": "Highlightr.Theme",
+                        "usr": "s:10Highlightr5ThemeC"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC5themeAA5ThemeCSgvg",
+                "mangledName": "$s10HighlightrAAC5themeAA5ThemeCSgvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ImplicitlyUnwrappedOptional",
+                    "printedName": "Highlightr.Theme?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Theme",
+                        "printedName": "Highlightr.Theme",
+                        "usr": "s:10Highlightr5ThemeC"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC5themeAA5ThemeCSgvs",
+                "mangledName": "$s10HighlightrAAC5themeAA5ThemeCSgvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC5themeAA5ThemeCSgvM",
+                "mangledName": "$s10HighlightrAAC5themeAA5ThemeCSgvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "themeChanged",
+            "printedName": "themeChanged",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "((Highlightr.Theme) -> ())?",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Highlightr.Theme) -> ()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Theme",
+                        "printedName": "Highlightr.Theme",
+                        "usr": "s:10Highlightr5ThemeC"
+                      }
+                    ]
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10HighlightrAAC12themeChangedyAA5ThemeCcSgvp",
+            "mangledName": "$s10HighlightrAAC12themeChangedyAA5ThemeCcSgvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "((Highlightr.Theme) -> ())?",
+                    "children": [
+                      {
+                        "kind": "TypeFunc",
+                        "name": "Function",
+                        "printedName": "(Highlightr.Theme) -> ()",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Void",
+                            "printedName": "()"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Theme",
+                            "printedName": "Highlightr.Theme",
+                            "usr": "s:10Highlightr5ThemeC"
+                          }
+                        ]
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC12themeChangedyAA5ThemeCcSgvg",
+                "mangledName": "$s10HighlightrAAC12themeChangedyAA5ThemeCcSgvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "((Highlightr.Theme) -> ())?",
+                    "children": [
+                      {
+                        "kind": "TypeFunc",
+                        "name": "Function",
+                        "printedName": "(Highlightr.Theme) -> ()",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Void",
+                            "printedName": "()"
+                          },
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Theme",
+                            "printedName": "Highlightr.Theme",
+                            "usr": "s:10Highlightr5ThemeC"
+                          }
+                        ]
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC12themeChangedyAA5ThemeCcSgvs",
+                "mangledName": "$s10HighlightrAAC12themeChangedyAA5ThemeCcSgvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC12themeChangedyAA5ThemeCcSgvM",
+                "mangledName": "$s10HighlightrAAC12themeChangedyAA5ThemeCcSgvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "ignoreIllegals",
+            "printedName": "ignoreIllegals",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:10HighlightrAAC14ignoreIllegalsSbvp",
+            "mangledName": "$s10HighlightrAAC14ignoreIllegalsSbvp",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC14ignoreIllegalsSbvg",
+                "mangledName": "$s10HighlightrAAC14ignoreIllegalsSbvg",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC14ignoreIllegalsSbvs",
+                "mangledName": "$s10HighlightrAAC14ignoreIllegalsSbvs",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:10HighlightrAAC14ignoreIllegalsSbvM",
+                "mangledName": "$s10HighlightrAAC14ignoreIllegalsSbvM",
+                "moduleName": "Highlightr",
+                "implicit": true,
+                "isOpen": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(highlightPath:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.Highlightr?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Highlightr",
+                    "printedName": "Highlightr.Highlightr",
+                    "usr": "s:10HighlightrAAC"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:10HighlightrAAC13highlightPathABSgSSSg_tcfc",
+            "mangledName": "$s10HighlightrAAC13highlightPathABSgSSSg_tcfc",
+            "moduleName": "Highlightr",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "setTheme",
+            "printedName": "setTheme(to:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:10HighlightrAAC8setTheme2toSbSS_tF",
+            "mangledName": "$s10HighlightrAAC8setTheme2toSbSS_tF",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "AccessControl",
+              "DiscardableResult",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "TypeDecl",
+            "name": "HighlightAutoResult",
+            "printedName": "HighlightAutoResult",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "attributedString",
+                "printedName": "attributedString",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSAttributedString",
+                    "printedName": "Foundation.NSAttributedString",
+                    "usr": "c:objc(cs)NSAttributedString"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:10HighlightrAAC19HighlightAutoResultV16attributedStringSo012NSAttributedF0Cvp",
+                "mangledName": "$s10HighlightrAAC19HighlightAutoResultV16attributedStringSo012NSAttributedF0Cvp",
+                "moduleName": "Highlightr",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "NSAttributedString",
+                        "printedName": "Foundation.NSAttributedString",
+                        "usr": "c:objc(cs)NSAttributedString"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:10HighlightrAAC19HighlightAutoResultV16attributedStringSo012NSAttributedF0Cvg",
+                    "mangledName": "$s10HighlightrAAC19HighlightAutoResultV16attributedStringSo012NSAttributedF0Cvg",
+                    "moduleName": "Highlightr",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "language",
+                "printedName": "language",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:10HighlightrAAC19HighlightAutoResultV8languageSSvp",
+                "mangledName": "$s10HighlightrAAC19HighlightAutoResultV8languageSSvp",
+                "moduleName": "Highlightr",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:10HighlightrAAC19HighlightAutoResultV8languageSSvg",
+                    "mangledName": "$s10HighlightrAAC19HighlightAutoResultV8languageSSvg",
+                    "moduleName": "Highlightr",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Var",
+                "name": "relevance",
+                "printedName": "relevance",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:10HighlightrAAC19HighlightAutoResultV9relevanceSivp",
+                "mangledName": "$s10HighlightrAAC19HighlightAutoResultV9relevanceSivp",
+                "moduleName": "Highlightr",
+                "declAttributes": [
+                  "HasStorage",
+                  "AccessControl"
+                ],
+                "isLet": true,
+                "hasStorage": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:10HighlightrAAC19HighlightAutoResultV9relevanceSivg",
+                    "mangledName": "$s10HighlightrAAC19HighlightAutoResultV9relevanceSivg",
+                    "moduleName": "Highlightr",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Struct",
+            "usr": "s:10HighlightrAAC19HighlightAutoResultV",
+            "mangledName": "$s10HighlightrAAC19HighlightAutoResultV",
+            "moduleName": "Highlightr",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "highlightAuto",
+            "printedName": "highlightAuto(_:languageSubset:fastRender:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Highlightr.Highlightr.HighlightAutoResult?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "HighlightAutoResult",
+                    "printedName": "Highlightr.Highlightr.HighlightAutoResult",
+                    "usr": "s:10HighlightrAAC19HighlightAutoResultV"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "[Swift.String]?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[Swift.String]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "hasDefaultArg": true,
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:10HighlightrAAC13highlightAuto_14languageSubset10fastRenderAB09HighlightC6ResultVSgSS_SaySSGSgSbtF",
+            "mangledName": "$s10HighlightrAAC13highlightAuto_14languageSubset10fastRenderAB09HighlightC6ResultVSgSS_SaySSGSgSbtF",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "highlight",
+            "printedName": "highlight(_:as:fastRender:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Foundation.NSAttributedString?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "NSAttributedString",
+                    "printedName": "Foundation.NSAttributedString",
+                    "usr": "c:objc(cs)NSAttributedString"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "hasDefaultArg": true,
+                "usr": "s:Sb"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:10HighlightrAAC9highlight_2as10fastRenderSo18NSAttributedStringCSgSS_SSSgSbtF",
+            "mangledName": "$s10HighlightrAAC9highlight_2as10fastRenderSo18NSAttributedStringCSgSS_SSSgSbtF",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "availableThemes",
+            "printedName": "availableThemes()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:10HighlightrAAC15availableThemesSaySSGyF",
+            "mangledName": "$s10HighlightrAAC15availableThemesSaySSGyF",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "supportedLanguages",
+            "printedName": "supportedLanguages()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:10HighlightrAAC18supportedLanguagesSaySSGyF",
+            "mangledName": "$s10HighlightrAAC18supportedLanguagesSaySSGyF",
+            "moduleName": "Highlightr",
+            "isOpen": true,
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:10HighlightrAAC",
+        "mangledName": "$s10HighlightrAAC",
+        "moduleName": "Highlightr",
+        "isOpen": true,
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/CodeAttributedString.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2420,
+      "length": 1,
+      "value": "0"
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/HTMLUtils.swift",
+      "kind": "Dictionary",
+      "offset": 142,
+      "length": 7900,
+      "value": "[(\"&quot;\", \"\"\"), (\"&amp;\", \"&\"), (\"&apos;\", \"'\"), (\"&lt;\", \"<\"), (\"&gt;\", \">\"), (\"&nbsp;\", \" \"), (\"&iexcl;\", \"¡\"), (\"&cent;\", \"¢\"), (\"&pound;\", \"£\"), (\"&curren;\", \"¤\"), (\"&yen;\", \"¥\"), (\"&brvbar;\", \"¦\"), (\"&sect;\", \"§\"), (\"&uml;\", \"¨\"), (\"&copy;\", \"©\"), (\"&ordf;\", \"ª\"), (\"&laquo;\", \"«\"), (\"&not;\", \"¬\"), (\"&shy;\", \"­\"), (\"&reg;\", \"®\"), (\"&macr;\", \"¯\"), (\"&deg;\", \"°\"), (\"&plusmn;\", \"±\"), (\"&sup2;\", \"²\"), (\"&sup3;\", \"³\"), (\"&acute;\", \"´\"), (\"&micro;\", \"µ\"), (\"&para;\", \"¶\"), (\"&middot;\", \"·\"), (\"&cedil;\", \"¸\"), (\"&sup1;\", \"¹\"), (\"&ordm;\", \"º\"), (\"&raquo;\", \"»\"), (\"&frac14;\", \"¼\"), (\"&frac12;\", \"½\"), (\"&frac34;\", \"¾\"), (\"&iquest;\", \"¿\"), (\"&Agrave;\", \"À\"), (\"&Aacute;\", \"Á\"), (\"&Acirc;\", \"Â\"), (\"&Atilde;\", \"Ã\"), (\"&Auml;\", \"Ä\"), (\"&Aring;\", \"Å\"), (\"&AElig;\", \"Æ\"), (\"&Ccedil;\", \"Ç\"), (\"&Egrave;\", \"È\"), (\"&Eacute;\", \"É\"), (\"&Ecirc;\", \"Ê\"), (\"&Euml;\", \"Ë\"), (\"&Igrave;\", \"Ì\"), (\"&Iacute;\", \"Í\"), (\"&Icirc;\", \"Î\"), (\"&Iuml;\", \"Ï\"), (\"&ETH;\", \"Ð\"), (\"&Ntilde;\", \"Ñ\"), (\"&Ograve;\", \"Ò\"), (\"&Oacute;\", \"Ó\"), (\"&Ocirc;\", \"Ô\"), (\"&Otilde;\", \"Õ\"), (\"&Ouml;\", \"Ö\"), (\"&times;\", \"×\"), (\"&Oslash;\", \"Ø\"), (\"&Ugrave;\", \"Ù\"), (\"&Uacute;\", \"Ú\"), (\"&Ucirc;\", \"Û\"), (\"&Uuml;\", \"Ü\"), (\"&Yacute;\", \"Ý\"), (\"&THORN;\", \"Þ\"), (\"&szlig;\", \"ß\"), (\"&agrave;\", \"à\"), (\"&aacute;\", \"á\"), (\"&acirc;\", \"â\"), (\"&atilde;\", \"ã\"), (\"&auml;\", \"ä\"), (\"&aring;\", \"å\"), (\"&aelig;\", \"æ\"), (\"&ccedil;\", \"ç\"), (\"&egrave;\", \"è\"), (\"&eacute;\", \"é\"), (\"&ecirc;\", \"ê\"), (\"&euml;\", \"ë\"), (\"&igrave;\", \"ì\"), (\"&iacute;\", \"í\"), (\"&icirc;\", \"î\"), (\"&iuml;\", \"ï\"), (\"&eth;\", \"ð\"), (\"&ntilde;\", \"ñ\"), (\"&ograve;\", \"ò\"), (\"&oacute;\", \"ó\"), (\"&ocirc;\", \"ô\"), (\"&otilde;\", \"õ\"), (\"&ouml;\", \"ö\"), (\"&divide;\", \"÷\"), (\"&oslash;\", \"ø\"), (\"&ugrave;\", \"ù\"), (\"&uacute;\", \"ú\"), (\"&ucirc;\", \"û\"), (\"&uuml;\", \"ü\"), (\"&yacute;\", \"ý\"), (\"&thorn;\", \"þ\"), (\"&yuml;\", \"ÿ\"), (\"&OElig;\", \"Œ\"), (\"&oelig;\", \"œ\"), (\"&Scaron;\", \"Š\"), (\"&scaron;\", \"š\"), (\"&Yuml;\", \"Ÿ\"), (\"&fnof;\", \"ƒ\"), (\"&circ;\", \"ˆ\"), (\"&tilde;\", \"˜\"), (\"&Alpha;\", \"Α\"), (\"&Beta;\", \"Β\"), (\"&Gamma;\", \"Γ\"), (\"&Delta;\", \"Δ\"), (\"&Epsilon;\", \"Ε\"), (\"&Zeta;\", \"Ζ\"), (\"&Eta;\", \"Η\"), (\"&Theta;\", \"Θ\"), (\"&Iota;\", \"Ι\"), (\"&Kappa;\", \"Κ\"), (\"&Lambda;\", \"Λ\"), (\"&Mu;\", \"Μ\"), (\"&Nu;\", \"Ν\"), (\"&Xi;\", \"Ξ\"), (\"&Omicron;\", \"Ο\"), (\"&Pi;\", \"Π\"), (\"&Rho;\", \"Ρ\"), (\"&Sigma;\", \"Σ\"), (\"&Tau;\", \"Τ\"), (\"&Upsilon;\", \"Υ\"), (\"&Phi;\", \"Φ\"), (\"&Chi;\", \"Χ\"), (\"&Psi;\", \"Ψ\"), (\"&Omega;\", \"Ω\"), (\"&alpha;\", \"α\"), (\"&beta;\", \"β\"), (\"&gamma;\", \"γ\"), (\"&delta;\", \"δ\"), (\"&epsilon;\", \"ε\"), (\"&zeta;\", \"ζ\"), (\"&eta;\", \"η\"), (\"&theta;\", \"θ\"), (\"&iota;\", \"ι\"), (\"&kappa;\", \"κ\"), (\"&lambda;\", \"λ\"), (\"&mu;\", \"μ\"), (\"&nu;\", \"ν\"), (\"&xi;\", \"ξ\"), (\"&omicron;\", \"ο\"), (\"&pi;\", \"π\"), (\"&rho;\", \"ρ\"), (\"&sigmaf;\", \"ς\"), (\"&sigma;\", \"σ\"), (\"&tau;\", \"τ\"), (\"&upsilon;\", \"υ\"), (\"&phi;\", \"φ\"), (\"&chi;\", \"χ\"), (\"&psi;\", \"ψ\"), (\"&omega;\", \"ω\"), (\"&thetasym;\", \"ϑ\"), (\"&upsih;\", \"ϒ\"), (\"&piv;\", \"ϖ\"), (\"&ensp;\", \" \"), (\"&emsp;\", \" \"), (\"&thinsp;\", \" \"), (\"&zwnj;\", \"‌\"), (\"&zwj;\", \"‍\"), (\"&lrm;\", \"‎\"), (\"&rlm;\", \"‏\"), (\"&ndash;\", \"–\"), (\"&mdash;\", \"—\"), (\"&lsquo;\", \"‘\"), (\"&rsquo;\", \"’\"), (\"&sbquo;\", \"‚\"), (\"&ldquo;\", \"“\"), (\"&rdquo;\", \"”\"), (\"&bdquo;\", \"„\"), (\"&dagger;\", \"†\"), (\"&Dagger;\", \"‡\"), (\"&bull;\", \"•\"), (\"&hellip;\", \"…\"), (\"&permil;\", \"‰\"), (\"&prime;\", \"′\"), (\"&Prime;\", \"″\"), (\"&lsaquo;\", \"‹\"), (\"&rsaquo;\", \"›\"), (\"&oline;\", \"‾\"), (\"&frasl;\", \"⁄\"), (\"&euro;\", \"€\"), (\"&image;\", \"ℑ\"), (\"&weierp;\", \"℘\"), (\"&real;\", \"ℜ\"), (\"&trade;\", \"™\"), (\"&alefsym;\", \"ℵ\"), (\"&larr;\", \"←\"), (\"&uarr;\", \"↑\"), (\"&rarr;\", \"→\"), (\"&darr;\", \"↓\"), (\"&harr;\", \"↔\"), (\"&crarr;\", \"↵\"), (\"&lArr;\", \"⇐\"), (\"&uArr;\", \"⇑\"), (\"&rArr;\", \"⇒\"), (\"&dArr;\", \"⇓\"), (\"&hArr;\", \"⇔\"), (\"&forall;\", \"∀\"), (\"&part;\", \"∂\"), (\"&exist;\", \"∃\"), (\"&empty;\", \"∅\"), (\"&nabla;\", \"∇\"), (\"&isin;\", \"∈\"), (\"&notin;\", \"∉\"), (\"&ni;\", \"∋\"), (\"&prod;\", \"∏\"), (\"&sum;\", \"∑\"), (\"&minus;\", \"−\"), (\"&lowast;\", \"∗\"), (\"&radic;\", \"√\"), (\"&prop;\", \"∝\"), (\"&infin;\", \"∞\"), (\"&ang;\", \"∠\"), (\"&and;\", \"∧\"), (\"&or;\", \"∨\"), (\"&cap;\", \"∩\"), (\"&cup;\", \"∪\"), (\"&int;\", \"∫\"), (\"&there4;\", \"∴\"), (\"&sim;\", \"∼\"), (\"&cong;\", \"≅\"), (\"&asymp;\", \"≈\"), (\"&ne;\", \"≠\"), (\"&equiv;\", \"≡\"), (\"&le;\", \"≤\"), (\"&ge;\", \"≥\"), (\"&sub;\", \"⊂\"), (\"&sup;\", \"⊃\"), (\"&nsub;\", \"⊄\"), (\"&sube;\", \"⊆\"), (\"&supe;\", \"⊇\"), (\"&oplus;\", \"⊕\"), (\"&otimes;\", \"⊗\"), (\"&perp;\", \"⊥\"), (\"&sdot;\", \"⋅\"), (\"&lceil;\", \"⌈\"), (\"&rceil;\", \"⌉\"), (\"&lfloor;\", \"⌊\"), (\"&rfloor;\", \"⌋\"), (\"&lang;\", \"〈\"), (\"&rang;\", \"〉\"), (\"&loz;\", \"◊\"), (\"&spades;\", \"♠\"), (\"&clubs;\", \"♣\"), (\"&hearts;\", \"♥\"), (\"&diams;\", \"♦\")]"
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/Highlightr.swift",
+      "kind": "BooleanLiteral",
+      "offset": 667,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/Highlightr.swift",
+      "kind": "StringLiteral",
+      "offset": 765,
+      "length": 3,
+      "value": "\"<\""
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/Highlightr.swift",
+      "kind": "StringLiteral",
+      "offset": 797,
+      "length": 15,
+      "value": "\"span class=\"\""
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/Highlightr.swift",
+      "kind": "StringLiteral",
+      "offset": 846,
+      "length": 5,
+      "value": "\"\">\""
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/Highlightr.swift",
+      "kind": "StringLiteral",
+      "offset": 878,
+      "length": 8,
+      "value": "\"\/span>\""
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/Highlightr.swift",
+      "kind": "StringLiteral",
+      "offset": 950,
+      "length": 19,
+      "value": "\"&#?[a-zA-Z0-9]+?;\""
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/Highlightr.swift",
+      "kind": "BooleanLiteral",
+      "offset": 3517,
+      "length": 4,
+      "value": "true"
+    },
+    {
+      "filePath": "\/Users\/ayates\/dashterm2\/submodules\/Highlightr\/Pod\/Classes\/Highlightr.swift",
+      "kind": "BooleanLiteral",
+      "offset": 4905,
+      "length": 4,
+      "value": "true"
+    }
+  ]
+}

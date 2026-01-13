@@ -1,0 +1,69 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
+// swift-module-flags: -target arm64-apple-macos10.14 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name Highlightr
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+import AppKit
+import Foundation
+import JavaScriptCore
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@objc public protocol HighlightDelegate {
+  @objc optional func shouldHighlight(_ range: Foundation.NSRange) -> Swift.Bool
+  @objc optional func didHighlight(_ range: Foundation.NSRange, success: Swift.Bool)
+}
+@objc open class CodeAttributedString : AppKit.NSTextStorage {
+  final public let highlightr: Highlightr.Highlightr
+  open var highlightDelegate: (any Highlightr.HighlightDelegate)?
+  public init(highlightr: Highlightr.Highlightr = Highlightr()!)
+  @objc override dynamic public init()
+  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc required dynamic public init?(pasteboardPropertyList propertyList: Any, ofType type: AppKit.NSPasteboard.PasteboardType)
+  open var language: Swift.String? {
+    get
+    set
+  }
+  @objc override dynamic open var string: Swift.String {
+    @objc get
+  }
+  @objc override dynamic open func attributes(at location: Swift.Int, effectiveRange range: Foundation.NSRangePointer?) -> [Highlightr.AttributedStringKey : Any]
+  @objc override dynamic open func replaceCharacters(in range: Foundation.NSRange, with str: Swift.String)
+  @objc override dynamic open func setAttributes(_ attrs: [Highlightr.AttributedStringKey : Any]?, range: Foundation.NSRange)
+  @objc override dynamic open func processEditing()
+  @objc deinit
+}
+public typealias RPColor = AppKit.NSColor
+public typealias RPFont = AppKit.NSFont
+open class Theme {
+  open var codeFont: Highlightr.RPFont!
+  open var boldCodeFont: Highlightr.RPFont!
+  open var italicCodeFont: Highlightr.RPFont!
+  open var themeBackgroundColor: Highlightr.RPColor!
+  public init(themeString: Swift.String)
+  open func setCodeFont(_ font: Highlightr.RPFont)
+  @objc deinit
+}
+public typealias AttributedStringKey = Foundation.NSAttributedString.Key
+public typealias TextStorageEditActions = AppKit.NSTextStorageEditActions
+open class Highlightr {
+  open var theme: Highlightr.Theme! {
+    get
+    set
+  }
+  open var themeChanged: ((Highlightr.Theme) -> Swift.Void)?
+  open var ignoreIllegals: Swift.Bool
+  public init?(highlightPath: Swift.String? = nil)
+  @discardableResult
+  open func setTheme(to name: Swift.String) -> Swift.Bool
+  public struct HighlightAutoResult {
+    public let attributedString: Foundation.NSAttributedString
+    public let language: Swift.String
+    public let relevance: Swift.Int
+  }
+  open func highlightAuto(_ code: Swift.String, languageSubset: [Swift.String]?, fastRender: Swift.Bool = true) -> Highlightr.Highlightr.HighlightAutoResult?
+  open func highlight(_ code: Swift.String, as languageName: Swift.String? = nil, fastRender: Swift.Bool = true) -> Foundation.NSAttributedString?
+  open func availableThemes() -> [Swift.String]
+  open func supportedLanguages() -> [Swift.String]
+  @objc deinit
+}

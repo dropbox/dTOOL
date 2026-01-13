@@ -1,0 +1,168 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs when a new run is triggered
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: macos-14
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # BUG-9: CI uses conditional fallback for Xcode path instead of hardcoding
+      - name: Select Xcode
+        run: |
+          # Try Xcode 16 first, fall back to latest available
+          if [ -d "/Applications/Xcode_16.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
+          else
+            echo "Using default Xcode: $(xcode-select -p)"
+          fi
+
+      - name: Show environment
+        run: |
+          echo "Xcode version:"
+          xcodebuild -version
+          echo ""
+          echo "Available SDKs:"
+          xcodebuild -showsdks | grep -E "macOS|macosx"
+          echo ""
+          echo "Available schemes:"
+          xcodebuild -project DashTerm2.xcodeproj -list | head -30
+
+      # BUG-36: xcpretty must be installed before use
+      - name: Install xcpretty
+        run: gem install xcpretty
+
+      - name: Build DashTerm2
+        run: |
+          xcodebuild -project DashTerm2.xcodeproj \
+            -scheme DashTerm2 \
+            -configuration Development \
+            -destination "platform=macOS" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee build.log | xcpretty
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashterm2-build
+          path: build/Development/DashTerm2.app
+          retention-days: 1
+          if-no-files-found: warn
+
+      - name: Run Unit Tests (DashTerm2Tests)
+        run: |
+          xcodebuild -project DashTerm2.xcodeproj \
+            -scheme DashTerm2Tests \
+            -configuration Debug \
+            -destination "platform=macOS" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            test 2>&1 | tee test-dashterm2.log | xcpretty --report junit --output test-results-dashterm2.xml
+
+      - name: Run Unit Tests (ModernTests)
+        run: |
+          xcodebuild -project DashTerm2.xcodeproj \
+            -scheme ModernTests \
+            -configuration Debug \
+            -destination "platform=macOS" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            test 2>&1 | tee test-modern.log | xcpretty --report junit --output test-results-modern.xml
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            build.log
+            test-dashterm2.log
+            test-modern.log
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-results-*.xml
+          if-no-files-found: ignore
+
+  # BUG-11: Smoke test uses DashTerm2 app name
+  smoke-test:
+    name: Smoke Test
+    runs-on: macos-14
+    needs: build
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dashterm2-build
+          path: build/Development
+
+      - name: Run Smoke Test
+        run: ./scripts/smoke-test.sh
+        timeout-minutes: 2
+
+      - name: Collect crash logs on failure
+        if: failure()
+        run: |
+          echo "=== Checking for crash logs ==="
+          # BUG-10: Crash log pattern updated to DashTerm2
+          # Look for DashTerm2 crash logs
+          ls -lt ~/Library/Logs/DiagnosticReports/DashTerm2* 2>/dev/null | head -5 || echo "No crash logs found"
+          echo ""
+          echo "=== Most recent crash log (if any) ==="
+          CRASH_LOG=$(ls -t ~/Library/Logs/DiagnosticReports/DashTerm2* 2>/dev/null | head -1)
+          if [ -n "$CRASH_LOG" ]; then
+            head -200 "$CRASH_LOG"
+          fi
+
+  lint:
+    name: Lint
+    runs-on: macos-14
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install SwiftLint
+        run: brew install swiftlint || true
+
+      - name: Run SwiftLint
+        run: |
+          if command -v swiftlint &> /dev/null; then
+            swiftlint lint --config .swiftlint.yml --reporter github-actions-logging sources/ || true
+          else
+            echo "SwiftLint not available, skipping"
+          fi

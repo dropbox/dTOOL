@@ -1,0 +1,39 @@
+[package]
+name = "common"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dashflow = { path = "../../../crates/dashflow" }
+dashflow-factories = { path = "../../../crates/dashflow-factories" }
+dashflow-openai = { path = "../../../crates/dashflow-openai" }
+dashflow-anthropic = { path = "../../../crates/dashflow-anthropic", optional = true }
+dashflow-bedrock = { path = "../../../crates/dashflow-bedrock", optional = true }
+dashflow-ollama = { path = "../../../crates/dashflow-ollama", optional = true }
+dashflow-groq = { path = "../../../crates/dashflow-groq" }
+dashflow-mistral = { path = "../../../crates/dashflow-mistral" }
+dashflow-deepseek = { path = "../../../crates/dashflow-deepseek" }
+dashflow-fireworks = { path = "../../../crates/dashflow-fireworks" }
+dashflow-xai = { path = "../../../crates/dashflow-xai" }
+dashflow-perplexity = { path = "../../../crates/dashflow-perplexity" }
+dashflow-huggingface = { path = "../../../crates/dashflow-huggingface" }
+dashflow-tavily = { path = "../../../crates/dashflow-tavily" }
+dashflow-duckduckgo = { path = "../../../crates/dashflow-duckduckgo", optional = true }
+dashflow-observability = { path = "../../../crates/dashflow-observability" }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+
+[features]
+default = []
+anthropic = ["dashflow-anthropic", "dashflow-factories/anthropic"]
+bedrock = ["dashflow-bedrock", "dashflow-factories/bedrock"]
+ollama = ["dashflow-ollama", "dashflow-factories/ollama"]
+duckduckgo = ["dashflow-duckduckgo", "dashflow-factories/duckduckgo"]
+all-providers = ["anthropic", "bedrock", "ollama"]
+all-tools = ["duckduckgo"]
+
+[lints]
+workspace = true

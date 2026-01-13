@@ -1,0 +1,156 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  # macOS build and test
+  macos:
+    runs-on: ${{ fromJSON(vars.DTERM_MACOS_RUNNER || '["self-hosted","macOS"]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Build dterm-core
+        run: cargo build -p dterm-core --release
+
+      - name: Build dterm-alacritty-bridge
+        run: cargo build -p dterm-alacritty-bridge --release
+
+      - name: Run dterm-core tests
+        run: cargo test -p dterm-core
+
+      - name: Run bridge tests
+        run: cargo test -p dterm-alacritty-bridge
+
+      - name: Run clippy
+        run: cargo clippy -p dterm-core -p dterm-alacritty-bridge -- -D warnings
+
+  # Windows build and test
+  windows:
+    runs-on: ${{ fromJSON(vars.DTERM_WINDOWS_RUNNER || '["self-hosted","windows"]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Build dterm-core
+        run: cargo build -p dterm-core --release
+
+      - name: Build dterm-alacritty-bridge
+        run: cargo build -p dterm-alacritty-bridge --release
+
+      - name: Run dterm-core tests
+        run: cargo test -p dterm-core
+
+      - name: Run bridge tests
+        run: cargo test -p dterm-alacritty-bridge
+
+      - name: Run ConPTY integration tests
+        run: cargo test -p dterm-alacritty-bridge --test integration_test -- --ignored
+
+  # Linux build and test
+  linux:
+    runs-on: ${{ fromJSON(vars.DTERM_LINUX_RUNNER || '["self-hosted","linux"]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
+
+      - name: Build dterm-core
+        run: cargo build -p dterm-core --release
+
+      - name: Build dterm-alacritty-bridge
+        run: cargo build -p dterm-alacritty-bridge --release
+
+      - name: Run dterm-core tests
+        run: cargo test -p dterm-core
+
+      - name: Run bridge tests
+        run: cargo test -p dterm-alacritty-bridge
+
+      - name: Run PTY integration tests
+        run: cargo test -p dterm-alacritty-bridge --test integration_test
+
+  # Verification tools (run on Linux for speed)
+  verify:
+    runs-on: ${{ fromJSON(vars.DTERM_VERIFY_RUNNER || '["self-hosted","linux"]') }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust nightly (for MIRI)
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: miri
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-verify-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-verify-
+
+      - name: Run MIRI (parser tests)
+        run: |
+          cargo +nightly miri setup
+          cargo +nightly miri test -p dterm-core parser:: -- --test-threads=1
+
+      - name: Run clippy with all warnings
+        run: cargo clippy -p dterm-core -p dterm-alacritty-bridge -- -D warnings
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check

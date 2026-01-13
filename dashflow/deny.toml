@@ -1,0 +1,101 @@
+# DashFlow cargo-deny configuration
+#
+# Run with: cargo deny check
+# Install with: cargo install cargo-deny
+#
+# See: ROADMAP_CURRENT.md Phase 0.8 (Pattern Enforcement)
+# See: https://embarkstudios.github.io/cargo-deny/
+
+[graph]
+# Only check direct dependencies for the workspace members
+all-features = false
+
+[advisories]
+# The path where the advisory database is stored
+db-path = "~/.cargo/advisory-db"
+# URL of the advisory database
+url = "https://github.com/rustsec/advisory-db"
+# How to handle unmaintained crates
+unmaintained = "warn"
+# How to handle yanked crates
+yanked = "warn"
+# How to handle informational advisories (not CVEs)
+notice = "warn"
+
+# Known advisories that are accepted (documented in Cargo.toml)
+ignore = [
+    # RUSTSEC-2024-0336: rustls 0.20.9 - dashflow-milvus (excluded from workspace)
+    "RUSTSEC-2024-0336",
+    # RUSTSEC-2025-0009: ring 0.16.20 - dashflow-milvus (excluded from workspace)
+    "RUSTSEC-2025-0009",
+    # RUSTSEC-2020-0071: time 0.1.45 - dashflow-playwright (excluded from workspace)
+    "RUSTSEC-2020-0071",
+    # RUSTSEC-2023-0071: rsa 0.9.8 - No fix available upstream
+    "RUSTSEC-2023-0071",
+    # RUSTSEC-2025-0012: backoff 0.4.0 - unmaintained but no CVE, monitoring for updates
+    "RUSTSEC-2025-0012",
+]
+
+[licenses]
+# Allow these licenses
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Unicode-3.0",
+    "Unicode-DFS-2016",
+    "MPL-2.0",
+    "OpenSSL",
+    "CC0-1.0",
+    "Unlicense",
+    "BSL-1.0",
+]
+# License confidence threshold (1.0 = exact match only)
+confidence-threshold = 0.8
+
+[bans]
+# Deny multiple versions of the same crate
+multiple-versions = "warn"
+# Deny wildcards in dependencies
+wildcards = "warn"
+# Deny git dependencies
+allow-build-scripts = true
+# Don't deny all workspace crates - just check
+workspace-default-features = "allow"
+external-default-features = "allow"
+
+# Skip these crates from duplicate checking (common to have multiple versions)
+skip = [
+    # Often have multiple versions due to dependency trees
+    { crate = "syn", reason = "Multiple versions commonly used by proc-macro crates" },
+    { crate = "windows-sys", reason = "Multiple versions in Windows dependency tree" },
+    { crate = "windows_x86_64_msvc", reason = "Windows dependencies" },
+    { crate = "windows_x86_64_gnu", reason = "Windows dependencies" },
+    { crate = "windows_aarch64_msvc", reason = "Windows dependencies" },
+]
+
+# Deny these crates entirely
+deny = [
+    # Known problematic crates
+    { crate = "openssl", reason = "Use rustls for TLS to avoid OpenSSL dependency" },
+]
+
+[sources]
+# Allow crates.io only by default
+unknown-registry = "deny"
+# Allow git dependencies from specific orgs
+unknown-git = "warn"
+
+# Allow git sources from these organizations
+allow-git = [
+    "https://github.com/dashflow-ai",
+    "https://github.com/ayates_dbx",
+]
+
+[sources.allow-org]
+# Organizations whose crates are always allowed
+github = ["dashflow-ai", "ayates_dbx"]

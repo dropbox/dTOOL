@@ -1,0 +1,298 @@
+# Default values for DashFlow Helm chart
+# This is a YAML-formatted file.
+
+# Global settings
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+
+# Namespace
+namespace: dashflow
+
+# WebSocket Server
+# M-415: WebSocket server must be single replica to avoid partial streams.
+# Multiple replicas with shared consumer group causes Kafka partition balancing
+# where each pod sees only a subset of events. For HA, implement a shared
+# backplane (Redis pub/sub) before scaling beyond 1 replica.
+websocketServer:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: dashflow/websocket-server
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3002
+    metricsPort: 9090
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  autoscaling:
+    enabled: false
+    # M-415: Scaling beyond 1 replica is not safe without a shared backplane.
+    # Keep autoscaling pinned to 1 unless/until websocket-server is redesigned.
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# Quality Monitor
+qualityMonitor:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: dashflow/quality-monitor
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 3003
+    metricsPort: 9090
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilizationPercentage: 70
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# Prometheus Exporter
+prometheusExporter:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: dashflow/prometheus-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9090
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "50m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+# Redis
+redis:
+  enabled: true
+  external: false
+  # If external: true, use these settings:
+  # host: redis.example.com
+  # port: 6379
+  # password: ""
+  image:
+    repository: redis
+    tag: 7-alpine
+    pullPolicy: IfNotPresent
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: ""
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "50m"
+    limits:
+      memory: "512Mi"
+      cpu: "200m"
+
+# Kafka
+kafka:
+  enabled: true
+  external: false
+  # If external: true, use these settings:
+  # brokers: kafka.example.com:9092
+  # Security settings for connecting to external/secured Kafka clusters
+  # These correspond to KAFKA_SECURITY_PROTOCOL, KAFKA_SASL_*, KAFKA_SSL_* env vars
+  security:
+    # Security protocol: "plaintext" (default), "ssl", "sasl_plaintext", "sasl_ssl"
+    protocol: ""
+    # SASL authentication (required for sasl_plaintext/sasl_ssl)
+    sasl:
+      mechanism: ""  # "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512", "GSSAPI", "OAUTHBEARER"
+      username: ""
+      password: ""
+    # SSL/TLS settings (required for ssl/sasl_ssl)
+    ssl:
+      # Path to CA certificate file (required for TLS verification)
+      caLocation: ""
+      # Path to client certificate file (for mTLS)
+      certificateLocation: ""
+      # Path to client private key file (for mTLS)
+      keyLocation: ""
+      # Password for encrypted private key
+      keyPassword: ""
+      # Hostname verification: "https" (verify, default) or "none" (skip)
+      endpointAlgorithm: ""
+  image:
+    repository: confluentinc/cp-kafka
+    tag: "7.5.0"
+    pullPolicy: IfNotPresent
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: ""
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "200m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+
+# Zookeeper (required for Kafka)
+zookeeper:
+  enabled: true
+  image:
+    repository: confluentinc/cp-zookeeper
+    tag: "7.5.0"
+    pullPolicy: IfNotPresent
+  persistence:
+    enabled: true
+    dataSize: 1Gi
+    logsSize: 1Gi
+    storageClass: ""
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# Observability Stack
+observability:
+  # Jaeger
+  jaeger:
+    enabled: true
+    image:
+      repository: jaegertracing/all-in-one
+      tag: "1.55"
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+
+  # Prometheus
+  prometheus:
+    enabled: true
+    image:
+      repository: prom/prometheus
+      tag: v2.49.1
+    persistence:
+      enabled: false
+      size: 10Gi
+    resources:
+      requests:
+        memory: "256Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+
+  # Alertmanager
+  alertmanager:
+    enabled: true
+    image:
+      repository: prom/alertmanager
+      tag: v0.26.0
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "25m"
+      limits:
+        memory: "256Mi"
+        cpu: "100m"
+
+  # Grafana
+  grafana:
+    enabled: true
+    image:
+      repository: grafana/grafana
+      tag: "10.3.3"
+    adminUser: admin
+    # adminPassword is set via secrets
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "50m"
+      limits:
+        memory: "512Mi"
+        cpu: "200m"
+
+# Ingress
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: dashflow.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Pod Disruption Budget
+# M-415: websocketServer minAvailable must be <= replicaCount (now 1)
+podDisruptionBudget:
+  enabled: false
+  websocketServer:
+    minAvailable: 1
+  qualityMonitor:
+    minAvailable: 1
+
+# Configuration
+config:
+  # Logging
+  logLevel: info
+  # Kafka topic
+  kafkaTopic: dashstream-quality
+  # OTEL
+  otelServiceName: dashflow
+  otelExporterProtocol: grpc
+
+# Secrets (should be overridden or provided via external secrets)
+secrets:
+  openaiApiKey: ""
+  anthropicApiKey: ""
+  grafanaAdminPassword: "admin"
+
+# Service Account
+serviceAccount:
+  create: true
+  name: dashflow
+  annotations: {}
+
+# Security Context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+
+# Network Policies
+networkPolicies:
+  enabled: false

@@ -1,0 +1,280 @@
+/* DashFlow Graph Visualization Animations */
+
+/* === Node Animations === */
+
+/* Pulse animation for active/running nodes */
+@keyframes node-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px 5px rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* Glow animation for running nodes */
+@keyframes node-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 5px rgba(59, 130, 246, 0.3),
+      0 0 10px rgba(59, 130, 246, 0.2),
+      0 0 15px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 10px rgba(59, 130, 246, 0.5),
+      0 0 20px rgba(59, 130, 246, 0.4),
+      0 0 30px rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* Status indicator ping animation */
+@keyframes status-ping {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Classes for node animations */
+/* TC-10: Added will-change for GPU acceleration */
+.node-running {
+  animation: node-pulse 1.5s ease-in-out infinite, node-glow 2s ease-in-out infinite;
+  will-change: transform, box-shadow;
+}
+
+.node-glow-active {
+  animation: node-glow 2s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+.status-ping {
+  animation: status-ping 1s ease-out infinite;
+  will-change: transform, opacity;
+}
+
+/* === Edge Animations === */
+
+/* Data flow animation - dots moving along edge */
+@keyframes edge-flow {
+  0% {
+    stroke-dashoffset: 20;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Pulse animation for edges when data flows */
+@keyframes edge-pulse {
+  0%, 100% {
+    stroke-opacity: 0.6;
+    stroke-width: 2px;
+  }
+  50% {
+    stroke-opacity: 1;
+    stroke-width: 3px;
+  }
+}
+
+/* Edge classes */
+/* TC-10: Added will-change for GPU acceleration */
+.edge-flowing {
+  stroke-dasharray: 5 5;
+  animation: edge-flow 0.5s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+.edge-active {
+  animation: edge-pulse 1s ease-in-out infinite;
+  will-change: stroke-opacity, stroke-width;
+}
+
+/* === LIVE Indicator === */
+
+/* LIVE badge pulse */
+@keyframes live-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* LIVE dot blink */
+@keyframes live-dot-blink {
+  0%, 50% {
+    background-color: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+  }
+  51%, 100% {
+    background-color: #dc2626;
+    box-shadow: 0 0 4px rgba(220, 38, 38, 0.4);
+  }
+}
+
+.live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ef4444;
+  text-transform: uppercase;
+}
+
+/* TC-10: Added will-change for GPU acceleration */
+.live-indicator.active {
+  animation: live-pulse 2s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ef4444;
+}
+
+.live-dot.active {
+  animation: live-dot-blink 1s ease-in-out infinite;
+  will-change: background-color, box-shadow;
+}
+
+/* === Elapsed Time Counter === */
+
+.elapsed-timer {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* === Graph Header === */
+
+.graph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: #1a1a2e;
+  border-radius: 8px 8px 0 0;
+  border-bottom: 1px solid #333;
+}
+
+.graph-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.graph-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.graph-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.thread-id {
+  font-size: 12px;
+  color: #888;
+  background-color: rgba(136, 136, 136, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* === Node Status Colors === */
+
+.node-status-pending {
+  border-color: #9ca3af !important;
+}
+
+.node-status-active {
+  border-color: #3b82f6 !important;
+}
+
+.node-status-completed {
+  border-color: #22c55e !important;
+}
+
+.node-status-error {
+  border-color: #ef4444 !important;
+}
+
+/* === Transition utilities === */
+
+.transition-all {
+  transition: all 0.2s ease-in-out;
+}
+
+.transition-colors {
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.transition-transform {
+  transition: transform 0.2s ease-in-out;
+}
+
+/* === V-14: Warning/Error Badge Pulse Animation === */
+
+/* Warning badge pulse - subtle attention-grabbing animation for degraded states */
+@keyframes warning-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 8px 2px rgba(255, 152, 0, 0.6);
+  }
+}
+
+/* Error badge pulse - more urgent animation for critical states */
+@keyframes error-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 10px 3px rgba(244, 67, 54, 0.6);
+  }
+}
+
+/* Status badge with warning pulse */
+.status-badge-warning {
+  animation: warning-pulse 2s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+/* Status badge with error pulse */
+.status-badge-error {
+  animation: error-pulse 1.5s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .status-badge-warning,
+  .status-badge-error {
+    animation: none;
+  }
+}

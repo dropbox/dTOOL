@@ -1,0 +1,29 @@
+[package]
+name = "dashflow-sqlitevss"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "SQLite VSS vector store for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "vector-store", "sqlite", "embeddings", "vss"]
+categories = ["database"]
+
+[dependencies]
+dashflow.workspace = true
+async-trait = { workspace = true }
+tokio = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+uuid.workspace = true
+rusqlite = { workspace = true }
+sqlite-vss = { version = "0.1.2", features = ["download-libs"] }
+
+[dev-dependencies]
+
+[lints]
+workspace = true

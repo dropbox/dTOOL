@@ -1,0 +1,81 @@
+<svg width="520" height="140" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140">
+  <!-- Copyright 2026 Dropbox (created by Andrew Yates <ayates@dropbox.com>) -->
+  <!-- DashFlow Logo - Dropbox Brand Aligned -->
+
+  <defs>
+    <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0061FF;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#0061FF;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#0061FF;stop-opacity:0.3" />
+    </linearGradient>
+  </defs>
+
+  <!-- Graph flow visualization -->
+  <g transform="translate(30, 70)">
+    <!-- Start node -->
+    <circle cx="0" cy="0" r="11" fill="#0061FF"/>
+    <circle cx="0" cy="0" r="5" fill="white" opacity="0.95"/>
+
+    <!-- Connection -->
+    <line x1="11" y1="0" x2="49" y2="0" stroke="#0061FF" stroke-width="2.5" opacity="0.5"/>
+
+    <!-- Process node -->
+    <circle cx="60" cy="0" r="13" fill="#0061FF"/>
+    <circle cx="60" cy="0" r="6" fill="white" opacity="0.9"/>
+
+    <!-- Branch paths -->
+    <path d="M 73 0 Q 90 -18, 107 -18" stroke="url(#flowGradient)" stroke-width="2.5" fill="none"/>
+    <path d="M 73 0 Q 90 18, 107 18" stroke="url(#flowGradient)" stroke-width="2.5" fill="none"/>
+
+    <!-- Branch nodes -->
+    <circle cx="119" cy="-18" r="10" fill="#0061FF" opacity="0.9"/>
+    <circle cx="119" cy="-18" r="4" fill="white"/>
+    <circle cx="119" cy="18" r="10" fill="#0061FF" opacity="0.9"/>
+    <circle cx="119" cy="18" r="4" fill="white"/>
+
+    <!-- Converge paths -->
+    <path d="M 129 -18 Q 145 -9, 161 0" stroke="url(#flowGradient)" stroke-width="2.5" fill="none"/>
+    <path d="M 129 18 Q 145 9, 161 0" stroke="url(#flowGradient)" stroke-width="2.5" fill="none"/>
+
+    <!-- Final node -->
+    <circle cx="172" cy="0" r="13" fill="#0061FF"/>
+    <circle cx="172" cy="0" r="6" fill="white" opacity="0.9"/>
+  </g>
+
+  <!-- DashFlow wordmark -->
+  <text x="235" y="85"
+        font-family="'Sharp Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif"
+        font-size="56"
+        font-weight="700"
+        fill="#1E1919"
+        letter-spacing="-1.5">
+    DashFlow
+  </text>
+
+  <!-- Feature badges -->
+  <g transform="translate(235, 95)">
+    <!-- Streaming badge -->
+    <rect x="0" y="0" width="98" height="20" rx="10" fill="#0061FF" opacity="0.1"/>
+    <text x="49" y="14"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="10"
+          font-weight="600"
+          fill="#0061FF"
+          text-anchor="middle"
+          letter-spacing="0.5">
+      +Streaming
+    </text>
+
+    <!-- DashOptimize badge -->
+    <rect x="110" y="0" width="105" height="20" rx="10" fill="#7B61FF" opacity="0.1"/>
+    <text x="162" y="14"
+          font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          font-size="10"
+          font-weight="600"
+          fill="#7B61FF"
+          text-anchor="middle"
+          letter-spacing="0.3">
+      +Optimize
+    </text>
+  </g>
+</svg>

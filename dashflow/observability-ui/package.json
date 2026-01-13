@@ -1,0 +1,49 @@
+{
+  "name": "observability-ui",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "proto:gen": "pbjs -t json ../proto/dashstream.proto -o src/proto/dashstream.schema.json && echo 'Generated src/proto/dashstream.schema.json'",
+    "proto:check": "pbjs -t json ../proto/dashstream.proto | diff -q - src/proto/dashstream.schema.json || (echo 'ERROR: Proto schema out of sync. Run: npm run proto:gen' && exit 1)",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "tsx src/__tests__/attributes.test.ts && tsx src/__tests__/jsonPatch.test.ts && tsx src/__tests__/mermaidRenderer.test.ts && tsx src/__tests__/parseConfigFromUrl.test.ts && tsx src/__tests__/stateHash.test.ts && tsx src/__tests__/timeFormat.test.ts && tsx src/__tests__/schemaDiff.test.ts && tsx src/__tests__/grouping.test.ts && tsx src/__tests__/graphTypes.test.ts && tsx src/__tests__/GraphCanvasPlaceholder.test.tsx && tsx src/__tests__/GraphNodeLogic.test.ts && tsx src/__tests__/GroupNode.test.tsx && tsx src/__tests__/NodeDetailsPanel.test.tsx && tsx src/__tests__/MermaidView.test.tsx && tsx src/__tests__/StateDiffViewer.test.tsx && tsx src/__tests__/ExecutionTimeline.test.tsx && tsx src/__tests__/StateViewer.test.tsx && tsx src/__tests__/SchemaHistoryPanel.test.tsx && tsx src/__tests__/ErrorBoundary.test.tsx && tsx src/__tests__/TimelineSlider.test.tsx && tsx src/__tests__/GraphNode.test.tsx && tsx src/__tests__/GraphCanvas.test.tsx && tsx src/__tests__/Tooltip.test.tsx && tsx src/__tests__/DecodeWorkerPool.test.ts && tsx src/__tests__/dashstream.test.ts && tsx src/__tests__/useRunStateStoreUtils.test.ts && tsx src/__tests__/tokens.test.ts && tsx src/__tests__/graphExport.test.ts",
+    "test:e2e": "playwright test",
+    "test": "npm run typecheck && npm run test:unit"
+  },
+  "dependencies": {
+    "@types/react-window": "^1.8.8",
+    "@xyflow/react": "^12.10.0",
+    "dagre": "^0.8.5",
+    "fzstd": "^0.1.1",
+    "long": "^5.3.2",
+    "protobufjs": "^7.5.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-tooltip": "^5.30.0",
+    "react-window": "^1.8.11",
+    "recharts": "^2.10.3",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/dagre": "^0.7.53",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "protobufjs-cli": "^1.1.3",
+    "tailwindcss": "^4.1.18",
+    "tsx": "^4.19.0",
+    "typescript": "^5.0.0",
+    "vite": "^6.4.1"
+  }
+}

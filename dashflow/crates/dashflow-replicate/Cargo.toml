@@ -1,0 +1,34 @@
+[package]
+name = "dashflow-replicate"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Replicate integration for DashFlow"
+
+[dependencies]
+# Workspace dependencies
+dashflow.workspace = true
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+async-stream = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+
+# OpenAI-compatible client (Replicate uses OpenAI-compatible API)
+async-openai = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+dashflow-langsmith.workspace = true
+dashflow-standard-tests.workspace = true
+dashflow-test-utils.workspace = true
+
+[lints]
+workspace = true

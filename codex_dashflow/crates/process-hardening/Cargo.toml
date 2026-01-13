@@ -1,0 +1,13 @@
+[package]
+name = "codex-dashflow-process-hardening"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Process hardening for security: disable core dumps, ptrace, sanitize env"
+
+[lib]
+name = "codex_dashflow_process_hardening"
+path = "src/lib.rs"
+
+[dependencies]
+libc = { workspace = true }

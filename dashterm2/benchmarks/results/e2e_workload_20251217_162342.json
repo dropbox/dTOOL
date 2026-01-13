@@ -1,0 +1,55 @@
+{
+  "benchmark_type": "e2e_workload",
+  "timestamp": "20251217_162342",
+  "mode": "quick",
+  "terminal": {
+    "name": "iTerm.app",
+    "version": "3.6.6"
+  },
+  "system": {"chip": "Apple M3 Max", "cores": 16, "memory": "64GB"},
+  "parameters": {
+    "yes_lines": 100000,
+    "seq_count": 50000,
+    "cat_bytes": 1000000,
+    "find_depth": 3,
+    "color_iterations": 10,
+    "unicode_iterations": 5,
+    "warmup_rounds": 1,
+    "test_rounds": 3
+  },
+  "results": [
+    {"name": "yes_lines_100000", "mean_ms": 23.683, "stddev_ms": 2.178990, "min_ms": 21.694, "max_ms": 26.716, "rounds": 3}
+,
+    {"name": "seq_50000", "mean_ms": 24.970, "stddev_ms": 3.320943, "min_ms": 20.283, "max_ms": 27.566, "rounds": 3}
+,
+    {"name": "cat_zero_1000000B", "mean_ms": 14.136, "stddev_ms": .266458, "min_ms": 13.824, "max_ms": 14.477, "rounds": 3}
+,
+    {"name": "cat_random_1000000B", "mean_ms": 15.283, "stddev_ms": 1.221883, "min_ms": 14.419, "max_ms": 17.012, "rounds": 3}
+,
+    {"name": "256color_render_x10", "mean_ms": 26.013, "stddev_ms": .509247, "min_ms": 25.606, "max_ms": 26.732, "rounds": 3}
+,
+    {"name": "sgr_attrs_x10", "mean_ms": 11.959, "stddev_ms": 1.156575, "min_ms": 10.367, "max_ms": 13.080, "rounds": 3}
+,
+    {"name": "truecolor_gradient_x10", "mean_ms": 12.005, "stddev_ms": .382534, "min_ms": 11.463, "max_ms": 12.291, "rounds": 3}
+,
+    {"name": "cjk_render_x5", "mean_ms": 13.731, "stddev_ms": .139043, "min_ms": 13.532, "max_ms": 13.849, "rounds": 3}
+,
+    {"name": "emoji_render_x5", "mean_ms": 9.221, "stddev_ms": .453872, "min_ms": 8.714, "max_ms": 9.816, "rounds": 3}
+,
+    {"name": "diacritics_render_x5", "mean_ms": 12.964, "stddev_ms": .148323, "min_ms": 12.754, "max_ms": 13.094, "rounds": 3}
+,
+    {"name": "boxdraw_render_x5", "mean_ms": 14.375, "stddev_ms": .231659, "min_ms": 14.105, "max_ms": 14.674, "rounds": 3}
+,
+    {"name": "find_depth_3", "mean_ms": , "stddev_ms": , "min_ms": /System/Library/Assistant/SyncConfiguration/com.apple.siri.applications.plist
+,
+    {"name": "ls_recursive", "mean_ms": , "stddev_ms": , "min_ms": total 0
+,
+    {"name": "grep_output", "mean_ms": , "stddev_ms": , "min_ms": /usr/share/man/man1/gzexe.1:.\" purpose with or without fee is hereby granted, provided that the above
+,
+    {"name": "ps_aux_x100", "mean_ms": 7939.922, "stddev_ms": 39.063764, "min_ms": 7884.679, "max_ms": 7967.856, "rounds": 3}
+,
+    {"name": "scroll_stress_1000_clears", "mean_ms": 4938.148, "stddev_ms": 194.313939, "min_ms": 4665.006, "max_ms": 5100.831, "rounds": 3}
+,
+    {"name": "long_lines_x1000", "mean_ms": 38.279, "stddev_ms": .470460, "min_ms": 37.707, "max_ms": 38.860, "rounds": 3}
+  ]
+}

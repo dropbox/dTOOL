@@ -1,0 +1,29 @@
+[package]
+name = "dashflow-redis"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["DashFlow Contributors"]
+description = "Redis vector store integration for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "redis", "vector-store", "embeddings", "search"]
+categories = ["database", "algorithms"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+redis.workspace = true
+async-trait = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+uuid.workspace = true
+tokio.workspace = true
+tracing = { workspace = true }
+
+[dev-dependencies]
+dashflow-standard-tests = { path = "../dashflow-standard-tests" }
+tokio = { workspace = true, features = ["test-util"] }
+
+[lints]
+workspace = true

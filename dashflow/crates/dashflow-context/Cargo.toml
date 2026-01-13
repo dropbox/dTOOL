@@ -1,0 +1,28 @@
+[package]
+name = "dashflow-context"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Context window management for LLM applications - token counting, truncation strategies, and budget tracking"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+tiktoken-rs = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+async-trait = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tokio = { workspace = true }
+dashflow-standard-tests.workspace = true
+
+[lints]
+workspace = true

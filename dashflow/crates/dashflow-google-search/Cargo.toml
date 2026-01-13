@@ -1,0 +1,28 @@
+[package]
+name = "dashflow-google-search"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Google Custom Search integration for DashFlow - web search tool"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "google", "search", "ai", "tools"]
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+dashflow.workspace = true
+reqwest = { workspace = true }
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+urlencoding = "2.1"
+thiserror = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+
+[lints]
+workspace = true

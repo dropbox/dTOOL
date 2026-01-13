@@ -1,0 +1,299 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
+// swift-module-flags: -target arm64-apple-macos10.14 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name SwiftyMarkdown
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+import AppKit
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os.log
+import os
+public protocol LineStyling {
+  var shouldTokeniseLine: Swift.Bool { get }
+  func styleIfFoundStyleAffectsPreviousLine() -> (any SwiftyMarkdown.LineStyling)?
+}
+public struct SwiftyLine : Swift.CustomStringConvertible {
+  public let line: Swift.String
+  public let lineStyle: any SwiftyMarkdown.LineStyling
+  public let literal: Swift.Bool
+  public var description: Swift.String {
+    get
+  }
+}
+extension SwiftyMarkdown.SwiftyLine : Swift.Equatable {
+  public static func == (lhs: SwiftyMarkdown.SwiftyLine, rhs: SwiftyMarkdown.SwiftyLine) -> Swift.Bool
+}
+public enum Remove {
+  case leading
+  case trailing
+  case both
+  case entireLine
+  case none
+  public static func == (a: SwiftyMarkdown.Remove, b: SwiftyMarkdown.Remove) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum ChangeApplication {
+  case current
+  case previous
+  case untilClose
+  public static func == (a: SwiftyMarkdown.ChangeApplication, b: SwiftyMarkdown.ChangeApplication) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct FrontMatterRule {
+}
+public struct LineRule {
+  public init(token: Swift.String, type: any SwiftyMarkdown.LineStyling, removeFrom: SwiftyMarkdown.Remove = .leading, shouldTrim: Swift.Bool = true, changeAppliesTo: SwiftyMarkdown.ChangeApplication = .current)
+}
+public struct BlockRule : Swift.Equatable {
+  public static func == (lhs: SwiftyMarkdown.BlockRule, rhs: SwiftyMarkdown.BlockRule) -> Swift.Bool
+}
+public class SwiftyLineProcessor {
+  public var processEmptyStrings: (any SwiftyMarkdown.LineStyling)?
+  public var frontMatterAttributes: [Swift.String : Swift.String] {
+    get
+  }
+  public init(blockRules: [SwiftyMarkdown.BlockRule], rules: [SwiftyMarkdown.LineRule], defaultRule: any SwiftyMarkdown.LineStyling, frontMatterRules: [SwiftyMarkdown.FrontMatterRule] = [])
+  public func process(_ string: Swift.String) -> [SwiftyMarkdown.SwiftyLine]
+  @objc deinit
+}
+public enum CharacterStyle : Swift.String, SwiftyMarkdown.CharacterStyling {
+  case none
+  case bold
+  case italic
+  case code
+  case link
+  case image
+  case referencedLink
+  case referencedImage
+  case strikethrough
+  public func isEqualTo(_ other: any SwiftyMarkdown.CharacterStyling) -> Swift.Bool
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objc public enum FontStyle : Swift.Int {
+  case normal
+  case bold
+  case italic
+  case boldItalic
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc public protocol FontProperties {
+  @objc var fontName: Swift.String? { get set }
+  @objc var color: AppKit.NSColor { get set }
+  @objc var fontSize: CoreFoundation.CGFloat { get set }
+  @objc var fontStyle: SwiftyMarkdown.FontStyle { get set }
+}
+@objc public protocol LineProperties {
+  @objc var alignment: AppKit.NSTextAlignment { get set }
+  @objc var lineSpacing: CoreFoundation.CGFloat { get set }
+  @objc var paragraphSpacing: CoreFoundation.CGFloat { get set }
+}
+@_inheritsConvenienceInitializers @objc open class BasicStyles : ObjectiveC.NSObject, SwiftyMarkdown.FontProperties {
+  @objc public var fontName: Swift.String?
+  @objc public var color: AppKit.NSColor
+  @objc public var fontSize: CoreFoundation.CGFloat
+  @objc public var fontStyle: SwiftyMarkdown.FontStyle
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc open class LineStyles : ObjectiveC.NSObject, SwiftyMarkdown.FontProperties, SwiftyMarkdown.LineProperties {
+  @objc public var fontName: Swift.String?
+  @objc public var color: AppKit.NSColor
+  @objc public var fontSize: CoreFoundation.CGFloat
+  @objc public var fontStyle: SwiftyMarkdown.FontStyle
+  @objc public var alignment: AppKit.NSTextAlignment
+  @objc public var lineSpacing: CoreFoundation.CGFloat
+  @objc public var paragraphSpacing: CoreFoundation.CGFloat
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc open class LinkStyles : SwiftyMarkdown.BasicStyles {
+  public var underlineStyle: AppKit.NSUnderlineStyle
+  public var underlineColor: AppKit.NSColor {
+    get
+    set
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc open class SwiftyMarkdown : ObjectiveC.NSObject {
+  public static var frontMatterRules: [SwiftyMarkdown.FrontMatterRule]
+  public static var blockRules: [SwiftyMarkdown.BlockRule]
+  public static var lineRules: [SwiftyMarkdown.LineRule]
+  public static var characterRules: [SwiftyMarkdown.CharacterRule]
+  open var tabStopInterval: CoreFoundation.CGFloat
+  open var h1: SwiftyMarkdown.LineStyles
+  open var h2: SwiftyMarkdown.LineStyles
+  open var h3: SwiftyMarkdown.LineStyles
+  open var h4: SwiftyMarkdown.LineStyles
+  open var h5: SwiftyMarkdown.LineStyles
+  open var h6: SwiftyMarkdown.LineStyles
+  open var body: SwiftyMarkdown.LineStyles
+  open var blockquotes: SwiftyMarkdown.LineStyles
+  open var link: SwiftyMarkdown.LinkStyles
+  open var bold: SwiftyMarkdown.BasicStyles
+  open var italic: SwiftyMarkdown.BasicStyles
+  open var code: SwiftyMarkdown.BasicStyles
+  open var strikethrough: SwiftyMarkdown.BasicStyles
+  public var bullet: Swift.String
+  public var underlineLinks: Swift.Bool
+  public var frontMatterAttributes: [Swift.String : Swift.String] {
+    get
+  }
+  public init(string: Swift.String)
+  public init?(url: Foundation.URL)
+  open func setFontSizeForAllStyles(with size: CoreFoundation.CGFloat)
+  open func setFontColorForAllStyles(with color: AppKit.NSColor)
+  open func setFontNameForAllStyles(with name: Swift.String)
+  open func attributedString(from markdownString: Swift.String? = nil) -> Foundation.NSAttributedString
+  @objc deinit
+}
+extension Foundation.NSAttributedString.Key {
+  public static let swiftyMarkdownLineStyle: Foundation.NSAttributedString.Key
+  public static let swiftyMarkdownCharacterStyles: Foundation.NSAttributedString.Key
+}
+public class SwiftyTokeniser {
+  public var metadataLookup: [Swift.String : Swift.String]
+  public init(with rules: [SwiftyMarkdown.CharacterRule])
+  @objc deinit
+  public func process(_ inputString: Swift.String) -> [SwiftyMarkdown.Token]
+}
+public enum SpaceAllowed {
+  case no
+  case bothSides
+  case oneSide
+  case leadingSide
+  case trailingSide
+  public static func == (a: SwiftyMarkdown.SpaceAllowed, b: SwiftyMarkdown.SpaceAllowed) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum Cancel {
+  case none
+  case allRemaining
+  case currentSet
+  public static func == (a: SwiftyMarkdown.Cancel, b: SwiftyMarkdown.Cancel) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum CharacterRuleTagType {
+  case open
+  case close
+  case metadataOpen
+  case metadataClose
+  case repeating
+  public static func == (a: SwiftyMarkdown.CharacterRuleTagType, b: SwiftyMarkdown.CharacterRuleTagType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct CharacterRuleTag {
+  public init(tag: Swift.String, type: SwiftyMarkdown.CharacterRuleTagType)
+}
+public struct CharacterRule : Swift.CustomStringConvertible {
+  public let primaryTag: SwiftyMarkdown.CharacterRuleTag
+  public let tags: [SwiftyMarkdown.CharacterRuleTag]
+  public let escapeCharacters: [Swift.Character]
+  public let styles: [Swift.Int : any SwiftyMarkdown.CharacterStyling]
+  public let minTags: Swift.Int
+  public let maxTags: Swift.Int
+  public var metadataLookup: Swift.Bool
+  public var isRepeatingTag: Swift.Bool {
+    get
+  }
+  public var definesBoundary: Swift.Bool
+  public var shouldCancelRemainingRules: Swift.Bool
+  public var balancedTags: Swift.Bool
+  public var description: Swift.String {
+    get
+  }
+  public func tag(for type: SwiftyMarkdown.CharacterRuleTagType) -> SwiftyMarkdown.CharacterRuleTag?
+  public init(primaryTag: SwiftyMarkdown.CharacterRuleTag, otherTags: [SwiftyMarkdown.CharacterRuleTag], escapeCharacters: [Swift.Character] = ["\\"], styles: [Swift.Int : any SwiftyMarkdown.CharacterStyling] = [:], minTags: Swift.Int = 1, maxTags: Swift.Int = 1, metadataLookup: Swift.Bool = false, definesBoundary: Swift.Bool = false, shouldCancelRemainingRules: Swift.Bool = false, balancedTags: Swift.Bool = false)
+}
+public protocol CharacterStyling {
+  func isEqualTo(_ other: any SwiftyMarkdown.CharacterStyling) -> Swift.Bool
+}
+public enum TokenType {
+  case repeatingTag
+  case openTag
+  case intermediateTag
+  case closeTag
+  case string
+  case escape
+  case replacement
+  public static func == (a: SwiftyMarkdown.TokenType, b: SwiftyMarkdown.TokenType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct Token {
+  public let id: Swift.String
+  public let type: SwiftyMarkdown.TokenType
+  public let inputString: Swift.String
+  public var metadataStrings: [Swift.String]
+  public var group: Swift.Int {
+    get
+  }
+  public var characterStyles: [any SwiftyMarkdown.CharacterStyling] {
+    get
+  }
+  public var count: Swift.Int {
+    get
+  }
+  public var shouldSkip: Swift.Bool {
+    get
+  }
+  public var tokenIndex: Swift.Int {
+    get
+  }
+  public var isProcessed: Swift.Bool {
+    get
+  }
+  public var isMetadata: Swift.Bool {
+    get
+  }
+  public var children: [SwiftyMarkdown.Token]
+  public var outputString: Swift.String {
+    get
+  }
+  public init(type: SwiftyMarkdown.TokenType, inputString: Swift.String, characterStyles: [any SwiftyMarkdown.CharacterStyling] = [])
+}
+extension SwiftyMarkdown.Remove : Swift.Equatable {}
+extension SwiftyMarkdown.Remove : Swift.Hashable {}
+extension SwiftyMarkdown.ChangeApplication : Swift.Equatable {}
+extension SwiftyMarkdown.ChangeApplication : Swift.Hashable {}
+extension SwiftyMarkdown.CharacterStyle : Swift.Equatable {}
+extension SwiftyMarkdown.CharacterStyle : Swift.Hashable {}
+extension SwiftyMarkdown.CharacterStyle : Swift.RawRepresentable {}
+extension SwiftyMarkdown.FontStyle : Swift.Equatable {}
+extension SwiftyMarkdown.FontStyle : Swift.Hashable {}
+extension SwiftyMarkdown.FontStyle : Swift.RawRepresentable {}
+extension SwiftyMarkdown.SpaceAllowed : Swift.Equatable {}
+extension SwiftyMarkdown.SpaceAllowed : Swift.Hashable {}
+extension SwiftyMarkdown.Cancel : Swift.Equatable {}
+extension SwiftyMarkdown.Cancel : Swift.Hashable {}
+extension SwiftyMarkdown.CharacterRuleTagType : Swift.Equatable {}
+extension SwiftyMarkdown.CharacterRuleTagType : Swift.Hashable {}
+extension SwiftyMarkdown.TokenType : Swift.Equatable {}
+extension SwiftyMarkdown.TokenType : Swift.Hashable {}

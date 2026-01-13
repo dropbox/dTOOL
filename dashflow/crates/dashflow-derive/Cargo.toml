@@ -1,0 +1,28 @@
+[package]
+name = "dashflow-derive"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "Apache-2.0"
+authors = ["Andrew Yates <ayates@dropbox.com>", "Dropbox"]
+description = "Derive macros for DashFlow state management"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "2.0", features = ["full", "extra-traits"] }
+quote = "1.0"
+proc-macro2 = "1.0"
+
+[dev-dependencies]
+serde.workspace = true
+serde_json = { workspace = true }
+dashflow = { path = "../dashflow" }
+
+[lints]
+workspace = true

@@ -1,0 +1,61 @@
+{
+  "color-space-for-untagged-svg-colors": "display-p3",
+  "fill": {
+    "linear-gradient": [
+      "display-p3:0.00000,0.38039,1.00000,1.00000",
+      "display-p3:0.00000,0.27843,0.70196,1.00000"
+    ]
+  },
+  "groups": [
+    {
+      "layers": [
+        {
+          "image-name": "dropbox-logo.svg",
+          "name": "dropbox-logo",
+          "position": {
+            "scale": 0.5,
+            "translation-in-points": [
+              256,
+              200
+            ]
+          }
+        },
+        {
+          "image-name": "cursor-white.svg",
+          "name": "cursor",
+          "position": {
+            "scale": 1,
+            "translation-in-points": [
+              150,
+              350
+            ]
+          }
+        },
+        {
+          "image-name": "bezel-dropbox.svg",
+          "name": "bezel",
+          "position": {
+            "scale": 0.67,
+            "translation-in-points": [
+              0,
+              0
+            ]
+          }
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.5
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.3
+      }
+    }
+  ],
+  "supported-platforms": {
+    "squares": [
+      "macOS"
+    ]
+  }
+}

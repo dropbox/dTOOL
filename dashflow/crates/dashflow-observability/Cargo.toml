@@ -1,0 +1,67 @@
+[package]
+name = "dashflow-observability"
+description = "Enterprise-grade distributed tracing, metrics, and cost tracking for DashFlow with OpenTelemetry"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+# Workspace dependencies
+tokio = { workspace = true }
+async-trait = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+opentelemetry = { workspace = true }
+opentelemetry-otlp = { workspace = true }
+tracing-opentelemetry = { workspace = true }
+opentelemetry_sdk = { workspace = true }
+opentelemetry-stdout = { workspace = true }
+prometheus = { workspace = true }
+regex = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+axum = { workspace = true, optional = true }
+tower = { workspace = true, optional = true }
+tower-http = { workspace = true, optional = true }
+serde = { workspace = true, features = ["derive"] }
+anyhow.workspace = true
+chrono = { workspace = true }
+
+# WebSocket server dependencies (optional)
+rdkafka = { workspace = true, optional = true }
+uuid = { workspace = true, optional = true }
+base64 = { workspace = true, optional = true }
+dashflow-streaming = { path = "../dashflow-streaming", optional = true }
+prost = { workspace = true, optional = true } # Issue #13: For Event::decode() in DLQ forensics
+redis = { workspace = true, optional = true }
+bytes = { workspace = true, optional = true } # M-995: Zero-copy broadcast payloads
+sha2 = { workspace = true, optional = true } # M-1064: SHA256 hash for DLQ payloads
+
+[features]
+default = ["observability"]
+observability = []
+metrics-server = ["axum", "tower", "tower-http"]
+websocket-server = ["axum", "tower", "tower-http", "rdkafka", "uuid", "base64", "dashflow-streaming", "prost", "redis", "bytes", "sha2"]
+
+[[bin]]
+name = "websocket_server"
+required-features = ["websocket-server"]
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+reqwest = { workspace = true }
+tokio-tungstenite = "0.21"
+futures-util = "0.3"
+dashflow-streaming = { path = "../dashflow-streaming" }
+prost = { workspace = true }
+# M-2004: Testing features for OTLP export verification
+opentelemetry_sdk = { version = "0.31", features = ["rt-tokio", "testing"] }
+
+[lints]
+workspace = true

@@ -1,0 +1,60 @@
+[package]
+name = "codex-dashflow-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "CLI entry point for Codex DashFlow"
+
+[features]
+default = []
+# Enable DashFlow Streaming integration (forwarded to core)
+dashstream = ["codex-dashflow-core/dashstream"]
+# Enable PostgreSQL checkpointing (forwarded to core)
+postgres = ["codex-dashflow-core/postgres"]
+# Enable LLM-as-judge quality scoring (forwarded to core)
+llm-judge = ["codex-dashflow-core/llm-judge"]
+
+[lib]
+name = "codex_dashflow_cli"
+path = "src/lib.rs"
+
+[[bin]]
+name = "codex-dashflow"
+path = "src/main.rs"
+
+[dependencies]
+codex-dashflow-core = { path = "../core" }
+codex-dashflow-tui = { path = "../tui" }
+codex-dashflow-exec = { path = "../exec" }
+codex-dashflow-mcp = { path = "../mcp" }
+codex-dashflow-mcp-server = { path = "../mcp-server" }
+codex-dashflow-process-hardening = { path = "../process-hardening" }
+tokio.workspace = true
+ctor = { workspace = true }
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+clap = { version = "4.4", features = ["derive"] }
+clap_complete = "4.4"
+async-trait.workspace = true
+uuid = { version = "1.6", features = ["v4"] }
+dirs = "5.0"
+colored = "2.1"
+libc = "0.2"
+which.workspace = true
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
+url = "2.5"
+
+[build-dependencies]
+chrono = "0.4"
+
+[dev-dependencies]
+serial_test = "3.1"
+criterion = "0.5"
+
+[[bench]]
+name = "prompt_loading"
+harness = false

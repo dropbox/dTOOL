@@ -1,0 +1,240 @@
+# Example DashFlow Rust Configuration File
+#
+# This file demonstrates how to configure DashFlow objects
+# from YAML configuration files.
+#
+# See docs/SERIALIZATION_DESIGN.md for complete documentation.
+
+# Chat Models - Named configurations for LLM providers
+chat_models:
+  # OpenAI GPT-4
+  openai:
+    type: openai
+    model: gpt-4
+    temperature: 0.7
+    max_tokens: 1000
+    api_key:
+      env: OPENAI_API_KEY  # Load from environment variable
+
+  # Anthropic Claude
+  claude:
+    type: anthropic
+    model: claude-3-5-sonnet-20241022
+    temperature: 0.5
+    max_tokens: 2000
+    api_key:
+      env: ANTHROPIC_API_KEY
+
+  # Local Ollama model
+  local:
+    type: ollama
+    model: llama3.2
+    base_url: http://localhost:11434
+    temperature: 0.7
+
+  # Groq (fast inference)
+  groq:
+    type: groq
+    model: llama-3.3-70b-versatile
+    temperature: 0.0
+    api_key:
+      env: GROQ_API_KEY
+
+  # Mistral AI
+  mistral:
+    type: mistral
+    model: mistral-large-latest
+    api_key:
+      env: MISTRAL_API_KEY
+
+  # DeepSeek
+  deepseek:
+    type: deepseek
+    model: deepseek-chat
+    api_key:
+      env: DEEPSEEK_API_KEY
+
+  # Fireworks
+  fireworks:
+    type: fireworks
+    model: accounts/fireworks/models/llama-v3p1-70b-instruct
+    api_key:
+      env: FIREWORKS_API_KEY
+
+  # xAI (Grok)
+  grok:
+    type: xai
+    model: grok-beta
+    api_key:
+      env: XAI_API_KEY
+
+  # Perplexity
+  perplexity:
+    type: perplexity
+    model: llama-3.1-sonar-small-128k-online
+    api_key:
+      env: PERPLEXITY_API_KEY
+
+  # HuggingFace
+  huggingface:
+    type: huggingface
+    model: meta-llama/Llama-2-7b-chat-hf
+    api_key:
+      env: HUGGINGFACE_API_KEY
+
+# Embeddings - Text embedding models
+embeddings:
+  # OpenAI embeddings
+  openai:
+    type: openai
+    model: text-embedding-3-small
+    api_key:
+      env: OPENAI_API_KEY
+    batch_size: 64
+
+  # OpenAI large embeddings
+  openai_large:
+    type: openai
+    model: text-embedding-3-large
+    api_key:
+      env: OPENAI_API_KEY
+    batch_size: 32
+
+  # Local Ollama embeddings
+  ollama:
+    type: ollama
+    model: nomic-embed-text
+    base_url: http://localhost:11434
+
+  # HuggingFace embeddings
+  huggingface:
+    type: huggingface
+    model: sentence-transformers/all-MiniLM-L6-v2
+    api_key:
+      env: HUGGINGFACE_API_KEY
+
+# Vector Stores - For document retrieval
+vector_stores:
+  # Qdrant vector database
+  documents_qdrant:
+    type: qdrant
+    collection_name: documents
+    url: http://localhost:6333
+    embedding:
+      type: openai
+      model: text-embedding-3-small
+      api_key:
+        env: OPENAI_API_KEY
+
+  # Qdrant Cloud (with API key)
+  qdrant_cloud:
+    type: qdrant
+    collection_name: production_docs
+    url: https://your-cluster.qdrant.io
+    api_key:
+      env: QDRANT_API_KEY
+    embedding:
+      type: openai
+      model: text-embedding-3-large
+      api_key:
+        env: OPENAI_API_KEY
+
+  # Chroma vector database
+  documents_chroma:
+    type: chroma
+    collection_name: documents
+    url: http://localhost:8000
+    embedding:
+      type: openai
+      model: text-embedding-3-small
+      api_key:
+        env: OPENAI_API_KEY
+
+# Retrievers - For document retrieval with search configuration
+retrievers:
+  # Simple similarity search
+  basic_retriever:
+    type: vector_store
+    vector_store: documents_qdrant
+    k: 4
+    search_type: similarity
+
+  # Maximum marginal relevance search
+  mmr_retriever:
+    type: vectorstore
+    vector_store: documents_qdrant
+    k: 10
+    search_type: mmr
+
+# Prompts - Reusable prompt templates
+prompts:
+  # Simple question answering prompt
+  qa_prompt:
+    template: |
+      Context: {context}
+
+      Question: {question}
+
+      Answer based only on the context above:
+    input_variables:
+      - context
+      - question
+
+  # System message with user question
+  chat_prompt:
+    template: "User: {input}\n\nAssistant:"
+    input_variables:
+      - input
+
+  # Summarization prompt
+  summarize_prompt:
+    template: |
+      Please summarize the following text concisely:
+
+      {text}
+
+      Summary:
+    input_variables:
+      - text
+
+# Chains - Composed runnable workflows
+chains:
+  # Basic question answering chain
+  qa_chain:
+    description: "Question answering with retrieval-augmented generation"
+    steps:
+      - type: retriever
+        ref: basic_retriever
+      - type: prompt
+        ref: qa_prompt
+      - type: chat_model
+        ref: openai
+
+  # Simple chat chain
+  chat_chain:
+    description: "Basic chat interaction"
+    steps:
+      - type: prompt
+        ref: chat_prompt
+      - type: chat_model
+        ref: claude
+
+  # Summarization chain with local model
+  summarize_chain:
+    description: "Text summarization using local Ollama"
+    steps:
+      - type: prompt
+        ref: summarize_prompt
+      - type: chat_model
+        ref: local
+
+  # Chain with inline prompt
+  inline_prompt_chain:
+    description: "Example using inline prompt template"
+    steps:
+      - type: prompt_template
+        template: "Translate to French: {text}"
+        input_variables:
+          - text
+      - type: chat_model
+        ref: openai

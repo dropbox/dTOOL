@@ -1,0 +1,22 @@
+
+
+MANAGER: Context at 59% (592k/1M).
+
+User wants: Keep iterating until excellent.
+
+Current: 7/10 (Good)
+Target: 9+/10 (Excellent)
+
+Implementing critical fixes now:
+1. Add insights (data storytelling)
+2. Add confidence intervals (statistical rigor)
+3. Enhance hierarchy (visual)
+
+Then: Re-run → Screenshot → GPT-4 → Iterate
+
+Estimated: Need 3-4 more iterations
+Context needed: ~35-40% more
+
+DECISION: Continue or stop?
+User said 'Keep iterating' but context approaching 60% warning.
+

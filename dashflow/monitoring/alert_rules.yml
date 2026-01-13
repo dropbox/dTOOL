@@ -1,0 +1,494 @@
+groups:
+  - name: dashstream_critical
+    interval: 30s
+    rules:
+      # M-416 FIX: Renamed from HighKafkaErrorRate to HighMessageProcessingErrorRate.
+      # This metric measures message PROCESSING errors (decode failures), NOT Kafka
+      # infrastructure errors. The old name was misleading incident responders.
+      # For actual Kafka infra errors, see: websocket_infrastructure_errors_total
+      - alert: HighMessageProcessingErrorRate
+        expr: sum(rate(websocket_kafka_messages_total{status="error"}[5m])) / clamp_min(sum(rate(websocket_kafka_messages_total[5m])), 1e-9) > 0.01
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High message processing error rate: {{ $value | humanizePercentage }}"
+          description: "DashFlow Streaming is experiencing message processing errors (decode failures, bad protobuf) at {{ $value | humanizePercentage }} rate. Check HighDecodeErrorRate alert for error type breakdown."
+
+      # M-434/M-643: Kafka infrastructure errors (network/connectivity/broker issues).
+      # These are distinct from message processing errors (decode failures).
+      # Tiered alerts to avoid paging operators for transient reconnects.
+
+      # Tier 1: Detected - any errors (informational, warning only)
+      - alert: KafkaInfraErrorsDetected
+        expr: sum(increase(websocket_infrastructure_errors_total[5m])) > 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Kafka infrastructure errors detected: {{ $value }} in 5m"
+          description: "WebSocket server experienced Kafka/network infrastructure errors ({{ $value }} in 5m). Single transient reconnects are normal; monitor for escalation to KafkaInfraErrorsHigh."
+
+      # Tier 2: High - multiple errors indicate real issue
+      - alert: KafkaInfraErrorsHigh
+        expr: sum(increase(websocket_infrastructure_errors_total[5m])) >= 5
+        for: 2m
+        labels:
+          severity: high
+        annotations:
+          summary: "Kafka infrastructure errors elevated: {{ $value }} in 5m"
+          description: "WebSocket server is experiencing multiple Kafka/network infrastructure errors ({{ $value }} >= 5 in 5m). Check broker health, DNS, network, and consumer logs."
+
+      # Tier 3: Critical - sustained high error rate requires immediate attention
+      - alert: KafkaInfraErrorsCritical
+        expr: sum(increase(websocket_infrastructure_errors_total[5m])) >= 10
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "CRITICAL: Kafka infrastructure errors sustained: {{ $value }} in 5m"
+          description: "WebSocket server has sustained high Kafka infrastructure error rate ({{ $value }} >= 10 in 5m). Real-time observability is at risk. Investigate immediately: broker health, network partitions, consumer state."
+
+      # Fixed: Use sum() for consistent aggregation and total messages (not success-only) in denominator.
+      # S-20: Decode error rate = decode errors / total messages received (all statuses).
+      - alert: HighDecodeErrorRate
+        expr: sum(rate(websocket_decode_errors_total[5m])) / clamp_min(sum(rate(websocket_kafka_messages_total[5m])), 1e-9) > 0.05
+        for: 2m
+        labels:
+          severity: high
+        annotations:
+          summary: "High decode error rate: {{ $value | humanizePercentage }}"
+          description: "{{ $value | humanizePercentage }} of messages are failing to decode. This indicates data corruption or format mismatch."
+
+      - alert: ServiceDown
+        expr: up{component=~"prometheus-exporter|websocket-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DashFlow Streaming component {{ $labels.component }} ({{ $labels.instance }}) is down"
+          description: "The DashFlow Streaming {{ $labels.component }} service on {{ $labels.instance }} has been down for more than 1 minute."
+
+      # Note: websocket_e2e_latency_ms_bucket is a "lazy" metric that only appears when
+      # messages are processed with latency tracking. If no data exists, this alert
+      # simply won't fire (correct behavior - no data means no latency issues).
+      - alert: E2ELatencyHigh
+        expr: histogram_quantile(0.99, rate(websocket_e2e_latency_ms_bucket[5m])) > 500
+        for: 5m
+        labels:
+          severity: medium
+        annotations:
+          summary: "High E2E latency: {{ $value }}ms (p99)"
+          description: "99th percentile end-to-end latency is {{ $value }}ms, exceeding 500ms threshold."
+
+      - alert: HighDroppedMessageRate
+        expr: rate(websocket_dropped_messages_total[5m]) > 0
+        for: 2m
+        labels:
+          severity: high
+        annotations:
+          summary: "Messages being dropped: {{ $value }} msgs/sec"
+          description: "WebSocket server is dropping messages due to slow clients. Rate: {{ $value }} messages/second."
+
+      # Issue #11: Sequence validation alerts for detecting message loss, duplicates, reordering
+      # Fixed: Use sum() to aggregate across thread_id labels (avoids unbounded cardinality issues)
+      # and remove thread_id from annotations (label may not exist in all emitters)
+      - alert: SequenceGapsDetected
+        expr: sum(rate(dashstream_sequence_gaps_total[5m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Message loss detected via sequence gaps"
+          description: "{{ $value }} sequence gaps/second detected. Messages are being lost. Check logs for per-thread details."
+
+      - alert: HighDuplicateRate
+        expr: sum(rate(dashstream_sequence_duplicates_total[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: medium
+        annotations:
+          summary: "High duplicate message rate: {{ $value }} dups/sec"
+          description: "Duplicate messages detected at {{ $value }} per second. Kafka at-least-once semantics may be causing retries."
+
+      - alert: HighReorderRate
+        expr: sum(rate(dashstream_sequence_reorders_total[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: medium
+        annotations:
+          summary: "High message reorder rate: {{ $value }} reorders/sec"
+          description: "Out-of-order messages detected at {{ $value }} per second. Kafka partition ordering may be compromised."
+
+      # ============================================================
+      # Library DLQ Alerts (dashstream_dlq_* metrics)
+      # ============================================================
+      # M-412 NOTE: These alerts use metrics from dashflow-streaming library's
+      # DlqHandler class. They ONLY fire if a deployed service uses the library's
+      # Consumer::with_dlq() or Producer::with_dlq() builder methods.
+      #
+      # Current deployment status (Dec 2025): No production services currently
+      # export these metrics. These alerts are for future/custom services.
+      # For WebSocket server DLQ issues, see websocket_dlq_* alerts below.
+      # ============================================================
+      # Issue #13: DLQ alerts for monitoring failed message handling
+      # Fixed: Use sum() to aggregate across error_type labels (schema may vary between emitters)
+      - alert: HighDLQRate
+        expr: sum(rate(dashstream_dlq_sends_total[5m])) > 0.1
+        for: 2m
+        labels:
+          severity: high
+        annotations:
+          summary: "High DLQ rate: {{ $value }} messages/second"
+          description: "Messages are failing and being sent to DLQ at high rate ({{ $value }} msgs/sec). Investigate decode/decompression issues."
+
+      # Fixed: Use sum() to aggregate across reason labels
+      - alert: DLQItselfBroken
+        expr: sum(rate(dashstream_dlq_send_failures_total[5m])) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DLQ is broken - cannot send failed messages"
+          description: "DLQ handler is failing to publish messages. Failed messages are being LOST. This is CRITICAL."
+
+      # Note: dashstream_dlq_dropped_total is a "lazy" metric that only appears when
+      # DLQ backpressure causes message drops. If no data exists, this alert simply
+      # won't fire (correct behavior - no drops have occurred).
+      - alert: DashStreamDlqBackpressureDrops
+        expr: rate(dashstream_dlq_dropped_total[5m]) > 0
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "DLQ backpressure drops: {{ $value }} drops/sec"
+          description: "DashStream DLQ handler is dropping messages due to backpressure. Forensic data is being lost under load; increase DLQ capacity or investigate Kafka latency."
+
+      - alert: DashStreamDlqSendFailures
+        expr: rate(dashstream_dlq_send_failures_total[5m]) > 0
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "DLQ send failures: {{ $value }} failures/sec"
+          description: "DashStream DLQ sends are failing. Failed telemetry messages may not be captured; investigate Kafka connectivity and DLQ topic health."
+
+      # ============================================================
+      # WebSocket Server DLQ Alerts (websocket_dlq_* metrics)
+      # ============================================================
+      # M-409/M-412: The WebSocket server implements its OWN DLQ handling inline
+      # (not using the library's DlqHandler). These metrics are ACTIVELY exported
+      # by the production WebSocket server on port 3002.
+      # ============================================================
+      - alert: WebSocketDlqHighRate
+        expr: sum(rate(websocket_dlq_sends_total[5m])) > 0.1
+        for: 2m
+        labels:
+          severity: high
+        annotations:
+          summary: "WebSocket DLQ high rate: {{ $value }} messages/second"
+          description: "WebSocket server is sending messages to DLQ at high rate. Investigate decode/decompression issues."
+
+      - alert: WebSocketDlqBroken
+        expr: sum(rate(websocket_dlq_send_failures_total[5m])) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "WebSocket DLQ is broken - cannot send failed messages"
+          description: "WebSocket server DLQ handler is failing. Failed messages are being LOST."
+
+      # Redis monitoring alerts for distributed rate limiting and replay buffer
+      # M-419: Kafka consumer lag monitoring
+      # This alert fires when the consumer is significantly behind the Kafka producers.
+      # Lag = high_watermark - current_offset (messages waiting to be processed)
+      - alert: KafkaConsumerLagHigh
+        expr: max(websocket_kafka_consumer_lag) > 10000
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "Kafka consumer lag high: {{ $value }} messages behind"
+          description: "WebSocket server is {{ $value }} messages behind Kafka high watermark. Consumer may be overloaded or experiencing slow processing. Check E2E latency, backpressure, and resource usage."
+
+      - alert: KafkaConsumerLagCritical
+        expr: max(websocket_kafka_consumer_lag) > 100000
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "CRITICAL: Kafka consumer lag {{ $value }} messages behind"
+          description: "Consumer is severely behind ({{ $value }} messages). Real-time observability is degraded. Investigate immediately: check consumer CPU/memory, network, and Kafka cluster health."
+
+      # M-481: Stale partition alert - detects stuck consumers
+      # A stale partition means no offset updates for >120s, which could indicate:
+      # - Consumer is stuck (deadlock, blocking call, bug)
+      # - Network partition between consumer and broker
+      # - Rebalance issues preventing message consumption
+      # Alert on staleness separately from lag to catch stuck-consumer scenarios.
+      - alert: KafkaPartitionStale
+        expr: max(websocket_kafka_lag_offset_age_seconds) > 120
+        for: 2m
+        labels:
+          severity: high
+        annotations:
+          summary: "Kafka partition stale: no offset updates for {{ $value }}s"
+          description: "Partition has not received offset updates for {{ $value }} seconds (threshold: 120s). Consumer may be stuck or disconnected. Check consumer logs, CPU, and Kafka connectivity."
+
+      - alert: KafkaPartitionStaleCritical
+        expr: max(websocket_kafka_lag_offset_age_seconds) > 300
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "CRITICAL: Kafka partition stale for {{ $value }}s"
+          description: "Partition has been stale for {{ $value }} seconds (>5 minutes). Consumer is likely stuck or dead. Investigate immediately - real-time data flow has stopped."
+
+      # M-647: Redis metrics now component-scoped
+      - alert: RateLimiterRedisErrors
+        expr: rate(dashstream_rate_limiter_redis_errors_total[5m]) > 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Rate limiter Redis errors detected"
+          description: "Rate limiting experiencing Redis errors ({{ $value }} errors/sec). Distributed rate limiting may be degraded."
+
+      - alert: WebSocketRedisErrors
+        expr: rate(dashstream_websocket_redis_errors_total[5m]) > 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "WebSocket replay buffer Redis errors detected"
+          description: "WebSocket replay buffer experiencing Redis errors ({{ $value }} errors/sec). Replay functionality may be degraded."
+
+      - alert: RateLimiterRedisHighLatency
+        expr: histogram_quantile(0.95, rate(dashstream_rate_limiter_redis_latency_ms_bucket[5m])) > 20
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Rate limiter Redis latency high: {{ $value }}ms (p95)"
+          description: "Rate limiter Redis p95 latency is {{ $value }}ms, exceeding 20ms threshold. May impact rate limiting accuracy."
+
+      - alert: WebSocketRedisHighLatency
+        expr: histogram_quantile(0.95, rate(dashstream_websocket_redis_latency_ms_bucket[5m])) > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "WebSocket replay Redis latency high: {{ $value }}ms (p95)"
+          description: "WebSocket replay Redis p95 latency is {{ $value }}ms, exceeding 100ms threshold. May impact replay performance."
+
+      - alert: ReplayBufferRedisWritesDropped
+        expr: rate(replay_buffer_redis_write_dropped_total[5m]) > 0
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "Replay buffer Redis writes dropped: {{ $value }} drops/sec"
+          description: "WebSocket server is dropping replay-buffer Redis writes due to concurrency limiting. Reconnect replays may be incomplete under load."
+
+      - alert: ReplayBufferRedisWriteFailures
+        expr: rate(replay_buffer_redis_write_failures_total[5m]) > 0
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "Replay buffer Redis write failures: {{ $value }} failures/sec"
+          description: "Replay-buffer Redis writes are failing. Reconnect replays may be incomplete; check Redis health/latency and server logs."
+
+      # Note: dashstream_rate_limit_exceeded_total is a "lazy" metric that only appears
+      # when a tenant exceeds their rate limit. If no data exists, this alert simply
+      # won't fire (correct behavior - no rate limits have been exceeded).
+      - alert: TenantRateLimitExceeded
+        expr: rate(dashstream_rate_limit_exceeded_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Tenant {{ $labels.tenant_id }} hitting rate limit"
+          description: "Tenant {{ $labels.tenant_id }} is being rate limited at {{ $value }} messages/sec. May need quota increase or is experiencing misconfiguration."
+
+  # Registry API Server alerts - Phase 22
+  - name: registry_critical
+    interval: 30s
+    rules:
+      # ============ HTTP SLO Alerts ============
+      - alert: RegistryHighErrorRate
+        expr: sum(rate(dashflow_registry_http_requests_total{status=~"5.."}[5m])) / sum(rate(dashflow_registry_http_requests_total[5m])) > 0.01
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Registry API error rate: {{ $value | humanizePercentage }}"
+          description: "Registry API is experiencing 5xx errors at {{ $value | humanizePercentage }} rate. SLO target: <1%."
+
+      - alert: RegistryHighLatency
+        expr: histogram_quantile(0.99, sum(rate(dashflow_registry_http_request_duration_seconds_bucket[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "Registry API P99 latency: {{ $value }}s"
+          description: "99th percentile latency is {{ $value }}s, exceeding 1s SLO threshold."
+
+      - alert: RegistryHighP50Latency
+        expr: histogram_quantile(0.50, sum(rate(dashflow_registry_http_request_duration_seconds_bucket[5m])) by (le)) > 0.2
+        for: 10m
+        labels:
+          severity: medium
+        annotations:
+          summary: "Registry API P50 latency: {{ $value }}s"
+          description: "Median latency is {{ $value }}s, exceeding 200ms threshold. Performance degradation detected."
+
+      - alert: RegistryDown
+        expr: up{job="dashflow-registry"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Registry API server is down"
+          description: "Registry API server ({{ $labels.instance }}) has been down for more than 1 minute."
+
+      - alert: RegistryHighInFlightRequests
+        expr: dashflow_registry_http_requests_in_flight > 100
+        for: 2m
+        labels:
+          severity: high
+        annotations:
+          summary: "Registry high in-flight requests: {{ $value }}"
+          description: "{{ $value }} concurrent requests in flight. Server may be overloaded."
+
+      # ============ Cache Alerts ============
+      - alert: RegistryLowCacheHitRate
+        expr: sum(rate(dashflow_registry_cache_hits_total[5m])) / (sum(rate(dashflow_registry_cache_hits_total[5m])) + sum(rate(dashflow_registry_cache_misses_total[5m]))) < 0.7
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Registry cache hit rate: {{ $value | humanizePercentage }}"
+          description: "Cache hit rate is {{ $value | humanizePercentage }}, below 70% threshold. Cache may need tuning or is warming up."
+
+      - alert: RegistryAPIKeyCacheLow
+        expr: rate(dashflow_registry_api_key_cache_hits_total[5m]) / (rate(dashflow_registry_api_key_cache_hits_total[5m]) + rate(dashflow_registry_api_key_cache_misses_total[5m])) < 0.5
+        for: 10m
+        labels:
+          severity: medium
+        annotations:
+          summary: "API key cache hit rate: {{ $value | humanizePercentage }}"
+          description: "API key cache hit rate is {{ $value | humanizePercentage }}. High miss rate increases database load."
+
+      # ============ Storage Alerts ============
+      - alert: RegistryStorageErrors
+        expr: sum(rate(dashflow_registry_storage_errors_total[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "Registry storage errors: {{ $value }}/s"
+          description: "Storage operations failing at {{ $value }} errors/second. Operation: {{ $labels.operation }}, backend: {{ $labels.backend }}."
+
+      - alert: RegistryStorageHighLatency
+        expr: histogram_quantile(0.99, sum(rate(dashflow_registry_storage_operation_duration_seconds_bucket[5m])) by (le, operation, backend)) > 5
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "Registry storage P99 latency: {{ $value }}s"
+          description: "Storage operation {{ $labels.operation }} on {{ $labels.backend }} has P99 latency of {{ $value }}s, exceeding 5s threshold."
+
+      - alert: RegistryStorageGetLatencyHigh
+        expr: histogram_quantile(0.99, sum(rate(dashflow_registry_storage_operation_duration_seconds_bucket{operation="get"}[5m])) by (le, backend)) > 2
+        for: 5m
+        labels:
+          severity: medium
+        annotations:
+          summary: "Storage GET P99 latency: {{ $value }}s"
+          description: "Package downloads are slow. P99 latency is {{ $value }}s on {{ $labels.backend }}."
+
+      # ============ Search Alerts ============
+      - alert: RegistrySearchHighLatency
+        expr: histogram_quantile(0.99, sum(rate(dashflow_registry_search_query_duration_seconds_bucket[5m])) by (le, search_type)) > 2
+        for: 5m
+        labels:
+          severity: medium
+        annotations:
+          summary: "Registry search P99 latency: {{ $value }}s"
+          description: "{{ $labels.search_type }} search has P99 latency of {{ $value }}s. Check vector database health."
+
+      - alert: RegistrySemanticSearchSlow
+        expr: histogram_quantile(0.95, sum(rate(dashflow_registry_search_query_duration_seconds_bucket{search_type="semantic"}[5m])) by (le)) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Semantic search P95 latency: {{ $value }}s"
+          description: "Semantic search P95 latency is {{ $value }}s. Check OpenAI API and Qdrant health."
+
+      # ============ Auth & Rate Limit Alerts ============
+      - alert: RegistryHighAuthFailureRate
+        expr: sum(rate(dashflow_registry_api_key_verifications_total{result="invalid"}[5m])) / sum(rate(dashflow_registry_api_key_verifications_total[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High auth failure rate: {{ $value | humanizePercentage }}"
+          description: "{{ $value | humanizePercentage }} of API key verifications are failing. May indicate attack or misconfigured clients."
+
+      - alert: RegistryRateLimitingActive
+        expr: sum(rate(dashflow_registry_rate_limit_events_total{result="limited"}[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Registry rate limiting active: {{ $value }}/s"
+          description: "Requests are being rate limited at {{ $value }} requests/second. Check for misconfigured clients or DDoS."
+
+      - alert: RegistryHighRateLimitRatio
+        expr: sum(rate(dashflow_registry_rate_limit_events_total{result="limited"}[5m])) / sum(rate(dashflow_registry_rate_limit_events_total[5m])) > 0.05
+        for: 10m
+        labels:
+          severity: high
+        annotations:
+          summary: "High rate limit ratio: {{ $value | humanizePercentage }}"
+          description: "{{ $value | humanizePercentage }} of requests are being rate limited. Significant traffic impact."
+
+      # ============ Package Operation Alerts ============
+      - alert: RegistryNoDownloads
+        expr: rate(dashflow_registry_package_downloads_total[1h]) == 0
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "No package downloads in last hour"
+          description: "Registry has had no package downloads in the past hour. Check if service is healthy and accessible."
+
+      - alert: RegistryPublishFailures
+        expr: sum(rate(dashflow_registry_http_requests_total{path="/api/v1/packages",method="POST",status=~"4..|5.."}[5m])) > 0.1
+        for: 5m
+        labels:
+          severity: high
+        annotations:
+          summary: "Package publish failures: {{ $value }}/s"
+          description: "Package publish requests are failing at {{ $value }} errors/second. Check storage and database health."
+
+      # ============ Contribution System Alerts ============
+      - alert: RegistryReviewBacklog
+        expr: sum(increase(dashflow_registry_contributions_total[1h])) - sum(increase(dashflow_registry_reviews_total[1h])) > 100
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Review backlog growing: {{ $value }} unreviewed"
+          description: "Contribution reviews are not keeping up with submissions. {{ $value }} contributions awaiting review."
+
+      - alert: RegistryHighRejectionRate
+        expr: sum(rate(dashflow_registry_reviews_total{result="rejected"}[1h])) / sum(rate(dashflow_registry_reviews_total[1h])) > 0.3
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "High contribution rejection rate: {{ $value | humanizePercentage }}"
+          description: "{{ $value | humanizePercentage }} of contributions are being rejected. Check for quality issues or spam."

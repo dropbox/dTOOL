@@ -1,0 +1,25 @@
+[package]
+name = "dashflow-opensearch"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "OpenSearch vector store implementation for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "opensearch", "vector-store", "vector-database", "search"]
+categories = ["database"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+opensearch = "2.3"
+serde_json = { workspace = true }
+async-trait = { workspace = true }
+uuid.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true
+
+[lints]
+workspace = true

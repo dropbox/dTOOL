@@ -1,0 +1,127 @@
+# LangStream WebSocket Server Dockerfile
+# Multi-stage build with cargo-chef for fast dependency caching
+#
+# Build time comparison:
+#   - Without caching: ~10-15 minutes
+#   - With cargo-chef (deps cached): ~2-3 minutes
+#   - With cached deps AND source: ~30 seconds
+
+# Stage 1: Chef - prepare recipe for dependency caching
+FROM rustlang/rust:nightly-bookworm-slim AS chef
+RUN cargo install cargo-chef --locked
+WORKDIR /build
+
+# Stage 2: Planner - analyze dependencies
+FROM chef AS planner
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+COPY proto ./proto
+COPY test-utils ./test-utils
+COPY benchmarks ./benchmarks
+COPY examples ./examples
+RUN cargo chef prepare --recipe-path recipe.json
+
+# Stage 3: Builder - build dependencies then source
+FROM chef AS builder
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    ca-certificates \
+    protobuf-compiler \
+    g++ \
+    cmake \
+    zlib1g-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy and build dependencies (cached layer)
+COPY --from=planner /build/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json \
+    --package dashflow-observability \
+    --features websocket-server
+
+# Now copy source and build (this layer changes with code changes)
+COPY Cargo.toml Cargo.lock ./
+COPY crates ./crates
+COPY proto ./proto
+COPY test-utils ./test-utils
+COPY benchmarks ./benchmarks
+COPY examples ./examples
+
+# Accept build args for version tracking
+ARG GIT_COMMIT_SHA=unknown
+ARG BUILD_DATE=unknown
+
+# Build release binary (deps are cached, only recompiles changed code)
+# Note: Export variables explicitly for cargo build so option_env!() can read them
+# Docker ENV only sets runtime env vars, but Rust option_env!() needs compile-time env
+RUN GIT_COMMIT_SHA="${GIT_COMMIT_SHA}" BUILD_DATE="${BUILD_DATE}" \
+    cargo build --release \
+    --package dashflow-observability \
+    --features websocket-server \
+    --bin websocket_server
+
+# Stage 4: UI Builder - build the observability-ui frontend
+FROM node:20-slim AS ui-builder
+WORKDIR /ui
+
+# Copy package files and install dependencies
+COPY observability-ui/package.json observability-ui/package-lock.json ./
+RUN npm ci
+
+# Copy source and proto files (needed for proto:gen)
+COPY observability-ui/ ./
+COPY proto/ /proto/
+
+# Generate proto schema and build the UI
+RUN npm run proto:gen && npm run build
+
+# Stage 5: Runtime environment
+FROM debian:bookworm-slim
+
+# Version metadata (passed via --build-arg)
+ARG GIT_COMMIT_SHA=unknown
+ARG BUILD_DATE=unknown
+LABEL version="${GIT_COMMIT_SHA}"
+LABEL build_date="${BUILD_DATE}"
+LABEL component="websocket-server"
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    libssl3 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN useradd -m -u 1000 dashstream && \
+    mkdir -p /app && \
+    chown -R dashstream:dashstream /app
+
+WORKDIR /app
+USER dashstream
+
+# Copy binary from builder
+COPY --from=builder --chown=dashstream:dashstream \
+    /build/target/release/websocket_server \
+    /app/websocket_server
+
+# Copy observability-ui dist folder from UI builder stage
+COPY --from=ui-builder --chown=dashstream:dashstream /ui/dist /app/observability-ui/dist
+
+# Health check endpoint (Issue #16: fail on degraded status for auto-restart)
+# This checks the status field in the JSON response, not just HTTP 200
+# Docker will restart the container if it stays unhealthy (degraded > 10min triggers graceful shutdown)
+HEALTHCHECK --interval=10s --timeout=3s --start-period=10s --retries=3 \
+    CMD curl -sf http://localhost:3002/health | grep -q '"status":"healthy"' || exit 1
+
+# Expose ports
+EXPOSE 3002
+
+# Set environment
+ENV RUST_LOG=info
+ENV RUST_BACKTRACE=1
+
+# Run the WebSocket server
+ENTRYPOINT ["/app/websocket_server"]

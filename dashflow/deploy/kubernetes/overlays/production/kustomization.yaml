@@ -1,0 +1,83 @@
+# Production environment overlay
+# Apply with: kubectl apply -k deploy/kubernetes/overlays/production
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dashflow
+
+# Include base resources
+resources:
+  - ../../base
+  - hpa.yaml
+  - pdb.yaml
+
+# Production-specific labels
+commonLabels:
+  environment: production
+
+# Patches for production environment
+patches:
+  # WebSocket server must remain single replica (M-415): Kafka consumer group partitioning
+  # would otherwise cause partial streams depending on which pod a client connects to.
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+    target:
+      kind: Deployment
+      name: dashflow-websocket-server
+
+  # Higher replicas for quality monitor
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
+    target:
+      kind: Deployment
+      name: dashflow-quality-monitor
+
+  # Higher resource limits for production
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "1Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "1000m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "256Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "200m"
+    target:
+      kind: Deployment
+      name: dashflow-websocket-server
+
+  # Higher Kafka resources for production
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "4Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "2000m"
+    target:
+      kind: StatefulSet
+      name: kafka
+
+# Production ConfigMap patches
+configMapGenerator:
+  - name: dashflow-config
+    behavior: merge
+    literals:
+      - RUST_LOG=warn
+
+# Image tags for production (use specific versions)
+images:
+  - name: dashflow/websocket-server
+    newTag: v1.11.1
+  - name: dashflow/quality-monitor
+    newTag: v1.11.1
+  - name: dashflow/prometheus-exporter
+    newTag: v1.11.1

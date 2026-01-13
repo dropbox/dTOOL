@@ -1,0 +1,129 @@
+[package]
+name = "dashflow-registry"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "AI-native package registry with content-addressed storage"
+license = "MIT"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[features]
+default = []
+# Enable vector search capabilities with Qdrant
+vector-search = ["dep:qdrant-client"]
+# Enable OpenAI embeddings for semantic search
+openai-embeddings = ["dep:dashflow-openai"]
+# Enable full semantic search (Qdrant + OpenAI)
+semantic-search = ["vector-search", "openai-embeddings"]
+# Enable S3-compatible storage backend (S3, R2, MinIO)
+s3 = ["dep:aws-sdk-s3", "dep:aws-config"]
+# Enable HTTP API server
+server = ["dep:axum", "dep:tower", "dep:tower-http", "dep:hyper", "dep:http-body-util"]
+# Enable PostgreSQL metadata store
+postgres = ["dep:tokio-postgres", "dep:deadpool-postgres"]
+# Enable Redis caching layer
+redis = ["dep:redis"]
+# Enable Prometheus metrics
+metrics = ["dep:prometheus"]
+# Enable OpenTelemetry distributed tracing
+opentelemetry = ["dep:dashflow-observability", "dep:opentelemetry", "dep:opentelemetry_sdk", "dep:opentelemetry-otlp", "dep:tracing-opentelemetry"]
+
+[dependencies]
+# Serialization
+serde.workspace = true
+serde_json = { workspace = true }
+
+# Crypto for content hashing and signatures
+sha2 = { workspace = true }
+ed25519-dalek = { version = "2.1", features = ["rand_core", "serde"] }
+rand = { workspace = true }
+hex = { workspace = true }
+
+# Async runtime
+tokio.workspace = true
+async-trait = { workspace = true }
+futures = { workspace = true }
+
+# HTTP client for registry API
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+
+# Error handling
+thiserror = { workspace = true }
+
+# Time
+chrono = { workspace = true }
+
+# UUID for identifiers
+uuid.workspace = true
+
+# Base64 encoding for P2P transfers
+base64 = { workspace = true }
+
+# Semantic versioning
+semver = { version = "1.0", features = ["serde"] }
+
+# Compression for tarballs
+flate2 = "1.0"
+tar = "0.4"
+
+# Optional dependencies
+qdrant-client = { workspace = true, optional = true }
+aws-sdk-s3 = { workspace = true, optional = true }
+aws-config = { workspace = true, optional = true }
+# DashFlow core for retry logic (M-196) and embeddings interface
+dashflow = { path = "../dashflow" }
+dashflow-openai = { path = "../dashflow-openai", optional = true }
+# PostgreSQL client (using tokio-postgres instead of sqlx to avoid workspace sqlite conflict)
+tokio-postgres = { version = "0.7", features = ["with-uuid-1", "with-chrono-0_4", "with-serde_json-1"], optional = true }
+# Connection pooling for postgres
+deadpool-postgres = { version = "0.14", optional = true }
+
+# HTTP API server (optional)
+axum = { workspace = true, optional = true }
+tower = { version = "0.4", features = ["limit", "timeout", "buffer"], optional = true }  # Keep at 0.4 for compatibility
+tower-http = { workspace = true, features = ["cors", "trace", "request-id", "limit"], optional = true }
+hyper = { workspace = true, optional = true }
+http-body-util = { version = "0.1", optional = true }
+
+# Redis cache (optional)
+redis = { workspace = true, optional = true }
+
+# Prometheus metrics (optional)
+prometheus = { workspace = true, optional = true }
+
+# OpenTelemetry distributed tracing (optional)
+dashflow-observability = { path = "../dashflow-observability", optional = true }
+opentelemetry = { version = "0.31", optional = true }
+opentelemetry_sdk = { version = "0.31", features = ["rt-tokio"], optional = true }
+opentelemetry-otlp = { version = "0.31", features = ["tonic", "grpc-tonic"], optional = true }
+tracing-opentelemetry = { version = "0.32", optional = true }
+
+# Logging/tracing
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["json"] }
+
+# Server binary (requires server feature)
+[[bin]]
+name = "registry_server"
+path = "src/bin/registry_server.rs"
+required-features = ["server"]
+
+# Examples (require server feature)
+[[example]]
+name = "registry_server"
+required-features = ["server"]
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+tempfile = { workspace = true }
+tower = { version = "0.4", features = ["util"] }  # Keep at 0.4 for compatibility
+# For integration tests with server feature
+axum = { workspace = true }
+http = "1.0"
+
+[lints]
+workspace = true

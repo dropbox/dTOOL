@@ -1,0 +1,118 @@
+{{- if .Values.websocketServer.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dashflow.fullname" . }}-websocket-server
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "dashflow.labels" . | nindent 4 }}
+    app.kubernetes.io/component: websocket-server
+spec:
+  replicas: {{ .Values.websocketServer.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dashflow.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: websocket-server
+  template:
+    metadata:
+      labels:
+        {{- include "dashflow.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: websocket-server
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3002"
+        prometheus.io/path: "/metrics"
+    spec:
+      {{- include "dashflow.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "dashflow.serviceAccountName" . }}
+      containers:
+        - name: websocket-server
+          image: "{{ .Values.global.imageRegistry }}{{ .Values.websocketServer.image.repository }}:{{ .Values.websocketServer.image.tag }}"
+          imagePullPolicy: {{ .Values.websocketServer.image.pullPolicy }}
+          ports:
+            - name: websocket
+              containerPort: 3002
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "dashflow.fullname" . }}-config
+            - secretRef:
+                name: {{ include "dashflow.fullname" . }}-secrets
+          env:
+            - name: KAFKA_BROKERS
+              value: {{ include "dashflow.kafkaBrokers" . | quote }}
+            - name: REDIS_URL
+              value: {{ include "dashflow.redisUrl" . | quote }}
+            {{- /* Kafka security env vars (non-secret values) */}}
+            {{- if .Values.kafka.security.protocol }}
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: {{ .Values.kafka.security.protocol | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.sasl.mechanism }}
+            - name: KAFKA_SASL_MECHANISM
+              value: {{ .Values.kafka.security.sasl.mechanism | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.ssl.caLocation }}
+            - name: KAFKA_SSL_CA_LOCATION
+              value: {{ .Values.kafka.security.ssl.caLocation | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.ssl.certificateLocation }}
+            - name: KAFKA_SSL_CERTIFICATE_LOCATION
+              value: {{ .Values.kafka.security.ssl.certificateLocation | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.ssl.keyLocation }}
+            - name: KAFKA_SSL_KEY_LOCATION
+              value: {{ .Values.kafka.security.ssl.keyLocation | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.ssl.endpointAlgorithm }}
+            - name: KAFKA_SSL_ENDPOINT_ALGORITHM
+              value: {{ .Values.kafka.security.ssl.endpointAlgorithm | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.websocketServer.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3002
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3002
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+      {{- with .Values.websocketServer.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.websocketServer.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.websocketServer.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dashflow.fullname" . }}-websocket-server
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "dashflow.labels" . | nindent 4 }}
+    app.kubernetes.io/component: websocket-server
+spec:
+  type: {{ .Values.websocketServer.service.type }}
+  ports:
+    - name: websocket
+      port: {{ .Values.websocketServer.service.port }}
+      targetPort: 3002
+      protocol: TCP
+  selector:
+    {{- include "dashflow.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: websocket-server
+{{- end }}

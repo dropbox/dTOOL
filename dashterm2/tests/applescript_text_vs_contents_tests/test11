@@ -1,0 +1,9 @@
+tell application "DashTerm2"
+        set newWindow to (current window)
+        set theSession to (current session of newWindow)
+        
+        tell theSession
+                contents
+        end tell
+end tell
+

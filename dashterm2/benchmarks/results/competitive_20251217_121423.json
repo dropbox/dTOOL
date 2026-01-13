@@ -1,0 +1,74 @@
+{
+  "timestamp": "20251217_121423",
+  "type": "competitive_benchmark",
+  "system": {
+    "model_name": "MacBook Pro",
+    "model_id": "Mac15,9",
+    "chip": "Apple M3 Max",
+    "memory": "64 GB"
+  },
+  "terminals": {
+    "DashTerm2": {
+      "path": "/Users/ayates/Library/Developer/Xcode/DerivedData/iTerm2-eozhmqjuyzuggzgkgmyyurjyassr/Build/Products/Development/iTerm2.app",
+      "version": "3.6.dev",
+      "size_kb": 233880,
+      "installed": true
+    }
+,
+    "iTerm2": {
+      "path": "/Applications/iTerm.app",
+      "version": "3.6.6",
+      "size_kb": 140260,
+      "installed": true
+    }
+,
+    "Alacritty": {
+      "path": "/Applications/Alacritty.app",
+      "version": "0.16.1",
+      "size_kb": 14788,
+      "installed": true
+    }
+,
+    "Kitty": {
+      "path": "/Applications/kitty.app",
+      "version": "0.44.0",
+      "size_kb": 153232,
+      "installed": true
+    }
+,
+    "WezTerm": {
+      "path": "/Applications/WezTerm.app",
+      "version": "0.1.0",
+      "size_kb": 259840,
+      "installed": true
+    }
+  },
+  "shell_throughput": [
+    {
+      "command": "yes | head -500000",
+      "mean_seconds": 0.0285181701,
+      "stddev": 0.0021522455787696486,
+      "min": 0.025550520100000005,
+      "max": 0.030451145100000004
+    }
+,
+    {
+      "command": "seq 1 100000",
+      "mean_seconds": 0.015826121000000002,
+      "stddev": 0.004359860882801905,
+      "min": 0.009422029200000005,
+      "max": 0.020359071200000006
+    }
+,
+    {
+      "command": "cat /dev/zero | head -c 10000000 | wc -c",
+      "mean_seconds": 0.01846991004,
+      "stddev": 0.00022581336782019772,
+      "min": 0.018233468639999997,
+      "max": 0.018748093639999994
+    }
+  ],
+  "memory_baseline": {
+    "shell_rss_kb": 2928
+  }
+}

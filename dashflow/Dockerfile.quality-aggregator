@@ -1,0 +1,66 @@
+# Dockerfile for Quality Aggregator
+#
+# This Dockerfile creates a production-ready container for the quality aggregator
+# that consumes quality metrics from Kafka on Linux (bypassing macOS rdkafka limitations).
+#
+# NOTE: This is the canonical Dockerfile for quality_aggregator. The previously
+# separate Dockerfile.quality-monitor was consolidated into this file (M-73, #1458)
+# since both built the same binary. Uses stable Rust per M-74.
+#
+# Build:
+#   docker build -f Dockerfile.quality-aggregator -t quality-aggregator:latest .
+#
+# Run:
+#   docker run -e KAFKA_BROKERS=localhost:9092 quality-aggregator:latest
+#
+# Or use docker-compose:
+#   docker-compose -f docker-compose.dashstream.yml up -d quality-monitor
+#   docker-compose -f docker-compose-kafka.yml up -d quality-aggregator
+
+# Use Rust 1.83 slim image which has build tools and stable repos
+FROM rust:1.83-slim
+
+# Install system dependencies for rdkafka and healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cmake \
+    curl \
+    g++ \
+    libssl-dev \
+    pkg-config \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directory
+WORKDIR /app
+
+# Copy source code
+COPY Cargo.toml Cargo.lock ./
+COPY proto/ ./proto/
+COPY crates/ ./crates/
+
+# Build the application in release mode
+RUN cargo build --bin quality_aggregator --release
+
+# Create non-root user
+RUN useradd -m -u 1000 aggregator && \
+    cp target/release/quality_aggregator /usr/local/bin/ && \
+    chown aggregator:aggregator /usr/local/bin/quality_aggregator
+
+# Switch to non-root user
+USER aggregator
+
+# Set environment variables with defaults
+ENV KAFKA_BROKERS=kafka:29092
+ENV KAFKA_TOPIC=dashstream-quality
+ENV HEALTH_PORT=3003
+ENV RUST_LOG=info
+
+# Expose health endpoint port
+EXPOSE 3003
+
+# Healthcheck using HTTP health endpoint (more robust than pgrep)
+HEALTHCHECK --interval=10s --timeout=3s --start-period=30s --retries=3 \
+  CMD curl -sf http://localhost:3003/health || exit 1
+
+# Run the aggregator
+CMD ["/usr/local/bin/quality_aggregator"]

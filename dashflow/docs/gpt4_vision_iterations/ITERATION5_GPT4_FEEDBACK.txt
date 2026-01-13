@@ -1,0 +1,78 @@
+Encoding screenshot: examples/apps/document_search/outputs/eval_report_screenshot.png
+Sending request to GPT-4 Vision...
+{
+  "model": "gpt-4o",
+  "improvements": [
+    {
+      "priority": "Critical",
+      "category": "Information Density",
+      "problem": "The report uses excessive vertical space, making it hard to view all data at once.",
+      "solution": "Condense the layout by reducing padding and margins, and use a multi-column layout for the scenario results.",
+      "implementation": "In html.rs, adjust CSS styles to reduce padding/margins and implement a grid layout for scenario results."
+    },
+    {
+      "priority": "Critical",
+      "category": "Actionability",
+      "problem": "The report lacks clear indicators for urgent issues that need immediate attention.",
+      "solution": "Add icons or color codes to highlight critical failures and their impact.",
+      "implementation": "In charts.rs, add logic to assign icons/colors based on failure severity and impact."
+    },
+    {
+      "priority": "High",
+      "category": "Data Storytelling",
+      "problem": "The narrative flow is unclear, making it difficult to understand the report's key insights.",
+      "solution": "Reorganize the report to start with an executive summary that highlights key insights and trends.",
+      "implementation": "In html.rs, create a new section at the top for an executive summary, summarizing key points."
+    },
+    {
+      "priority": "High",
+      "category": "Statistical Rigor",
+      "problem": "The report lacks statistical context like confidence intervals or distributions.",
+      "solution": "Include confidence intervals and distribution charts for key metrics to provide statistical context.",
+      "implementation": "In charts.rs, add new charts for confidence intervals and distributions using a library like D3.js."
+    },
+    {
+      "priority": "High",
+      "category": "Visual Design",
+      "problem": "The color scheme lacks contrast, making it hard to distinguish between different data points.",
+      "solution": "Revise the color palette to ensure sufficient contrast and improve readability.",
+      "implementation": "In html.rs, update CSS styles to use a high-contrast color palette."
+    },
+    {
+      "priority": "Medium",
+      "category": "Information Density",
+      "problem": "Important data like latency and quality scores are not immediately visible.",
+      "solution": "Use sparklines or small charts next to each scenario to show trends in latency and quality scores.",
+      "implementation": "In charts.rs, generate sparklines for each scenario using a lightweight charting library."
+    },
+    {
+      "priority": "Medium",
+      "category": "Actionability",
+      "problem": "The report does not provide clear next steps or recommendations based on the data.",
+      "solution": "Add a section with prioritized recommendations and next steps based on the analysis.",
+      "implementation": "In html.rs, create a new section at the bottom for recommendations and next steps, auto-generated from data."
+    },
+    {
+      "priority": "Medium",
+      "category": "Visual Design",
+      "problem": "Typography is inconsistent, affecting the report's professional appearance.",
+      "solution": "Standardize typography by using a consistent font family and size hierarchy.",
+      "implementation": "In html.rs, update CSS styles to use a consistent font family and define a clear size hierarchy."
+    },
+    {
+      "priority": "Medium",
+      "category": "Data Storytelling",
+      "problem": "The report does not effectively highlight trends over time.",
+      "solution": "Incorporate trend lines or time series charts to show changes in key metrics over time.",
+      "implementation": "In charts.rs, add time series charts using a library like Chart.js to visualize trends."
+    },
+    {
+      "priority": "Medium",
+      "category": "Statistical Rigor",
+      "problem": "Percentiles are not displayed, limiting the understanding of data distribution.",
+      "solution": "Include percentile ranks for key metrics to provide a better understanding of data distribution.",
+      "implementation": "In charts.rs, calculate and display percentile ranks for key metrics using statistical functions."
+    }
+  ],
+  "raw_response": "```json\n[\n    {\n        \"priority\": \"Critical\",\n        \"category\": \"Information Density\",\n        \"problem\": \"The report uses excessive vertical space, making it hard to view all data at once.\",\n        \"solution\": \"Condense the layout by reducing padding and margins, and use a multi-column layout for the scenario results.\",\n        \"implementation\": \"In html.rs, adjust CSS styles to reduce padding/margins and implement a grid layout for scenario results.\"\n    },\n    {\n        \"priority\": \"Critical\",\n        \"category\": \"Actionability\",\n        \"problem\": \"The report lacks clear indicators for urgent issues that need immediate attention.\",\n        \"solution\": \"Add icons or color codes to highlight critical failures and their impact.\",\n        \"implementation\": \"In charts.rs, add logic to assign icons/colors based on failure severity and impact.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Data Storytelling\",\n        \"problem\": \"The narrative flow is unclear, making it difficult to understand the report's key insights.\",\n        \"solution\": \"Reorganize the report to start with an executive summary that highlights key insights and trends.\",\n        \"implementation\": \"In html.rs, create a new section at the top for an executive summary, summarizing key points.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Statistical Rigor\",\n        \"problem\": \"The report lacks statistical context like confidence intervals or distributions.\",\n        \"solution\": \"Include confidence intervals and distribution charts for key metrics to provide statistical context.\",\n        \"implementation\": \"In charts.rs, add new charts for confidence intervals and distributions using a library like D3.js.\"\n    },\n    {\n        \"priority\": \"High\",\n        \"category\": \"Visual Design\",\n        \"problem\": \"The color scheme lacks contrast, making it hard to distinguish between different data points.\",\n        \"solution\": \"Revise the color palette to ensure sufficient contrast and improve readability.\",\n        \"implementation\": \"In html.rs, update CSS styles to use a high-contrast color palette.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Information Density\",\n        \"problem\": \"Important data like latency and quality scores are not immediately visible.\",\n        \"solution\": \"Use sparklines or small charts next to each scenario to show trends in latency and quality scores.\",\n        \"implementation\": \"In charts.rs, generate sparklines for each scenario using a lightweight charting library.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Actionability\",\n        \"problem\": \"The report does not provide clear next steps or recommendations based on the data.\",\n        \"solution\": \"Add a section with prioritized recommendations and next steps based on the analysis.\",\n        \"implementation\": \"In html.rs, create a new section at the bottom for recommendations and next steps, auto-generated from data.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Visual Design\",\n        \"problem\": \"Typography is inconsistent, affecting the report's professional appearance.\",\n        \"solution\": \"Standardize typography by using a consistent font family and size hierarchy.\",\n        \"implementation\": \"In html.rs, update CSS styles to use a consistent font family and define a clear size hierarchy.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Data Storytelling\",\n        \"problem\": \"The report does not effectively highlight trends over time.\",\n        \"solution\": \"Incorporate trend lines or time series charts to show changes in key metrics over time.\",\n        \"implementation\": \"In charts.rs, add time series charts using a library like Chart.js to visualize trends.\"\n    },\n    {\n        \"priority\": \"Medium\",\n        \"category\": \"Statistical Rigor\",\n        \"problem\": \"Percentiles are not displayed, limiting the understanding of data distribution.\",\n        \"solution\": \"Include percentile ranks for key metrics to provide a better understanding of data distribution.\",\n        \"implementation\": \"In charts.rs, calculate and display percentile ranks for key metrics using statistical functions.\"\n    }\n]\n```"
+}

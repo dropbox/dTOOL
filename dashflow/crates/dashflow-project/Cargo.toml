@@ -1,0 +1,33 @@
+[package]
+name = "dashflow-project"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["Andrew Yates <ayates@dropbox.com>", "Dropbox"]
+description = "Project context discovery for DashFlow coding agents"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license = "Apache-2.0"
+
+[dependencies]
+# Serialization
+serde.workspace = true
+serde_json = { workspace = true }
+
+# File system
+walkdir = { workspace = true }
+glob = "0.3"
+
+# Async runtime
+tokio = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }
+
+[lints]
+workspace = true

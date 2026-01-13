@@ -1,0 +1,19 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"        Codex DashFlow - test-session-12345 @ .../tui       "
+"                                                            "
+"────────────────────────────────────────────────────────────"
+"┌ Chat ────────────────────────────────────────────────────┐"
+"│Agent: This is a very long message that should wrap to    │"
+"│multiple lines when rendered in the chat area. It contai  │"
+"│ns enough text to exceed the typical terminal width of 8  │"
+"│0 characters and demonstrate word wrapping functionality  │"
+"│.                                                         │"
+"│                                                          │"
+"└──────────────────────────────────────────────────────────┘"
+"┌ Input [Ctrl+Enter:send Enter:newline Esc:normal] ────────┐"
+"│Type a message... (/ for commands, Ctrl+Enter to send)    │"
+"└──────────────────────────────────────────────────────────┘"
+" INSERT  Turn: 0 | Model: gpt-4o-mini | ~3/128k (0%) | Env |"

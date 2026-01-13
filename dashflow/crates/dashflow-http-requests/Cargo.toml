@@ -1,0 +1,27 @@
+[package]
+name = "dashflow-http-requests"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "HTTP request tools for DashFlow - GET, POST, PUT, PATCH, DELETE operations"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "http", "requests", "api", "tool"]
+categories = ["web-programming::http-client"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+dashflow-json = { path = "../dashflow-json" }
+async-trait = { workspace = true }
+reqwest = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+
+[dev-dependencies]
+tokio.workspace = true
+wiremock = { workspace = true }
+
+[lints]
+workspace = true

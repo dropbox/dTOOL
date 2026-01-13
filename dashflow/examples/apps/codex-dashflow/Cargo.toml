@@ -1,0 +1,51 @@
+[package]
+name = "codex-dashflow"
+version = "0.1.0"
+edition = "2021"
+description = "Codex DashFlow - AI-powered code generation and understanding"
+
+[[bin]]
+name = "codex-dashflow"
+path = "src/main.rs"
+
+[dependencies]
+# DashFlow core
+dashflow = { path = "../../../crates/dashflow" }
+dashflow-openai = { path = "../../../crates/dashflow-openai" }
+dashflow-observability = { path = "../../../crates/dashflow-observability" }
+common = { path = "../common" }
+
+# Async runtime
+tokio = { workspace = true }
+futures = { workspace = true }
+async-trait = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# CLI
+clap = { workspace = true }
+anyhow = { workspace = true }
+
+# Code analysis
+tree-sitter = "0.24"
+tree-sitter-rust = "0.23"
+tree-sitter-python = "0.23"
+tree-sitter-typescript = "0.23"
+
+# Telemetry
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["json"] }
+
+# Utilities
+uuid = { workspace = true }
+chrono = { workspace = true }
+dirs = "5.0"
+
+[dev-dependencies]
+dashflow-test-utils = { path = "../../../test-utils" }
+tempfile = { workspace = true }
+
+[lints]
+workspace = true

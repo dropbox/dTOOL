@@ -1,0 +1,24 @@
+[package]
+name = "dashflow-human-tool"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Human input tool for DashFlow - request input from a human user"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "tool", "human-in-loop", "interactive"]
+categories = ["development-tools"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+tokio.workspace = true
+serde_json = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+
+[lints]
+workspace = true

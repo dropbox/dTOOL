@@ -1,0 +1,27 @@
+[package]
+name = "dashflow-module-discovery"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Zero-marker auto-discovery of DashFlow modules from Rust source"
+license = "MIT"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+syn = { version = "2.0", features = ["full", "parsing", "visit"] }
+
+[dev-dependencies]
+tempfile = { workspace = true }
+
+[[example]]
+name = "discover"
+path = "examples/discover.rs"
+
+[lints]
+workspace = true

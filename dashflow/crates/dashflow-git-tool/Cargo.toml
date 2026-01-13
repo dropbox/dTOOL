@@ -1,0 +1,29 @@
+[package]
+name = "dashflow-git-tool"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Git integration for DashFlow coding agents - repository detection, commits, diffs, and context collection"
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+git2 = "0.20"
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tempfile = { workspace = true }
+dashflow-standard-tests.workspace = true
+
+[lints]
+workspace = true

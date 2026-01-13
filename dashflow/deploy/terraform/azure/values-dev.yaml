@@ -1,0 +1,66 @@
+# DashFlow Helm values for Azure dev environment
+
+global:
+  environment: dev
+  azureRegion: ${azure_region}
+
+websocketServer:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+qualityMonitor:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+prometheusExporter:
+  enabled: true
+  replicaCount: 1
+
+redis:
+  enabled: false
+  external:
+    enabled: true
+    host: ${redis_host}
+    port: 6380
+    tls: true
+    password: ${redis_key}
+
+postgresql:
+  enabled: false
+  external:
+    enabled: true
+    host: ${postgres_host}
+    port: 5432
+    database: dashflow
+    sslMode: require
+
+observability:
+  prometheus:
+    enabled: true
+  grafana:
+    enabled: true
+
+ingress:
+  enabled: true
+  className: azure/application-gateway
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000

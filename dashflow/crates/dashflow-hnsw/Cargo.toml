@@ -1,0 +1,26 @@
+[package]
+name = "dashflow-hnsw"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "DashFlow HNSW vector store implementation using hnsw_rs"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "hnsw", "vector-store", "ann", "similarity-search"]
+categories = ["algorithms", "science", "data-structures"]
+
+[dependencies]
+dashflow.workspace = true
+hnsw_rs = "0.3.2"
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+uuid = { workspace = true, features = ["v4"] }
+
+[dev-dependencies]
+
+[lints]
+workspace = true

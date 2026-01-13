@@ -1,0 +1,24 @@
+[package]
+name = "codex-dashflow-sandbox"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Sandbox execution (Seatbelt/Landlock) for Codex DashFlow"
+
+[dependencies]
+tokio.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = "0.2"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2"
+landlock = "0.4"
+seccompiler = "0.4"
+
+[dev-dependencies]
+tempfile = "3"

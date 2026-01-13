@@ -1,0 +1,366 @@
+# DashFlow Streaming Complete System Docker Compose
+#
+# This configuration provides the complete DashFlow Streaming observability stack:
+# - Kafka & Zookeeper (event streaming)
+# - Quality Monitor (generates quality events)
+# - WebSocket Server (streams events to UI)
+# - Prometheus Exporter (bridges Kafka → Prometheus)
+# - Grafana (visualization)
+# - Prometheus (metrics time-series database)
+# - Jaeger (distributed tracing)
+#
+# Usage:
+#   docker-compose -f docker-compose.dashstream.yml up -d
+#   docker-compose -f docker-compose.dashstream.yml down
+#   docker-compose -f docker-compose.dashstream.yml logs -f
+#
+# Access:
+#   Quality Monitor Health:    http://localhost:3003/health
+#   WebSocket Health:          http://localhost:3002/health
+#   Prometheus Exporter:       http://localhost:9190/metrics
+#   Grafana UI:                http://localhost:3000 (admin/admin)
+#   Prometheus UI:             http://localhost:9090
+#   Jaeger UI:                 http://localhost:16686
+#
+# React Dashboard (run separately):
+#   cd observability-ui && npm run dev
+#   Access at: http://localhost:5173
+#
+# Environment Variables:
+#   OPENAI_API_KEY - NOT required for the DashStream stack itself.
+#                    Only needed if running librarian/codex apps that use LLMs.
+#   The quality-monitor reads from Kafka and writes to Prometheus - no LLM calls.
+
+services:
+  # ============================================================================
+  # Event Streaming Infrastructure
+  # ============================================================================
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: dashstream-zookeeper
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_LOG4J_ROOT_LOGLEVEL: WARN
+      ZOOKEEPER_4LW_COMMANDS_WHITELIST: "srvr,mntr,ruok"
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-logs:/var/lib/zookeeper/log
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo srvr | nc localhost 2181 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: dashstream-kafka
+    hostname: kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      # S-6: Auto-topic-creation is enabled for LOCAL DEVELOPMENT ONLY.
+      # Production deployments should:
+      # 1. Set KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      # 2. Use explicit topic provisioning with desired partitions/replication/retention
+      # 3. Use crates/dashflow-streaming/src/kafka.rs TopicConfig for topic management
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  # ============================================================================
+  # DashFlow Streaming Core Services
+  # ============================================================================
+
+  # NOTE: Service named quality-monitor for backwards compatibility, but runs
+  # quality_aggregator binary. See Dockerfile.quality-aggregator header for details.
+  # M-73: Consolidated from separate Dockerfile.quality-monitor (#1458)
+  quality-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.quality-aggregator
+    container_name: dashstream-quality-monitor
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "3003:3003"
+    environment:
+      # Note: OPENAI_API_KEY not required - this service does not call LLMs
+      - KAFKA_BROKERS=kafka:29092
+      - RUST_LOG=info
+      - RUST_BACKTRACE=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3003/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  # WebSocket server for real-time streaming
+  # To include version info in builds:
+  #   GIT_COMMIT_SHA=$(git rev-parse HEAD) BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ) docker-compose build websocket-server
+  websocket-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.websocket-server
+      args:
+        - GIT_COMMIT_SHA=${GIT_COMMIT_SHA:-unknown}
+        - BUILD_DATE=${BUILD_DATE:-unknown}
+    container_name: dashstream-websocket-server
+    depends_on:
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      # Note: quality-monitor dependency removed - they are independent Kafka consumers
+    ports:
+      - "3002:3002"
+    environment:
+      - KAFKA_BROKERS=kafka:29092
+      - KAFKA_TOPIC=dashstream-quality
+      - KAFKA_DLQ_TOPIC=dashstream-quality-dlq
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_AUTO_OFFSET_RESET=earliest
+      # M-232: Explicit network binding required for container access (default is localhost-only)
+      # WARNING: This server has NO authentication - use only in isolated/dev environments
+      - WEBSOCKET_HOST=0.0.0.0
+      - WEBSOCKET_PORT=3002
+      - RUST_LOG=info
+      - RUST_BACKTRACE=1
+    healthcheck:
+      # Status-aware check: only "healthy" status is considered healthy
+      # "degraded" and "waiting" states will cause unhealthy status
+      test: ["CMD-SHELL", "curl -sf http://localhost:3002/health | grep -q '\"status\":\"healthy\"' || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  prometheus-exporter:
+    build:
+      context: .
+      dockerfile: Dockerfile.prometheus-exporter
+      args:
+        - GIT_COMMIT_SHA=${GIT_COMMIT_SHA:-unknown}
+        - BUILD_DATE=${BUILD_DATE:-unknown}
+    container_name: dashstream-prometheus-exporter
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - "9190:9190"
+    environment:
+      - KAFKA_BROKERS=kafka:29092
+      - KAFKA_TOPIC=dashstream-quality
+      - METRICS_PORT=9190
+      - RUST_LOG=info
+      - RUST_BACKTRACE=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9190/metrics"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  # ============================================================================
+  # Storage and State
+  # ============================================================================
+
+  redis:
+    image: redis:7-alpine
+    container_name: dashstream-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  # ============================================================================
+  # Observability Stack
+  # ============================================================================
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.55
+    container_name: dashstream-jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - LOG_LEVEL=warn
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "4317:4317"    # OTLP gRPC
+      - "4318:4318"    # OTLP HTTP
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:14269/"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: dashstream-alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--log.level=warn'
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager-data:/alertmanager
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9093/-/healthy"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  prometheus:
+    image: prom/prometheus:v2.49.1
+    container_name: dashstream-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--log.level=warn'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+      - prometheus-data:/prometheus
+    # Make host.docker.internal work on Linux (native on Mac/Windows Docker Desktop)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      alertmanager:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+  grafana:
+    image: grafana/grafana:10.3.3
+    container_name: dashstream-grafana
+    environment:
+      # M-128: Secure by default - use env vars to override for dev convenience
+      # For dev: export GF_AUTH_ANONYMOUS_ENABLED=true before docker-compose up
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      # Default: anonymous disabled (secure). Set GF_AUTH_ANONYMOUS_ENABLED=true for dev
+      - GF_AUTH_ANONYMOUS_ENABLED=${GF_AUTH_ANONYMOUS_ENABLED:-false}
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_LOG_LEVEL=warn
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - dashstream
+
+# ============================================================================
+# Networks and Volumes
+# ============================================================================
+
+networks:
+  dashstream:
+    driver: bridge
+    name: dashstream-network
+  # Note: dashflow_rs_default external network was removed.
+  # Kafka is defined in this compose file on the dashstream network,
+  # so external network is not needed and caused CI failures.
+
+volumes:
+  zookeeper-data:
+    name: dashstream-zookeeper-data
+  zookeeper-logs:
+    name: dashstream-zookeeper-logs
+  kafka-data:
+    name: dashstream-kafka-data
+  prometheus-data:
+    name: dashstream-prometheus-data
+  alertmanager-data:
+    name: dashstream-alertmanager-data
+  grafana-data:
+    name: dashstream-grafana-data
+  redis-data:
+    name: dashstream-redis-data

@@ -1,0 +1,80 @@
+[package]
+name = "dashflow-memory"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+description = "Memory implementations for DashFlow - conversation history, summaries, and state management"
+
+[dependencies]
+# Core dependencies
+dashflow = { path = "../dashflow" }
+
+# Async runtime
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# UUID generation
+uuid = { workspace = true }
+
+# HTTP client (for Upstash Redis)
+reqwest = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Tokenization (for ConversationTokenBufferMemory)
+tiktoken-rs = { workspace = true }
+
+# Graph data structure (for ConversationKGMemory)
+petgraph = { workspace = true }
+
+# Database backends (optional features)
+redis = { workspace = true, optional = true }
+mongodb = { workspace = true, optional = true }
+tokio-postgres = { workspace = true, optional = true }
+aws-sdk-dynamodb = { workspace = true, optional = true }
+aws-config = { workspace = true, optional = true }
+scylla = { workspace = true, optional = true }
+
+[features]
+default = []
+redis-backend = ["redis"]
+mongodb-backend = ["mongodb"]
+postgres-backend = ["tokio-postgres"]
+dynamodb-backend = ["aws-sdk-dynamodb", "aws-config"]
+upstash-backend = []
+cassandra-backend = ["scylla"]
+all-backends = ["redis-backend", "mongodb-backend", "postgres-backend", "dynamodb-backend", "upstash-backend", "cassandra-backend"]
+
+[dev-dependencies]
+# Testing
+tokio = { workspace = true, features = ["test-util"] }
+dashflow-openai = { path = "../dashflow-openai" }
+tempfile = { workspace = true }
+uuid = { workspace = true }
+criterion = { workspace = true, features = ["async_tokio"] }
+testcontainers = { workspace = true }
+scylla = { workspace = true }
+
+[[bench]]
+name = "memory_benchmarks"
+harness = false
+
+[lints]
+workspace = true

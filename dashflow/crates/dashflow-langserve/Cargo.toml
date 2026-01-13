@@ -1,0 +1,54 @@
+[package]
+name = "dashflow-langserve"
+version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "REST API deployment framework for DashFlow runnables"
+
+[dependencies]
+# Web framework
+axum = { workspace = true, features = ["macros"] }
+tower-http = { workspace = true, features = ["cors", "compression-gzip", "trace"] }
+
+# Async runtime
+tokio = { workspace = true }
+futures = { workspace = true }
+async-stream = { workspace = true }
+async-trait = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# HTTP client for RemoteRunnable
+reqwest = { workspace = true }
+eventsource-stream = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+# Utilities
+uuid.workspace = true
+url = { workspace = true }
+
+# Observability
+prometheus = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["json"] }
+dashflow-observability = { path = "../dashflow-observability" }
+
+# DashFlow integration
+dashflow = { path = "../dashflow" }
+
+[dev-dependencies]
+hyper = { workspace = true }
+tower = { version = "0.4", features = ["util"] }
+
+[lints]
+workspace = true

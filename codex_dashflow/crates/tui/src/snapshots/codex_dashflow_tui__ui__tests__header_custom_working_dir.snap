@@ -1,0 +1,7 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"                  Codex DashFlow - test-session @ /tmp/project                  "
+"                                                                                "
+"────────────────────────────────────────────────────────────────────────────────"

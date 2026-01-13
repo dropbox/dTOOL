@@ -1,0 +1,28 @@
+[package]
+name = "dashflow-timescale"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "TimescaleVector (pgvectorscale) integration for dashflow - PostgreSQL with DiskANN and SBQ compression"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "timescale", "pgvectorscale", "vector-search", "diskann"]
+categories = ["database"]
+
+[dependencies]
+dashflow.workspace = true
+async-trait = { workspace = true }
+tokio = { workspace = true }
+tokio-postgres = { workspace = true }
+pgvector = { version = "0.4", features = ["postgres"] }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+uuid.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+
+[lints]
+workspace = true

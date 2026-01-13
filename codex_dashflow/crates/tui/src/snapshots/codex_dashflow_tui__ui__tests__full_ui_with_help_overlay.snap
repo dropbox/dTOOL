@@ -1,0 +1,28 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"        Codex DashFlow - test-session-12345 @ ~/codex_dashflow/crates/tui       "
+"                ┌ Help ────────────────────────────────────────┐                "
+"────────────────│ Keyboard Shortcuts                           │────────────────"
+"┌ Chat ─────────│                                              │───────────────┐"
+"│System: Welcome│Normal Mode:                                  │vironment.     │"
+"│               │  i      Enter insert mode                    │               │"
+"│               │  a      Append after cursor                  │               │"
+"│               │  A      Append at end of line                │               │"
+"│               │  I      Insert at beginning                  │               │"
+"│               │  q      Quit application                     │               │"
+"│               │  ?      Toggle this help                     │               │"
+"│               │                                              │               │"
+"│               │Navigation:                                   │               │"
+"│               │  h/l    Move cursor left/right               │               │"
+"│               │  j/k    Scroll chat down/up                  │               │"
+"│               │  g/G    Go to top/bottom of chat             │               │"
+"│               │  0/$    Go to start/end of line              │               │"
+"│               │  PgUp/PgDn  Scroll 10 messages               │               │"
+"│               │                                              │               │"
+"└───────────────│Search:                                       │───────────────┘"
+"┌ Input [Ctrl+En│  /      Start search                         │───────────────┐"
+"│Type a message.│  n/N    Next/prev match                      │               │"
+"└───────────────└──────────────────────────────────────────────┘───────────────┘"
+" INSERT  Turn: 0 | Model: gpt-4o-mini | ~3/128k (0%) | Env | Auto               "

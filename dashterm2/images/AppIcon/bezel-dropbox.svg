@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dropbox Blue Bezel - Rounded Rectangle Border -->
+  <!-- Dropbox Blue: #0061FF -->
+  <defs>
+    <mask id="bezel-mask">
+      <!-- Outer shape (white = visible) -->
+      <rect x="0" y="0" width="1024" height="1024" rx="225" ry="225" fill="white"/>
+      <!-- Inner cutout (black = hidden) -->
+      <rect x="62" y="62" width="900" height="900" rx="175" ry="175" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- Bezel with gradient -->
+  <rect x="0" y="0" width="1024" height="1024" rx="225" ry="225"
+        fill="#0061FF" mask="url(#bezel-mask)"/>
+</svg>

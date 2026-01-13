@@ -1,0 +1,27 @@
+[package]
+name = "dashflow-jina"
+version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Jina AI integration for DashFlow"
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+reqwest = { workspace = true }
+serde.workspace = true
+tokio = { workspace = true }
+
+[dev-dependencies]
+dashflow-standard-tests = { path = "../dashflow-standard-tests" }
+serde_json = { workspace = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+
+[lints]
+workspace = true

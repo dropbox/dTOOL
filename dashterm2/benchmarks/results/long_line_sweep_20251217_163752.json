@@ -1,0 +1,26 @@
+{
+  "benchmark_type": "long_line_sweep",
+  "timestamp": "20251217_163752",
+  "mode": "quick",
+  "terminal": {"name": "iTerm.app", "version": "3.6.6"},
+  "system": {"chip": "Apple M3 Max", "cores": 16, "memory": "64GB"},
+  "parameters": {"widths": [100,500,1000,2000], "line_counts": [500,1000], "iterations": 3},
+  "results": [
+    {"width": 100, "lines": 500, "mean_ms": 48.424, "stddev_ms": 4.745, "min_ms": 44.902, "max_ms": 55.133, "total_bytes": 50000, "throughput_mbs": 0}
+,
+    {"width": 100, "lines": 1000, "mean_ms": 44.430, "stddev_ms": .118, "min_ms": 44.261, "max_ms": 44.543, "total_bytes": 100000, "throughput_mbs": 0}
+,
+    {"width": 500, "lines": 500, "mean_ms": 44.728, "stddev_ms": .670, "min_ms": 44.073, "max_ms": 45.650, "total_bytes": 250000, "throughput_mbs": 0}
+,
+    {"width": 500, "lines": 1000, "mean_ms": 45.079, "stddev_ms": .228, "min_ms": 44.888, "max_ms": 45.404, "total_bytes": 500000, "throughput_mbs": 0}
+,
+    {"width": 1000, "lines": 500, "mean_ms": 44.907, "stddev_ms": .939, "min_ms": 43.842, "max_ms": 46.127, "total_bytes": 500000, "throughput_mbs": 0}
+,
+    {"width": 1000, "lines": 1000, "mean_ms": 44.691, "stddev_ms": .248, "min_ms": 44.357, "max_ms": 44.960, "total_bytes": 1000000, "throughput_mbs": 0}
+,
+    {"width": 2000, "lines": 500, "mean_ms": 44.232, "stddev_ms": .334, "min_ms": 43.796, "max_ms": 44.613, "total_bytes": 1000000, "throughput_mbs": 0}
+,
+    {"width": 2000, "lines": 1000, "mean_ms": 44.721, "stddev_ms": .544, "min_ms": 44.039, "max_ms": 45.373, "total_bytes": 2000000, "throughput_mbs": 0}
+
+  ]
+}

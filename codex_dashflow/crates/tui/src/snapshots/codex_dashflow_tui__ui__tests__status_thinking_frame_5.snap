@@ -1,0 +1,5 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+" PROCESSING...  Turn: 0 | Model: gpt-4o-mini | ~3/128k (0%) | Env | Auto | ⠴ Thi"

@@ -1,0 +1,44 @@
+# DashFlow Azure Terraform Configuration Example
+# Copy this file to terraform.tfvars and customize for your environment
+
+# General Settings
+project_name = "dashflow"
+environment  = "dev"  # Options: dev, staging, production
+location     = "westus2"
+
+# Network Configuration
+vnet_cidr            = "10.0.0.0/16"
+aks_subnet_cidr      = "10.0.0.0/20"
+services_subnet_cidr = "10.0.16.0/24"
+
+# AKS Configuration
+aks_version = "1.28"
+
+# General Node Pool
+general_vm_size    = "Standard_D4s_v3"  # Use Standard_D8s_v3 for production
+general_node_count = 3
+general_min_nodes  = 2
+general_max_nodes  = 10
+
+# Streaming Node Pool
+streaming_vm_size    = "Standard_D8s_v3"  # Use Standard_D16s_v3 for production
+streaming_node_count = 2
+streaming_min_nodes  = 1
+streaming_max_nodes  = 5
+
+# Redis Configuration
+enable_redis   = true
+redis_capacity = 1      # Increase for production
+redis_family   = "C"    # Use "P" for Premium in production
+redis_sku      = "Standard"  # Use "Premium" for production
+
+# PostgreSQL Configuration
+enable_postgres     = true
+postgres_sku        = "GP_Standard_D2s_v3"  # Use GP_Standard_D4s_v3 for production
+postgres_storage_mb = 32768                  # Increase for production
+postgres_username   = "dashflow_admin"
+postgres_password   = "CHANGE_ME_SECURE_PASSWORD"  # Use Key Vault in production
+
+# DashFlow Application
+dashflow_namespace = "dashflow"
+dashflow_version   = "1.11.1"

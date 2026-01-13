@@ -1,0 +1,18 @@
+[package]
+name = "memory_bench"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+dashflow = { path = "../../crates/dashflow" }
+dashflow-text-splitters = { path = "../../crates/dashflow-text-splitters" }
+serde_json.workspace = true
+
+[lints]
+workspace = true

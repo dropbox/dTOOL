@@ -1,0 +1,860 @@
+{
+  "uid": "dashflow-streaming",
+  "title": "DashFlow Streaming - Infrastructure Monitoring",
+  "tags": [
+    "dashflow",
+    "streaming",
+    "kafka",
+    "websocket",
+    "infrastructure"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "30s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "annotations": {
+    "list": []
+  },
+  "templating": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Kafka Success Rate",
+      "description": "Percentage of Kafka messages successfully processed. Target: >=99%",
+      "type": "stat",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 4 },
+      "targets": [
+        {
+          "expr": "(100 * sum(rate(websocket_kafka_messages_total{status=\"success\"}[5m])) / clamp_min(sum(rate(websocket_kafka_messages_total[5m])), 1e-9)) or vector(100)",
+          "legendFormat": "Success Rate"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "red" },
+              { "value": 95, "color": "yellow" },
+              { "value": 99, "color": "green" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Decode Error Rate",
+      "description": "Percentage of messages failing protobuf decode. Target: <5%",
+      "type": "stat",
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 4 },
+      "targets": [
+        {
+          "expr": "(100 * sum(rate(websocket_decode_errors_total[5m])) / clamp_min(sum(rate(websocket_kafka_messages_total[5m])), 1e-9)) or vector(0)",
+          "legendFormat": "Decode Error Rate"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 1, "color": "yellow" },
+              { "value": 5, "color": "red" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Connected Clients",
+      "description": "Current number of WebSocket clients connected",
+      "type": "stat",
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 4 },
+      "targets": [
+        {
+          "expr": "websocket_connected_clients or vector(0)",
+          "legendFormat": "Clients"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "blue" },
+              { "value": 10, "color": "green" },
+              { "value": 100, "color": "yellow" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 4,
+      "title": "E2E Latency (P99)",
+      "description": "99th percentile end-to-end latency. Target: <500ms",
+      "type": "stat",
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 4 },
+      "targets": [
+        {
+          "expr": "(histogram_quantile(0.99, sum(rate(websocket_e2e_latency_ms_bucket[5m])) by (le)) and on() (sum(rate(websocket_e2e_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P99 Latency"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 200, "color": "yellow" },
+              { "value": 500, "color": "red" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 5,
+      "title": "Message Rate (Kafka)",
+      "description": "Kafka message throughput over time by status",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(rate(websocket_kafka_messages_total{status=\"success\"}[1m])) or vector(0)",
+          "legendFormat": "Success"
+        },
+        {
+          "expr": "sum(rate(websocket_kafka_messages_total{status=\"error\"}[1m])) or vector(0)",
+          "legendFormat": "Error"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Error" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Success" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } }]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["mean", "max"] }
+      }
+    },
+    {
+      "id": 6,
+      "title": "Decode Errors by Type",
+      "description": "Protobuf decode errors broken down by error type",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum by (error_type) (rate(websocket_decode_errors_total[1m])) or vector(0)",
+          "legendFormat": "{{error_type}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 20,
+            "spanNulls": true,
+            "stacking": { "mode": "normal" }
+          }
+        }
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "bottom", "calcs": ["sum"] }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Sequence Gaps (Message Loss)",
+      "description": "Sequence gaps indicate messages were lost in transit",
+      "type": "stat",
+      "gridPos": { "x": 0, "y": 10, "w": 8, "h": 4 },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_sequence_gaps_total[5m])) or vector(0)",
+          "legendFormat": "Gaps/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "decimals": 3,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 0.001, "color": "yellow" },
+              { "value": 0.01, "color": "red" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Sequence Duplicates",
+      "description": "Duplicate messages detected (Kafka at-least-once semantics)",
+      "type": "stat",
+      "gridPos": { "x": 8, "y": 10, "w": 8, "h": 4 },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_sequence_duplicates_total[5m])) or vector(0)",
+          "legendFormat": "Duplicates/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "decimals": 3,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 0.1, "color": "yellow" },
+              { "value": 1, "color": "red" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 9,
+      "title": "Sequence Reorders",
+      "description": "Out-of-order messages detected",
+      "type": "stat",
+      "gridPos": { "x": 16, "y": 10, "w": 8, "h": 4 },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_sequence_reorders_total[5m])) or vector(0)",
+          "legendFormat": "Reorders/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "decimals": 3,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 0.1, "color": "yellow" },
+              { "value": 1, "color": "red" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 10,
+      "title": "Sequence Validation Over Time",
+      "description": "Timeline of sequence anomalies (gaps, duplicates, reorders)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 14, "w": 24, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_sequence_gaps_total[1m])) or vector(0)",
+          "legendFormat": "Gaps (message loss)"
+        },
+        {
+          "expr": "sum(rate(dashstream_sequence_duplicates_total[1m])) or vector(0)",
+          "legendFormat": "Duplicates"
+        },
+        {
+          "expr": "sum(rate(dashstream_sequence_reorders_total[1m])) or vector(0)",
+          "legendFormat": "Reorders"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Gaps (message loss)" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum", "max"] }
+      }
+    },
+    {
+      "id": 11,
+      "title": "DLQ Send Rate",
+      "description": "Messages sent to Dead Letter Queue by error type",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 20, "w": 8, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum by (error_type) (rate(websocket_dlq_sends_total[1m])) or vector(0)",
+          "legendFormat": "{{error_type}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 20,
+            "spanNulls": true,
+            "stacking": { "mode": "normal" }
+          }
+        }
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      }
+    },
+    {
+      "id": 12,
+      "title": "DLQ Send Failures",
+      "description": "Failed DLQ sends - CRITICAL: messages being lost",
+      "type": "stat",
+      "gridPos": { "x": 8, "y": 20, "w": 8, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(rate(websocket_dlq_send_failures_total[5m])) or vector(0)",
+          "legendFormat": "Failures/sec"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "decimals": 3,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 0.001, "color": "red" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 13,
+      "title": "Library DLQ Metrics",
+      "description": "DLQ metrics from dashflow-streaming library",
+      "type": "timeseries",
+      "gridPos": { "x": 16, "y": 20, "w": 8, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_dlq_sends_total[1m])) or vector(0)",
+          "legendFormat": "DLQ Sends"
+        },
+        {
+          "expr": "sum(rate(dashstream_dlq_send_failures_total[1m])) or vector(0)",
+          "legendFormat": "DLQ Failures"
+        },
+        {
+          "expr": "sum(rate(dashstream_dlq_dropped_total[1m])) or vector(0)",
+          "legendFormat": "DLQ Dropped (backpressure)"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "DLQ Failures" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "DLQ Dropped (backpressure)" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } }]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      }
+    },
+    {
+      "id": 14,
+      "title": "Redis Operation Latency (P95)",
+      "description": "Redis operation latency for rate limiting and replay buffer (M-647: component-scoped)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 26, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "(histogram_quantile(0.95, sum by (le, operation) (rate(dashstream_rate_limiter_redis_latency_ms_bucket[5m]))) and on() (sum(rate(dashstream_rate_limiter_redis_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "rate_limiter/{{operation}}"
+        },
+        {
+          "expr": "(histogram_quantile(0.95, sum by (le, operation) (rate(dashstream_websocket_redis_latency_ms_bucket[5m]))) and on() (sum(rate(dashstream_websocket_redis_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "websocket/{{operation}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "spanNulls": true
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 50, "color": "red" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }
+      }
+    },
+    {
+      "id": 15,
+      "title": "Redis & Rate Limit Events",
+      "description": "Redis connection errors and rate limit activity",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 26, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(rate(dashstream_rate_limiter_redis_errors_total[1m])) or vector(0)",
+          "legendFormat": "Rate Limiter Redis Errors"
+        },
+        {
+          "expr": "sum(rate(dashstream_websocket_redis_errors_total[1m])) or vector(0)",
+          "legendFormat": "WebSocket Redis Errors"
+        },
+        {
+          "expr": "sum(rate(dashstream_rate_limit_exceeded_total[1m])) or vector(0)",
+          "legendFormat": "Rate Limits Exceeded"
+        },
+        {
+          "expr": "sum(rate(dashstream_rate_limit_allowed_total[1m])) or vector(0)",
+          "legendFormat": "Rate Limits Allowed"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Redis Connection Errors" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Rate Limits Exceeded" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } }]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }
+      }
+    },
+    {
+      "id": 16,
+      "title": "Replay Buffer Stats",
+      "description": "Replay buffer cache hits/misses for client reconnection",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 32, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(rate(replay_buffer_memory_hits_total[1m])) or vector(0)",
+          "legendFormat": "Memory Hits"
+        },
+        {
+          "expr": "sum(rate(replay_buffer_redis_hits_total[1m])) or vector(0)",
+          "legendFormat": "Redis Hits"
+        },
+        {
+          "expr": "sum(rate(replay_buffer_redis_misses_total[1m])) or vector(0)",
+          "legendFormat": "Redis Misses"
+        },
+        {
+          "expr": "sum(rate(replay_buffer_redis_write_dropped_total[1m])) or vector(0)",
+          "legendFormat": "Redis Writes Dropped"
+        },
+        {
+          "expr": "sum(rate(replay_buffer_redis_write_failures_total[1m])) or vector(0)",
+          "legendFormat": "Redis Write Failures"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Memory Hits" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Redis Write Failures" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }
+      }
+    },
+    {
+      "id": 17,
+      "title": "Infrastructure Health",
+      "description": "WebSocket server infrastructure metrics",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 32, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum(rate(websocket_infrastructure_errors_total[1m])) or vector(0)",
+          "legendFormat": "Infrastructure Errors"
+        },
+        {
+          "expr": "sum(rate(websocket_old_data_decode_errors_total[1m])) or vector(0)",
+          "legendFormat": "Old Data Decode Errors"
+        },
+        {
+          "expr": "sum(rate(websocket_dropped_messages_total[1m])) or vector(0)",
+          "legendFormat": "Dropped Messages"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Infrastructure Errors" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }
+      }
+    },
+    {
+      "id": 18,
+      "title": "Client Lag Events",
+      "description": "Client lag events by severity (warning/critical)",
+      "type": "timeseries",
+      "gridPos": { "x": 0, "y": 38, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "sum by (severity) (rate(websocket_client_lag_events_total[1m])) or vector(0)",
+          "legendFormat": "{{severity}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 20,
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "critical" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "warning" },
+            "properties": [{ "id": "color", "value": { "mode": "fixed", "fixedColor": "yellow" } }]
+          }
+        ]
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      }
+    },
+    {
+      "id": 19,
+      "title": "E2E Latency Distribution",
+      "description": "End-to-end latency percentiles over time",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 38, "w": 12, "h": 6 },
+      "targets": [
+        {
+          "expr": "(histogram_quantile(0.50, sum(rate(websocket_e2e_latency_ms_bucket[5m])) by (le)) and on() (sum(rate(websocket_e2e_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P50"
+        },
+        {
+          "expr": "(histogram_quantile(0.90, sum(rate(websocket_e2e_latency_ms_bucket[5m])) by (le)) and on() (sum(rate(websocket_e2e_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P90"
+        },
+        {
+          "expr": "(histogram_quantile(0.99, sum(rate(websocket_e2e_latency_ms_bucket[5m])) by (le)) and on() (sum(rate(websocket_e2e_latency_ms_count[5m])) > 0)) or vector(0)",
+          "legendFormat": "P99"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "spanNulls": true
+          }
+        }
+      },
+      "options": {
+        "legend": { "displayMode": "table", "placement": "right", "calcs": ["mean", "max"] }
+      }
+    },
+    {
+      "id": 20,
+      "title": "Server Uptime",
+      "description": "WebSocket server uptime in seconds",
+      "type": "stat",
+      "gridPos": { "x": 0, "y": 44, "w": 8, "h": 4 },
+      "targets": [
+        {
+          "expr": "websocket_uptime_seconds or vector(0)",
+          "legendFormat": "Uptime"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "dtdurations",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "yellow" },
+              { "value": 3600, "color": "green" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 21,
+      "title": "Kafka Errors by Type",
+      "description": "Kafka errors broken down by error type",
+      "type": "timeseries",
+      "gridPos": { "x": 8, "y": 44, "w": 16, "h": 4 },
+      "targets": [
+        {
+          "expr": "sum by (error_type) (rate(websocket_kafka_errors_by_type_total[1m])) or vector(0)",
+          "legendFormat": "{{error_type}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 20,
+            "spanNulls": true
+          }
+        }
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "right" }
+      }
+    },
+    {
+      "id": 22,
+      "title": "M-1106: Absent Metrics Detection",
+      "description": "Detects when critical metrics are not being scraped. Shows count of missing metrics (0 = all present). Alert when > 0. Prevents 'or vector(X)' fallbacks from masking scrape failures.",
+      "type": "stat",
+      "gridPos": { "x": 0, "y": 48, "w": 12, "h": 4 },
+      "targets": [
+        {
+          "expr": "sum(vector(0) + (absent(websocket_uptime_seconds) or vector(0)) + (absent(websocket_kafka_messages_total) or vector(0)) + (absent(websocket_connected_clients) or vector(0)) + (absent(websocket_dropped_messages_total) or vector(0)) + (absent(websocket_send_failed_total) or vector(0)))",
+          "legendFormat": "Missing Metrics Count"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 1, "color": "red" }
+            ]
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": { "text": "All Present ✓", "color": "green" }
+              }
+            },
+            {
+              "type": "range",
+              "options": {
+                "from": 1,
+                "to": 999,
+                "result": { "text": "${__value.raw} Missing!", "color": "red" }
+              }
+            }
+          ]
+        }
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "reduceOptions": { "values": false, "calcs": ["lastNotNull"] }
+      }
+    },
+    {
+      "id": 23,
+      "title": "M-1106: Absent Metric Details",
+      "description": "Shows which specific metrics are absent. Each series shows 1 when absent, 0 when present.",
+      "type": "timeseries",
+      "gridPos": { "x": 12, "y": 48, "w": 12, "h": 4 },
+      "targets": [
+        {
+          "expr": "absent(websocket_uptime_seconds) or vector(0)",
+          "legendFormat": "websocket_uptime_seconds"
+        },
+        {
+          "expr": "absent(websocket_kafka_messages_total) or vector(0)",
+          "legendFormat": "websocket_kafka_messages_total"
+        },
+        {
+          "expr": "absent(websocket_connected_clients) or vector(0)",
+          "legendFormat": "websocket_connected_clients"
+        },
+        {
+          "expr": "absent(websocket_dropped_messages_total) or vector(0)",
+          "legendFormat": "websocket_dropped_messages_total"
+        },
+        {
+          "expr": "absent(websocket_send_failed_total) or vector(0)",
+          "legendFormat": "websocket_send_failed_total"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "max": 1.1,
+          "custom": {
+            "lineWidth": 2,
+            "fillOpacity": 50,
+            "spanNulls": true
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": 0, "color": "green" },
+              { "value": 0.5, "color": "red" }
+            ]
+          }
+        }
+      },
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" }
+      }
+    }
+  ]
+}

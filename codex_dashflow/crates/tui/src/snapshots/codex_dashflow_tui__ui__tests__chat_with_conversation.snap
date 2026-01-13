@@ -1,0 +1,14 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"┌ Chat ────────────────────────────────────────────────────────────────────────┐"
+"│System: Welcome to Codex DashFlow. Using OPENAI_API_KEY from environment.     │"
+"│You: List the files in the current directory                                  │"
+"│⏳ Calling tool: shell                                                        │" Hidden by multi-width symbols: [(2, " ")]
+"│✓ shell: Cargo.toml                                                           │"
+"│README.md                                                                     │"
+"│src/                                                                          │"
+"│Agent: The current directory contains Cargo.toml, README.md, and a src        │"
+"│directory.                                                                    │"
+"└──────────────────────────────────────────────────────────────────────────────┘"

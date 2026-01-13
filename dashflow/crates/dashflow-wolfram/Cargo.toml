@@ -1,0 +1,25 @@
+[package]
+name = "dashflow-wolfram"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["DashFlow Contributors"]
+description = "WolframAlpha computational knowledge engine tool for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "wolfram", "wolfram-alpha", "computational-knowledge", "ai"]
+categories = ["science", "api-bindings"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+reqwest = { workspace = true }
+tokio = { workspace = true }
+url = { workspace = true }
+
+[dev-dependencies]
+
+[lints]
+workspace = true

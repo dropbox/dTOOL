@@ -1,0 +1,37 @@
+[package]
+name = "dashflow-file-tool"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "File management tools for DashFlow - read, write, list, copy, move, delete, and search files"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+tokio.workspace = true
+serde_json = { workspace = true }
+regex = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tokio = { workspace = true }
+tempfile = { workspace = true }
+dashflow-standard-tests.workspace = true
+async-trait = { workspace = true }
+
+[[example]]
+name = "basic_file_operations"
+required-features = []
+
+[[example]]
+name = "file_search"
+required-features = []
+
+[lints]
+workspace = true

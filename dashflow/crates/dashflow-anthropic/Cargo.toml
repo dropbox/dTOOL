@@ -1,0 +1,38 @@
+[package]
+name = "dashflow-anthropic"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+description = "Anthropic/Claude integration for DashFlow"
+
+[dependencies]
+# Workspace dependencies
+dashflow.workspace = true
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+async-stream = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+
+# Anthropic client - using reqwest for custom HTTP client
+# The anthropic-sdk-rust crate is too new/untested, following implementation docs
+# recommendation to build custom HTTP client for Anthropic
+reqwest = { workspace = true }
+eventsource-stream = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+dashflow-standard-tests = { path = "../dashflow-standard-tests" }
+dashflow-test-utils = { path = "../../test-utils" }
+wiremock = { workspace = true }
+
+[lints]
+workspace = true

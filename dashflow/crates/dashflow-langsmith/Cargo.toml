@@ -1,0 +1,41 @@
+[package]
+name = "dashflow-langsmith"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "LangSmith tracing and observability client for DashFlow"
+
+[dependencies]
+# HTTP client
+reqwest = { workspace = true, features = ["gzip"] }
+
+# Async runtime
+tokio = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+
+# UUID support
+uuid.workspace = true
+anyhow = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Concurrent data structures
+dashmap = { workspace = true }
+parking_lot = { workspace = true }
+serde.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+mockito = "1.2"
+
+[lints]
+workspace = true

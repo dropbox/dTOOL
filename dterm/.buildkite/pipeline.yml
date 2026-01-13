@@ -1,0 +1,28 @@
+env:
+  CARGO_TERM_COLOR: "always"
+  RUST_BACKTRACE: "1"
+  DTERM_CI_MACOS_QUEUE: "macos"
+  DTERM_CI_WINDOWS_QUEUE: "windows"
+  DTERM_CI_LINUX_QUEUE: "linux"
+  DTERM_CI_VERIFY_QUEUE: "linux"
+
+steps:
+  - label: ":mac: macos build/test"
+    command: ".buildkite/scripts/macos.sh"
+    agents:
+      queue: "${DTERM_CI_MACOS_QUEUE}"
+
+  - label: ":windows: windows build/test"
+    command: "powershell -ExecutionPolicy Bypass -File .buildkite/scripts/windows.ps1"
+    agents:
+      queue: "${DTERM_CI_WINDOWS_QUEUE}"
+
+  - label: ":linux: linux build/test"
+    command: ".buildkite/scripts/linux.sh"
+    agents:
+      queue: "${DTERM_CI_LINUX_QUEUE}"
+
+  - label: ":mag: verify (miri + clippy + fmt)"
+    command: ".buildkite/scripts/verify.sh"
+    agents:
+      queue: "${DTERM_CI_VERIFY_QUEUE}"

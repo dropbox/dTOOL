@@ -1,0 +1,22 @@
+# Cargo configuration for langchain-dashstream tests
+# Automatically set DOCKER_HOST for Colima compatibility
+
+[env]
+# For macOS with Colima, testcontainers needs to know the Docker socket location.
+# Uncomment and set your socket path, or set DOCKER_HOST environment variable before running tests.
+# Example for Colima: unix://$HOME/.colima/default/docker.sock
+# DOCKER_HOST = { value = "unix:///path/to/.colima/default/docker.sock", condition = { env_not_set = ["DOCKER_HOST"] } }
+
+# Aliases for development workflows
+[alias]
+# Run the platform usage linter on a directory
+# Usage: cargo lint [path]
+lint = ["run", "-p", "dashflow-cli", "--", "lint"]
+
+# Run cargo check on the entire workspace
+# Usage: cargo check-lint
+check-lint = ["check", "--workspace"]
+
+# Comprehensive check: cargo check + clippy + lint
+# Usage: cargo verify
+verify = ["clippy", "--workspace", "--all-targets", "--", "-D", "warnings"]

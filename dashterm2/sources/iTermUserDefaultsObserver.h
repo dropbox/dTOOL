@@ -1,0 +1,18 @@
+//
+//  iTermUserDefaultsObserver.h
+//  DashTerm2
+//
+//  Created by George Nachman on 11/11/18.
+//
+
+#import <Foundation/Foundation.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface iTermUserDefaultsObserver : NSObject
+- (void)observeKey:(NSString *)key block:(void (^)(void))block;
+- (void)observeAllKeysWithBlock:(void (^)(void))block;
+
+@end
+
+NS_ASSUME_NONNULL_END

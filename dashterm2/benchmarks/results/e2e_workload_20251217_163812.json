@@ -1,0 +1,20 @@
+{
+  "benchmark_type": "e2e_workload",
+  "timestamp": "20251217_163812",
+  "mode": "quick",
+  "terminal": {"name": "iTerm.app", "version": "3.6.6"},
+  "system": {"chip": "Apple M3 Max", "cores": 16, "memory": "64GB"},
+  "results": [
+    {"name": "yes_lines_100000", "mean_ms": 21.593, "stddev_ms": 1.328, "min_ms": 20.157, "max_ms": 23.360}
+    ,{"name": "seq_50000", "mean_ms": 20.102, "stddev_ms": .303, "min_ms": 19.763, "max_ms": 20.502}
+    ,{"name": "cat_zero_1000000B", "mean_ms": 14.046, "stddev_ms": .234, "min_ms": 13.715, "max_ms": 14.239}
+    ,{"name": "cat_random_1MB", "mean_ms": 11.662, "stddev_ms": 3.065, "min_ms": 9.205, "max_ms": 15.984}
+    ,{"name": "256color_x10", "mean_ms": 62.242, "stddev_ms": 1.590, "min_ms": 60.811, "max_ms": 64.462}
+    ,{"name": "truecolor_x10", "mean_ms": 57.622, "stddev_ms": .622, "min_ms": 56.747, "max_ms": 58.151}
+    ,{"name": "cjk_x5", "mean_ms": 35.640, "stddev_ms": .275, "min_ms": 35.334, "max_ms": 36.007}
+    ,{"name": "emoji_x5", "mean_ms": 36.291, "stddev_ms": .731, "min_ms": 35.678, "max_ms": 37.320}
+    ,{"name": "boxdraw_x5", "mean_ms": 37.205, "stddev_ms": .432, "min_ms": 36.866, "max_ms": 37.818}
+    ,{"name": "long_lines_x1000", "mean_ms": 46.013, "stddev_ms": .371, "min_ms": 45.546, "max_ms": 46.457}
+    ,{"name": "rapid_output_x5000", "mean_ms": 30.138, "stddev_ms": .340, "min_ms": 29.839, "max_ms": 30.616}
+  ]
+}

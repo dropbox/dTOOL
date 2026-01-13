@@ -1,0 +1,25 @@
+[config]
+command = "Test"
+timeout = 300
+run-types = ["Tests", "Doctests"]
+out = ["Html", "Json", "Lcov"]
+output-dir = "coverage/v1.3.0/"
+
+# Exclude test code itself
+exclude-files = [
+    "*/tests/*",
+    "*/benches/*",
+    "*/examples/*",
+    "*/proto/*",
+    "*/build.rs",
+]
+
+# Per-crate targets
+# Note: dashflow-core was merged into dashflow (2025)
+[[coverage]]
+name = "dashflow"
+minimum-coverage = 85.0
+
+[[coverage]]
+name = "dashflow-streaming"
+minimum-coverage = 85.0

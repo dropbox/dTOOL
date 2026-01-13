@@ -1,0 +1,149 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Mermaid",
+  "scopeName": "source.mermaid",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#graph" },
+    { "include": "#flowchart" },
+    { "include": "#subgraph" },
+    { "include": "#node" },
+    { "include": "#edge" },
+    { "include": "#class" },
+    { "include": "#style" },
+    { "include": "#click" },
+    { "include": "#strings" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.percent.mermaid",
+          "match": "%%.*$"
+        }
+      ]
+    },
+    "graph": {
+      "patterns": [
+        {
+          "name": "keyword.control.graph.mermaid",
+          "match": "\\b(graph|flowchart)\\s+(TD|TB|BT|RL|LR)\\b"
+        },
+        {
+          "name": "keyword.control.diagram.mermaid",
+          "match": "\\b(sequenceDiagram|classDiagram|stateDiagram|stateDiagram-v2|erDiagram|gantt|pie|gitGraph|journey|requirementDiagram)\\b"
+        }
+      ]
+    },
+    "flowchart": {
+      "patterns": [
+        {
+          "name": "keyword.control.flowchart.mermaid",
+          "match": "\\b(direction)\\s+(TB|TD|BT|RL|LR)\\b"
+        }
+      ]
+    },
+    "subgraph": {
+      "patterns": [
+        {
+          "name": "keyword.control.subgraph.mermaid",
+          "match": "\\b(subgraph|end)\\b"
+        }
+      ]
+    },
+    "node": {
+      "patterns": [
+        {
+          "name": "entity.name.node.mermaid",
+          "match": "\\b(__start__|__end__|START|END)\\b"
+        },
+        {
+          "name": "variable.other.node.mermaid",
+          "match": "\\b([A-Za-z_][A-Za-z0-9_]*)\\b(?=\\s*[\\[\\(\\{\\>])"
+        },
+        {
+          "name": "variable.other.node.mermaid",
+          "match": "(?<=[\\]\\)\\}\\>])\\s*\\b([A-Za-z_][A-Za-z0-9_]*)\\b"
+        }
+      ]
+    },
+    "edge": {
+      "patterns": [
+        {
+          "name": "keyword.operator.edge.mermaid",
+          "match": "-->|---|-\\.->|===|==>"
+        },
+        {
+          "name": "keyword.operator.edge.mermaid",
+          "match": "--[^>].*-->"
+        },
+        {
+          "name": "keyword.operator.edge.mermaid",
+          "match": "\\|[^|]*\\|"
+        }
+      ]
+    },
+    "class": {
+      "patterns": [
+        {
+          "name": "keyword.other.class.mermaid",
+          "match": "\\b(class)\\b"
+        },
+        {
+          "name": "keyword.other.classdef.mermaid",
+          "match": "\\b(classDef)\\s+([A-Za-z_][A-Za-z0-9_]*)"
+        }
+      ]
+    },
+    "style": {
+      "patterns": [
+        {
+          "name": "keyword.other.style.mermaid",
+          "match": "\\b(style)\\s+([A-Za-z_][A-Za-z0-9_]*)"
+        },
+        {
+          "name": "constant.other.css.mermaid",
+          "match": "(fill|stroke|stroke-width|color|font-size)\\s*:"
+        }
+      ]
+    },
+    "click": {
+      "patterns": [
+        {
+          "name": "keyword.other.click.mermaid",
+          "match": "\\b(click)\\s+([A-Za-z_][A-Za-z0-9_]*)"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mermaid",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.mermaid",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.bracket.mermaid",
+          "begin": "\\[",
+          "end": "\\]"
+        },
+        {
+          "name": "string.quoted.paren.mermaid",
+          "begin": "\\(",
+          "end": "\\)"
+        },
+        {
+          "name": "string.quoted.brace.mermaid",
+          "begin": "\\{",
+          "end": "\\}"
+        }
+      ]
+    }
+  }
+}

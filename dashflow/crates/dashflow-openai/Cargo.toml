@@ -1,0 +1,40 @@
+[package]
+name = "dashflow-openai"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "OpenAI integration for DashFlow"
+
+[dependencies]
+# Workspace dependencies
+dashflow.workspace = true
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+async-stream = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+schemars = { workspace = true }
+
+# OpenAI client
+async-openai = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+dashflow-langsmith = { path = "../dashflow-langsmith" }
+dashflow-standard-tests = { path = "../dashflow-standard-tests" }
+dashflow-test-utils = { path = "../../test-utils" }
+dashflow-macros = { path = "../dashflow-macros" }
+dashflow-anthropic = { path = "../dashflow-anthropic" }
+schemars = { workspace = true }
+wiremock = { workspace = true }
+
+[lints]
+workspace = true

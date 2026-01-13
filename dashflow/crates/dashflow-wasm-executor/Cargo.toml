@@ -1,0 +1,53 @@
+[package]
+name = "dashflow-wasm-executor"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["DashFlow Contributors"]
+description = "HIPAA/SOC2 compliant WebAssembly code execution for AI agents"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "wasm", "hipaa", "soc2", "compliance"]
+categories = ["wasm", "security"]
+
+[dependencies]
+# WASM runtime
+wasmtime = "38"
+wasmtime-wasi = "38"
+
+# Async runtime
+tokio = { workspace = true }
+async-trait = { workspace = true }
+
+# Security
+jsonwebtoken = "9.3"
+argon2 = "0.5"
+sha2 = { workspace = true }
+
+# Logging & monitoring
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["json"] }
+prometheus = { workspace = true }
+memory-stats = "1.2"
+
+# Serialization
+serde.workspace = true
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+
+# Utilities
+uuid.workspace = true
+chrono = { workspace = true }
+base64 = { workspace = true }
+
+# DashFlow integration
+dashflow = { path = "../dashflow" }
+thiserror.workspace = true
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tempfile = { workspace = true }
+
+[lints]
+workspace = true

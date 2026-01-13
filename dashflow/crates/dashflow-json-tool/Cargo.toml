@@ -1,0 +1,26 @@
+[package]
+name = "dashflow-json-tool"
+description = "JSON parsing and querying tool for DashFlow - parse, validate, and query JSON with JSONPath"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+dashflow.workspace = true
+serde_json = { workspace = true }
+serde_json_path = "0.7"
+async-trait = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tokio-test = { workspace = true }
+dashflow-standard-tests.workspace = true
+
+[lints]
+workspace = true

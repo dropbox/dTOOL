@@ -1,0 +1,9 @@
+# DashFlow Namespace
+# Creates an isolated namespace for all DashFlow components
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/part-of: dashflow

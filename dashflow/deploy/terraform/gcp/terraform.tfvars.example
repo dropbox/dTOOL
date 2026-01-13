@@ -1,0 +1,41 @@
+# DashFlow GCP Terraform Configuration Example
+# Copy this file to terraform.tfvars and customize for your environment
+
+# General Settings
+project_id   = "your-gcp-project-id"
+project_name = "dashflow"
+environment  = "dev"  # Options: dev, staging, production
+region       = "us-west1"
+
+# Network Configuration
+nodes_subnet_cidr    = "10.0.0.0/20"
+pods_subnet_cidr     = "10.4.0.0/14"
+services_subnet_cidr = "10.8.0.0/20"
+master_cidr          = "172.16.0.0/28"
+
+# GKE General Node Pool
+general_machine_type = "e2-standard-4"  # Use n2-standard-8 for production
+general_node_count   = 3
+general_min_nodes    = 2
+general_max_nodes    = 10
+
+# GKE Streaming Node Pool
+streaming_machine_type = "e2-standard-8"  # Use n2-standard-16 for production
+streaming_node_count   = 2
+streaming_min_nodes    = 1
+streaming_max_nodes    = 5
+
+# Redis Configuration
+enable_redis         = true
+redis_memory_size_gb = 4  # Increase for production
+
+# PostgreSQL Configuration
+enable_postgres    = true
+postgres_tier      = "db-custom-2-4096"  # Use db-custom-4-16384 for production
+postgres_disk_size = 20                  # Increase for production
+postgres_username  = "dashflow_admin"
+postgres_password  = "CHANGE_ME_SECURE_PASSWORD"  # Use Secret Manager in production
+
+# DashFlow Application
+dashflow_namespace = "dashflow"
+dashflow_version   = "1.11.1"

@@ -1,0 +1,27 @@
+[package]
+name = "dashflow-bing"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "Bing Search tool for DashFlow - Microsoft's web search API"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+reqwest = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+tokio = { workspace = true }
+urlencoding = "2.1"
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+
+[lints]
+workspace = true

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>DashTerm2 Testing</title>
+        <link>https://github.com/ayates_dbx/dashterm2</link>
+        <description>DashTerm2 Testing/Beta Updates</description>
+        <language>en</language>
+        <!--
+        Testing release entries will be added here.
+        These are for beta/preview builds that users opt into via preferences.
+
+        Example:
+        <item>
+            <title>Version 3.6.0-beta1</title>
+            <pubDate>Mon, 30 Dec 2025 00:00:00 +0000</pubDate>
+            <sparkle:version>3.6.0-beta1</sparkle:version>
+            <sparkle:shortVersionString>3.6.0-beta1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>10.15</sparkle:minimumSystemVersion>
+            <enclosure
+                url="https://github.com/ayates_dbx/dashterm2/releases/download/v3.6.0-beta1/DashTerm2-3.6.0-beta1.zip"
+                sparkle:edSignature="SIGNATURE_HERE"
+                length="12345678"
+                type="application/octet-stream"/>
+            <description><![CDATA[
+                <h2>What's New in Beta</h2>
+                <ul>
+                    <li>New features being tested</li>
+                </ul>
+            ]]></description>
+        </item>
+        -->
+    </channel>
+</rss>

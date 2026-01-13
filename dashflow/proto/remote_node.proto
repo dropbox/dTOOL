@@ -1,0 +1,271 @@
+syntax = "proto3";
+
+package dashflow.remote_node.v1;
+
+// Remote Node Execution - Distributed DashFlow Execution
+// Version: 1.0.0
+// Author: Andrew Yates (ayates@dropbox.com) © 2025 Dropbox
+//
+// This protocol enables distributing graph node execution across multiple
+// machines via gRPC, allowing compute-intensive nodes to run on dedicated
+// infrastructure while maintaining the same Node interface.
+
+// ============================================================================
+// Remote Node Service
+// ============================================================================
+
+service RemoteNodeService {
+  // Execute a node with given state
+  rpc ExecuteNode(ExecuteNodeRequest) returns (ExecuteNodeResponse);
+
+  // Execute a node with streaming state updates
+  rpc ExecuteNodeStream(ExecuteNodeRequest) returns (stream ExecuteNodeStreamResponse);
+
+  // Health check for node availability
+  rpc Health(HealthRequest) returns (HealthResponse);
+
+  // Get node metadata (capabilities, resource requirements)
+  rpc GetNodeMetadata(GetNodeMetadataRequest) returns (GetNodeMetadataResponse);
+}
+
+// ============================================================================
+// Execute Node Request/Response
+// ============================================================================
+
+message ExecuteNodeRequest {
+  // Node name/ID to execute
+  string node_name = 1;
+
+  // Serialized state (JSON or bincode)
+  bytes state = 2;
+
+  // State serialization format
+  SerializationFormat format = 3;
+
+  // State type hint (for deserialization)
+  string state_type = 4;
+
+  // Execution timeout (milliseconds)
+  uint64 timeout_ms = 5;
+
+  // Request ID for tracing
+  string request_id = 6;
+
+  // Thread ID (for context/checkpointing)
+  string thread_id = 7;
+
+  // Optional: Execution context
+  map<string, string> context = 8;
+}
+
+message ExecuteNodeResponse {
+  // Execution result
+  oneof result {
+    // Success: Updated state
+    ExecutionSuccess success = 1;
+
+    // Failure: Error details
+    ExecutionError error = 2;
+  }
+
+  // Request ID (echoed from request)
+  string request_id = 3;
+
+  // Execution metrics
+  ExecutionMetrics metrics = 4;
+}
+
+message ExecutionSuccess {
+  // Serialized output state
+  bytes state = 1;
+
+  // State serialization format
+  SerializationFormat format = 2;
+
+  // State type
+  string state_type = 3;
+}
+
+message ExecutionError {
+  // Error code
+  ErrorCode code = 1;
+
+  // Human-readable error message
+  string message = 2;
+
+  // Optional: Stack trace
+  string stack_trace = 3;
+
+  // Optional: Error context
+  map<string, string> context = 4;
+
+  // Retryable?
+  bool retryable = 5;
+
+  enum ErrorCode {
+    ERROR_CODE_UNSPECIFIED = 0;
+    ERROR_CODE_NODE_NOT_FOUND = 1;
+    ERROR_CODE_DESERIALIZATION_FAILED = 2;
+    ERROR_CODE_EXECUTION_FAILED = 3;
+    ERROR_CODE_SERIALIZATION_FAILED = 4;
+    ERROR_CODE_TIMEOUT = 5;
+    ERROR_CODE_RESOURCE_EXHAUSTED = 6;
+    ERROR_CODE_INTERNAL = 7;
+  }
+}
+
+message ExecuteNodeStreamResponse {
+  oneof response {
+    // Progress update
+    ProgressUpdate progress = 1;
+
+    // Partial state update (for streaming results)
+    PartialState partial_state = 2;
+
+    // Final result
+    ExecutionSuccess success = 3;
+
+    // Error
+    ExecutionError error = 4;
+  }
+}
+
+message ProgressUpdate {
+  // Progress percentage (0-100)
+  float percentage = 1;
+
+  // Status message
+  string message = 2;
+
+  // Current step (if applicable)
+  string current_step = 3;
+}
+
+message PartialState {
+  // Serialized partial state
+  bytes state = 1;
+
+  // Path in state (e.g., "messages/-" for append)
+  string path = 2;
+
+  // Serialization format
+  SerializationFormat format = 3;
+}
+
+// ============================================================================
+// Health Check
+// ============================================================================
+
+message HealthRequest {
+  // Service name to check
+  string service = 1;
+}
+
+message HealthResponse {
+  // Health status
+  HealthStatus status = 1;
+
+  // Optional: Status message
+  string message = 2;
+
+  // Server version
+  string version = 3;
+
+  // Server capabilities
+  repeated string capabilities = 4;
+
+  enum HealthStatus {
+    HEALTH_STATUS_UNKNOWN = 0;
+    HEALTH_STATUS_SERVING = 1;
+    HEALTH_STATUS_NOT_SERVING = 2;
+    HEALTH_STATUS_SERVICE_UNKNOWN = 3;
+  }
+}
+
+// ============================================================================
+// Node Metadata
+// ============================================================================
+
+message GetNodeMetadataRequest {
+  // Node name to query
+  string node_name = 1;
+}
+
+message GetNodeMetadataResponse {
+  // Node name
+  string node_name = 1;
+
+  // Supported state types
+  repeated string state_types = 2;
+
+  // Supported serialization formats
+  repeated SerializationFormat formats = 3;
+
+  // Resource requirements
+  ResourceRequirements resources = 4;
+
+  // Capabilities
+  repeated string capabilities = 5;
+
+  // Estimated execution time (milliseconds, -1 if unknown)
+  int64 estimated_duration_ms = 6;
+}
+
+message ResourceRequirements {
+  // Minimum CPU cores
+  float min_cpu_cores = 1;
+
+  // Minimum memory (MB)
+  uint64 min_memory_mb = 2;
+
+  // GPU required?
+  bool requires_gpu = 3;
+
+  // GPU memory required (MB)
+  uint64 gpu_memory_mb = 4;
+}
+
+// ============================================================================
+// Execution Metrics
+// ============================================================================
+
+message ExecutionMetrics {
+  // Total execution duration (microseconds)
+  uint64 duration_us = 1;
+
+  // Deserialization time (microseconds)
+  uint64 deserialization_us = 2;
+
+  // Node execution time (microseconds)
+  uint64 execution_us = 3;
+
+  // Serialization time (microseconds)
+  uint64 serialization_us = 4;
+
+  // Network transfer time (microseconds, client-side)
+  uint64 network_us = 5;
+
+  // State size (input)
+  uint64 input_bytes = 6;
+
+  // State size (output)
+  uint64 output_bytes = 7;
+
+  // Memory peak (bytes)
+  uint64 memory_peak_bytes = 8;
+
+  // CPU time (microseconds)
+  uint64 cpu_time_us = 9;
+}
+
+// ============================================================================
+// Common Types
+// ============================================================================
+
+enum SerializationFormat {
+  SERIALIZATION_FORMAT_UNSPECIFIED = 0;
+  SERIALIZATION_FORMAT_JSON = 1;
+  SERIALIZATION_FORMAT_BINCODE = 2;
+  SERIALIZATION_FORMAT_MSGPACK = 3;
+  SERIALIZATION_FORMAT_PROTOBUF = 4;
+}

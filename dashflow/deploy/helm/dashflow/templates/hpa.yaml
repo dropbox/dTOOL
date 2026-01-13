@@ -1,0 +1,61 @@
+{{- if .Values.websocketServer.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dashflow.fullname" . }}-websocket-server
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "dashflow.labels" . | nindent 4 }}
+    app.kubernetes.io/component: websocket-server
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dashflow.fullname" . }}-websocket-server
+  minReplicas: {{ .Values.websocketServer.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.websocketServer.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.websocketServer.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.websocketServer.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.websocketServer.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.websocketServer.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
+---
+{{- if .Values.qualityMonitor.autoscaling.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "dashflow.fullname" . }}-quality-monitor
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "dashflow.labels" . | nindent 4 }}
+    app.kubernetes.io/component: quality-monitor
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "dashflow.fullname" . }}-quality-monitor
+  minReplicas: {{ .Values.qualityMonitor.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.qualityMonitor.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.qualityMonitor.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.qualityMonitor.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+{{- end }}

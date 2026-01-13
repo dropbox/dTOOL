@@ -1,0 +1,31 @@
+[package]
+name = "dashflow-voyage"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Voyage AI embeddings integration for DashFlow"
+
+[dependencies]
+# Workspace dependencies
+dashflow.workspace = true
+tokio = { workspace = true }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# HTTP client
+reqwest = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+dashflow-standard-tests.workspace = true
+dashflow-test-utils.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,177 @@
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+# DashTerm2 shell integration maintains compatibility with legacy control
+# sequences while surfacing the correct branding for user-facing strings.
+
+function is_fish_4_1_or_later
+    if test -z "$FISH_VERSION"
+        # Not fish
+        return 1
+    end
+
+    set -l parts (string split . $FISH_VERSION)
+    set -l major $parts[1]
+    set -l minor $parts[2]
+
+    if test $major -gt 4
+        return 0
+    else if test $major -eq 4 -a $minor -ge 1
+        return 0
+    else
+        return 1
+    end
+end
+
+function is_fish_4_3_or_later
+    if test -z "$FISH_VERSION"
+        # Not fish
+        return 1
+    end
+
+    set -l parts (string split . $FISH_VERSION)
+    set -l major $parts[1]
+    set -l minor $parts[2]
+
+    if test $major -gt 4
+        return 0
+    else if test $major -eq 4 -a $minor -ge 3
+        return 0
+    else
+        return 1
+    end
+end
+
+if begin; status --is-interactive; and not functions -q -- dashterm2_status; and test "$ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX""$TERM" != screen; and test "$ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX""$TERM" != screen-256color; and test "$ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX""$TERM" != tmux-256color; and test "$TERM" != dumb; and test "$TERM" != linux; end
+  if not is_fish_4_3_or_later
+    function dashterm2_status
+        if not is_fish_4_1_or_later
+          printf "\033]133;D;%s\007" $argv
+        end
+    end
+
+    # Mark start of prompt
+    function dashterm2_prompt_mark
+        if not is_fish_4_1_or_later
+          printf "\033]133;A;DashTerm2\007"
+        end
+    end
+
+    # Mark end of prompt
+    function dashterm2_prompt_end
+      printf "\033]133;B\007"
+    end
+
+    # Tell terminal to create a mark at this location
+    function dashterm2_preexec --on-event fish_preexec
+      # For other shells we would output status here but we can't do that in fish.
+      if not is_fish_4_1_or_later
+        if test "$TERM_PROGRAM" = "DashTerm.app"
+            printf "\033]133;C;DashTerm2\r\007"
+        else
+            printf "\033]133;C;DashTerm2\007"
+        end
+      end
+    end
+
+    # Usage: dashterm2_set_user_var key value
+    # These variables show up in badges (and later in other places). For example
+    # dashterm2_set_user_var currentDirectory "$PWD"
+    # Gives a variable accessible in a badge by \(user.currentDirectory)
+    # Calls to this go in dashterm2_print_user_vars.
+    function dashterm2_set_user_var
+      printf "\033]1337;SetUserVar=%s=%s\007" $argv[1] (printf "%s" $argv[2] | base64 | tr -d "\n")
+    end
+
+    function dashterm2_write_remotehost_currentdir_uservars
+      if not set -q -g dashterm2_hostname
+        printf "\033]1337;RemoteHost=%s@%s\007\033]1337;CurrentDir=%s\007" $USER (hostname -f 2>/dev/null) $PWD
+      else
+        printf "\033]1337;RemoteHost=%s@%s\007\033]1337;CurrentDir=%s\007" $USER $dashterm2_hostname $PWD
+      end
+
+      # Users can define a function called dashterm2_print_user_vars.
+      # It should call dashterm2_set_user_var and produce no other output.
+      if functions -q -- dashterm2_print_user_vars
+        dashterm2_print_user_vars
+      end
+    end
+
+    functions -c fish_prompt dashterm2_fish_prompt
+
+    function dashterm2_common_prompt
+      set -l last_status $status
+
+      dashterm2_status $last_status
+      dashterm2_write_remotehost_currentdir_uservars
+      if not functions dashterm2_fish_prompt | string match -q "*dashterm2_prompt_mark*"
+        dashterm2_prompt_mark
+      end
+      return $last_status
+    end
+
+    function dashterm2_check_function -d "Check if function is defined and non-empty"
+      test (functions $argv[1] | grep -cvE '^ *(#|function |end$|$)') != 0
+    end
+
+    if dashterm2_check_function fish_mode_prompt
+      # Only override fish_mode_prompt if it is non-empty. This works around a problem created by a
+      # workaround in starship: https://github.com/starship/starship/issues/1283
+      functions -c fish_mode_prompt dashterm2_fish_mode_prompt
+      function fish_mode_prompt --description 'Write out the mode prompt; do not replace this. Instead, change fish_mode_prompt before sourcing .dashterm2_shell_integration.fish, or modify dashterm2_fish_mode_prompt instead.'
+        dashterm2_common_prompt
+        dashterm2_fish_mode_prompt $argv
+      end
+
+      function fish_prompt --description 'Write out the prompt; do not replace this. Instead, change fish_prompt before sourcing .dashterm2_shell_integration.fish, or modify dashterm2_fish_prompt instead.'
+        # Remove the trailing newline from the original prompt. This is done
+        # using the string builtin from fish, but to make sure any escape codes
+        # are correctly interpreted, use %b for printf.
+        printf "%b" (string join "\n" -- (dashterm2_fish_prompt $argv))
+
+        dashterm2_prompt_end
+      end
+    else
+      # fish_mode_prompt is empty or unset.
+      function fish_prompt --description 'Write out the mode prompt; do not replace this. Instead, change fish_mode_prompt before sourcing .dashterm2_shell_integration.fish, or modify dashterm2_fish_mode_prompt instead.'
+        dashterm2_common_prompt
+
+        # Remove the trailing newline from the original prompt. This is done
+        # using the string builtin from fish, but to make sure any escape codes
+        # are correctly interpreted, use %b for printf.
+        printf "%b" (string join "\n" -- (dashterm2_fish_prompt $argv))
+
+        dashterm2_prompt_end
+      end
+    end
+
+    # If hostname -f is slow for you, set dashterm2_hostname before sourcing this script
+    if not set -q -g dashterm2_hostname
+      # hostname -f is fast on macOS so don't cache it. This lets us get an updated version when
+      # it changes, such as if you attach to a VPN.
+      if test (uname) != Darwin
+        set -g dashterm2_hostname (hostname -f 2>/dev/null)
+        # some flavors of BSD (i.e. NetBSD and OpenBSD) don't have the -f option
+        if test $status -ne 0
+          set -g dashterm2_hostname (hostname)
+        end
+      end
+    end
+
+    dashterm2_write_remotehost_currentdir_uservars
+  end
+  printf "\033]1337;ShellIntegrationVersion=21;shell=fish\007"
+end
+
+functions -e is_fish_4_3_or_later

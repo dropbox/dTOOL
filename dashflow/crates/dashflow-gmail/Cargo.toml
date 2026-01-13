@@ -1,0 +1,39 @@
+[package]
+name = "dashflow-gmail"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+description = "Gmail tools for DashFlow - send, search, and manage emails"
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+tokio = { workspace = true }
+google-gmail1 = "6.0"
+yup-oauth2 = "11.0"
+base64 = { workspace = true }
+mime = "0.3"
+scraper = { workspace = true, optional = true }
+hyper = { workspace = true }
+hyper-util = { version = "0.1", features = ["client", "client-legacy", "http1", "tokio"] }
+hyper-rustls = "0.27"
+http-body-util = "0.1"
+bytes = { workspace = true }
+
+[dev-dependencies]
+
+[features]
+default = []
+html-cleaning = ["scraper"]
+
+[lints]
+workspace = true

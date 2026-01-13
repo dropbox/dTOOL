@@ -1,0 +1,55 @@
+{
+  "benchmark": "packed_screen_char_t",
+  "date": "2025-12-17",
+  "system": {
+    "model": "MacBook Pro (Mac15,9)",
+    "chip": "Apple M3 Max",
+    "memory": "64 GB"
+  },
+  "results": {
+    "structure_sizes": {
+      "screen_char_t_bytes": 12,
+      "packed_screen_char_t_bytes": 8,
+      "memory_reduction_percent": 33.3
+    },
+    "cache_efficiency": {
+      "screen_char_t_chars_per_cache_line": 5.3,
+      "packed_screen_char_t_chars_per_cache_line": 8.0,
+      "improvement_factor": 1.5
+    },
+    "conversion_performance": {
+      "benchmark_chars": 100000,
+      "pack_ms": 0.195,
+      "unpack_ms": 0.190,
+      "pack_ns_per_char": 1.9,
+      "unpack_ns_per_char": 1.9,
+      "pack_throughput_mb_per_s": 6167,
+      "unpack_throughput_mb_per_s": 6308
+    },
+    "memory_savings": {
+      "1k_lines_mb_saved": 0.3,
+      "10k_lines_mb_saved": 3.2,
+      "100k_lines_mb_saved": 32.0,
+      "1m_lines_mb_saved": 320.0
+    },
+    "correctness": {
+      "round_trip_verified": true,
+      "24bit_colors_stored": 32,
+      "24bit_colors_capacity": 251
+    }
+  },
+  "summary": {
+    "key_findings": [
+      "33% memory reduction per character",
+      "1.5x better cache line utilization",
+      "~2 ns/char conversion overhead (negligible)",
+      "320 MB savings for 1M line scrollback",
+      "Lossless round-trip conversion verified"
+    ],
+    "recommendations": [
+      "Use packed format for scrollback storage (LineBuffer)",
+      "Keep unpacked format for active screen (lower latency)",
+      "Consider SIMD optimization for batch conversion"
+    ]
+  }
+}

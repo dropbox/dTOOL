@@ -1,0 +1,24 @@
+[package]
+name = "dashflow-gitlab"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "GitLab integration tools for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "gitlab", "tools", "ai", "agents"]
+categories = ["api-bindings", "development-tools"]
+license.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+gitlab = "0.1804"
+tokio = { workspace = true }
+
+[dev-dependencies]
+
+[lints]
+workspace = true

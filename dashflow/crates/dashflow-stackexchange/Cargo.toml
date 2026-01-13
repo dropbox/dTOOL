@@ -1,0 +1,27 @@
+[package]
+name = "dashflow-stackexchange"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+description = "Stack Exchange API integration for DashFlow - search questions, answers, and developer resources"
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+reqwest = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+tokio = { workspace = true }
+urlencoding = "2.1"
+
+[dev-dependencies]
+
+[lints]
+workspace = true

@@ -1,0 +1,29 @@
+[package]
+name = "dashflow-sql-database"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "SQL Database tools for DashFlow - Execute queries, introspect schemas, list tables"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[features]
+default = ["postgres", "mysql"]
+postgres = ["sqlx/postgres"]
+mysql = ["sqlx/mysql"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+sqlx = { version = "0.8", features = ["runtime-tokio", "tls-native-tls"], default-features = false }
+tokio = { workspace = true }
+
+[dev-dependencies]
+
+[lints]
+workspace = true

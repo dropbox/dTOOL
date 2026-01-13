@@ -1,0 +1,51 @@
+# DashFlow Clippy Configuration
+#
+# This file enforces DashFlow coding patterns by disallowing anti-patterns.
+#
+# Why: AI workers copy example code. Direct instantiation bypasses observability,
+# optimization, and the factory patterns that make DashFlow valuable.
+#
+# See: ROADMAP_CURRENT.md Phase 0.8 (Pattern Enforcement)
+
+# Disallow direct LLM constructors - use build_chat_model() instead
+disallowed-methods = [
+    # OpenAI
+    { path = "dashflow_openai::ChatOpenAI::new", reason = "Use dashflow_openai::build_chat_model(&config) for traced, optimizable LLM calls. See: docs/DASHOPTIMIZE_GUIDE.md" },
+    { path = "dashflow_openai::OpenAIEmbeddings::new", reason = "Use build_embeddings(&config) for traced embedding calls (Phase 0.7)" },
+
+    # Anthropic
+    { path = "dashflow_anthropic::ChatAnthropic::new", reason = "Use dashflow_anthropic::build_chat_model(&config) for traced, optimizable LLM calls" },
+
+    # Ollama
+    { path = "dashflow_ollama::ChatOllama::new", reason = "Use dashflow_ollama::build_chat_model(&config) for traced, optimizable LLM calls" },
+
+    # Groq
+    { path = "dashflow_groq::ChatGroq::new", reason = "Use dashflow_groq::build_chat_model(&config) for traced, optimizable LLM calls" },
+
+    # Mistral
+    { path = "dashflow_mistral::ChatMistralAI::new", reason = "Use dashflow_mistral::build_chat_model(&config) for traced, optimizable LLM calls" },
+
+    # DeepSeek
+    { path = "dashflow_deepseek::ChatDeepSeek::new", reason = "Use dashflow_deepseek::build_chat_model(&config) for traced, optimizable LLM calls" },
+
+    # Fireworks
+    { path = "dashflow_fireworks::ChatFireworks::new", reason = "Use dashflow_fireworks::build_chat_model(&config) for traced, optimizable LLM calls" },
+
+    # xAI
+    { path = "dashflow_xai::ChatXAI::new", reason = "Use dashflow_xai::build_chat_model(&config) for traced, optimizable LLM calls" },
+
+    # Perplexity
+    { path = "dashflow_perplexity::ChatPerplexity::new", reason = "Use dashflow_perplexity::build_chat_model(&config) for traced, optimizable LLM calls" },
+
+    # HuggingFace
+    { path = "dashflow_huggingface::ChatHuggingFace::new", reason = "Use dashflow_huggingface::build_chat_model(&config) for traced, optimizable LLM calls" },
+]
+
+# Maximum complexity for functions
+cognitive-complexity-threshold = 25
+
+# Maximum number of function arguments
+too-many-arguments-threshold = 8
+
+# Maximum lines in a function
+too-many-lines-threshold = 100

@@ -1,0 +1,71 @@
+[package]
+name = "librarian"
+version = "0.1.0"
+edition = "2021"
+description = "Superhuman Librarian - The ultimate RAG paragon with hybrid search, memory, and analysis"
+
+[features]
+dashstream = ["dashflow/dashstream"]
+
+[[bin]]
+name = "librarian"
+path = "src/main.rs"
+
+[[bin]]
+name = "indexer"
+path = "src/bin/indexer.rs"
+
+[[bin]]
+name = "librarian_eval"
+path = "src/bin/eval.rs"
+
+[dependencies]
+# DashFlow core
+dashflow = { path = "../../../crates/dashflow" }
+dashflow-opensearch = { path = "../../../crates/dashflow-opensearch" }
+dashflow-huggingface = { path = "../../../crates/dashflow-huggingface" }
+dashflow-openai = { path = "../../../crates/dashflow-openai" }
+dashflow-observability = { path = "../../../crates/dashflow-observability" }
+dashflow-streaming = { path = "../../../crates/dashflow-streaming" }
+common = { path = "../common" }
+
+# Async runtime
+tokio = { workspace = true }
+futures = { workspace = true }
+async-trait = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# CLI
+clap = { workspace = true }
+anyhow = { workspace = true }
+
+# HTTP client for Gutenberg downloads
+reqwest = { version = "0.12", features = ["json"] }
+
+# Telemetry
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["json"] }
+metrics = { workspace = true }
+metrics-exporter-prometheus = { workspace = true }
+opentelemetry = { workspace = true, features = ["trace"] }
+opentelemetry_sdk = { workspace = true }
+opentelemetry-otlp = { workspace = true, features = ["trace"] }
+tracing-opentelemetry = { workspace = true }
+
+# Utilities
+uuid = { workspace = true }
+chrono = { workspace = true }
+rand = { workspace = true }
+
+# Language detection (Phase 451)
+whatlang = "0.16"
+
+[dev-dependencies]
+dashflow-test-utils = { path = "../../../test-utils" }
+tempfile = { workspace = true }
+
+[lints]
+workspace = true

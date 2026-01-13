@@ -1,0 +1,266 @@
+# =============================================================================
+# Semgrep Configuration for DashTerm2
+# NASA/NSA Grade Security Scanning
+# =============================================================================
+
+rules:
+  # ===========================================================================
+  # COMMAND INJECTION
+  # ===========================================================================
+  - id: objc-command-injection-system
+    pattern: system($ARG)
+    message: "system() is vulnerable to command injection. Use NSTask/Process with argument arrays instead."
+    severity: ERROR
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-78: OS Command Injection"
+      owasp: "A03:2021 - Injection"
+
+  - id: objc-command-injection-popen
+    pattern: popen($CMD, ...)
+    message: "popen() is vulnerable to command injection. Use NSTask/Process with argument arrays instead."
+    severity: ERROR
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-78: OS Command Injection"
+
+  - id: swift-shell-command-injection
+    patterns:
+      - pattern: Process().launchPath = "/bin/sh"
+      - pattern: Process().launchPath = "/bin/bash"
+      - pattern: Process().arguments = ["-c", ...]
+    message: "Shell command execution is vulnerable to injection. Use direct executable paths with argument arrays."
+    severity: WARNING
+    languages: [swift]
+    metadata:
+      cwe: "CWE-78: OS Command Injection"
+
+  # ===========================================================================
+  # PATH TRAVERSAL
+  # ===========================================================================
+  - id: swift-path-traversal
+    patterns:
+      - pattern: |
+          $PATH.appendingPathComponent($USER_INPUT)
+      - pattern: |
+          URL(fileURLWithPath: $USER_INPUT)
+    message: "Potential path traversal. Validate that user input doesn't contain '../' sequences."
+    severity: WARNING
+    languages: [swift]
+    metadata:
+      cwe: "CWE-22: Path Traversal"
+
+  # ===========================================================================
+  # CRYPTOGRAPHIC ISSUES
+  # ===========================================================================
+  - id: weak-hash-md5
+    pattern-either:
+      - pattern: CC_MD5(...)
+      - pattern: MD5(...)
+      - pattern: ".md5"
+    message: "MD5 is cryptographically weak. Use SHA-256 or stronger."
+    severity: WARNING
+    languages: [c, cpp, swift]
+    metadata:
+      cwe: "CWE-328: Weak Hash"
+
+  - id: weak-hash-sha1
+    pattern-either:
+      - pattern: CC_SHA1(...)
+      - pattern: SHA1(...)
+      - pattern: ".sha1"
+    message: "SHA-1 is cryptographically weak. Use SHA-256 or stronger."
+    severity: WARNING
+    languages: [c, cpp, swift]
+    metadata:
+      cwe: "CWE-328: Weak Hash"
+
+  - id: weak-crypto-ecb
+    pattern-either:
+      - pattern: kCCOptionECBMode
+      - pattern: ECB
+    message: "ECB mode is insecure. Use CBC, CTR, or GCM mode."
+    severity: ERROR
+    languages: [c, cpp, swift]
+    metadata:
+      cwe: "CWE-327: Broken Crypto"
+
+  - id: hardcoded-crypto-key
+    pattern-regex: '(key|KEY|Key)\s*[:=]\s*["\x27][A-Za-z0-9+/]{16,}["\x27]'
+    message: "Hardcoded cryptographic key detected. Use secure key storage."
+    severity: ERROR
+    languages: [swift, c, cpp]
+    metadata:
+      cwe: "CWE-321: Hard-coded Cryptographic Key"
+
+  # ===========================================================================
+  # MEMORY SAFETY
+  # ===========================================================================
+  - id: dangerous-c-function-strcpy
+    pattern: strcpy($DST, $SRC)
+    message: "strcpy() is unsafe. Use strlcpy() or strncpy() with bounds checking."
+    severity: ERROR
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-120: Buffer Overflow"
+
+  - id: dangerous-c-function-strcat
+    pattern: strcat($DST, $SRC)
+    message: "strcat() is unsafe. Use strlcat() or strncat() with bounds checking."
+    severity: ERROR
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-120: Buffer Overflow"
+
+  - id: dangerous-c-function-sprintf
+    pattern: sprintf($DST, ...)
+    message: "sprintf() is unsafe. Use snprintf() with buffer size."
+    severity: ERROR
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-120: Buffer Overflow"
+
+  - id: dangerous-c-function-gets
+    pattern: gets($BUF)
+    message: "gets() is unsafe and should never be used. Use fgets() instead."
+    severity: ERROR
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-120: Buffer Overflow"
+
+  - id: format-string-vulnerability
+    patterns:
+      - pattern: printf($VAR)
+      - pattern: fprintf($FILE, $VAR)
+      - pattern: NSLog($VAR)
+    message: "Potential format string vulnerability. Use a format string literal."
+    severity: WARNING
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-134: Format String"
+
+  # ===========================================================================
+  # SWIFT SAFETY
+  # ===========================================================================
+  - id: swift-force-unwrap
+    pattern: $X!
+    message: "Force unwrap can cause crashes. Use optional binding or nil coalescing."
+    severity: WARNING
+    languages: [swift]
+    metadata:
+      cwe: "CWE-476: NULL Pointer Dereference"
+
+  - id: swift-force-cast
+    pattern: $X as! $TYPE
+    message: "Force cast can cause crashes. Use 'as?' with optional binding."
+    severity: WARNING
+    languages: [swift]
+    metadata:
+      cwe: "CWE-704: Incorrect Type Conversion"
+
+  - id: swift-force-try
+    pattern: try! $EXPR
+    message: "Force try can cause crashes. Use do-catch or try? with error handling."
+    severity: WARNING
+    languages: [swift]
+
+  - id: swift-implicitly-unwrapped-optional
+    pattern: "var $X: $TYPE!"
+    message: "Implicitly unwrapped optionals can cause crashes. Use regular optionals."
+    severity: INFO
+    languages: [swift]
+
+  # ===========================================================================
+  # SECRETS
+  # ===========================================================================
+  - id: hardcoded-password
+    pattern-regex: '(password|passwd|pwd)\s*[:=]\s*["\x27][^\s"]+["\x27]'
+    message: "Hardcoded password detected. Use secure credential storage."
+    severity: ERROR
+    languages: [swift, c, cpp]
+    metadata:
+      cwe: "CWE-798: Hard-coded Credentials"
+
+  - id: hardcoded-api-key
+    pattern-regex: '(api[_-]?key|apikey|api[_-]?secret)\s*[:=]\s*["\x27][A-Za-z0-9_\-]{20,}["\x27]'
+    message: "Hardcoded API key detected. Use environment variables or secure storage."
+    severity: ERROR
+    languages: [swift, c, cpp]
+    metadata:
+      cwe: "CWE-798: Hard-coded Credentials"
+
+  - id: aws-access-key
+    pattern-regex: 'AKIA[0-9A-Z]{16}'
+    message: "AWS Access Key detected. Remove immediately and rotate the key."
+    severity: ERROR
+    languages: [generic]
+    metadata:
+      cwe: "CWE-798: Hard-coded Credentials"
+
+  - id: private-key-detected
+    pattern-regex: '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----'
+    message: "Private key detected in code. Remove immediately."
+    severity: ERROR
+    languages: [generic]
+    metadata:
+      cwe: "CWE-321: Hard-coded Cryptographic Key"
+
+  # ===========================================================================
+  # XSS / WEB VIEWS
+  # ===========================================================================
+  - id: swift-webview-xss
+    patterns:
+      - pattern: $WEBVIEW.loadHTMLString($HTML, ...)
+      - pattern: $WEBVIEW.evaluateJavaScript($JS, ...)
+    message: "Loading dynamic content in WebView. Ensure proper input sanitization to prevent XSS."
+    severity: WARNING
+    languages: [swift]
+    metadata:
+      cwe: "CWE-79: Cross-site Scripting (XSS)"
+
+  - id: objc-webview-xss
+    patterns:
+      - pattern: "[$WEBVIEW loadHTMLString:$HTML baseURL:$URL]"
+      - pattern: "[$WEBVIEW stringByEvaluatingJavaScriptFromString:$JS]"
+    message: "Loading dynamic content in WebView. Ensure proper input sanitization to prevent XSS."
+    severity: WARNING
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-79: Cross-site Scripting (XSS)"
+
+  # ===========================================================================
+  # INSECURE RANDOMNESS
+  # ===========================================================================
+  - id: insecure-random-c
+    pattern-either:
+      - pattern: rand()
+      - pattern: random()
+      - pattern: srand(...)
+      - pattern: srandom(...)
+    message: "Using weak random number generator. Use arc4random() or SecRandomCopyBytes() for security-sensitive operations."
+    severity: WARNING
+    languages: [c, cpp]
+    metadata:
+      cwe: "CWE-338: Weak PRNG"
+
+  # ===========================================================================
+  # NETWORK SECURITY
+  # ===========================================================================
+  - id: insecure-http
+    pattern-regex: 'http://[^"\s]+'
+    message: "Insecure HTTP URL detected. Use HTTPS instead."
+    severity: WARNING
+    languages: [swift, c, cpp]
+    metadata:
+      cwe: "CWE-319: Cleartext Transmission"
+
+  - id: disabled-ssl-verification
+    patterns:
+      - pattern: allowsInvalidSSL = true
+      - pattern: kSecTrustResultInvalid
+      - pattern: .allowUntrustedCertificate
+    message: "SSL/TLS verification disabled. This allows man-in-the-middle attacks."
+    severity: ERROR
+    languages: [swift]
+    metadata:
+      cwe: "CWE-295: Improper Certificate Validation"

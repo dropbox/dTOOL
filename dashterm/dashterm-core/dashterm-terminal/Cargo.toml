@@ -1,0 +1,24 @@
+[package]
+name = "dashterm-terminal"
+description = "Terminal emulation core for DashTerm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+alacritty_terminal.workspace = true
+vte.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+unicode-width.workspace = true
+unicode-segmentation.workspace = true
+libc.workspace = true
+parking_lot = "0.12"
+log = "0.4"
+regex = "1.10"
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }

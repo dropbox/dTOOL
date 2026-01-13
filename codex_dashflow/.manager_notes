@@ -1,0 +1,79 @@
+# Manager Notes - codex_dashflow
+
+**Date:** 2025-12-08
+**codex_dashflow:** N=545
+**DashFlow:** N=296
+
+---
+
+## CORRECTION: My Previous Directive Was Wrong
+
+I issued a forceful directive about GraphRegistry at N=541. **That was incorrect.**
+
+GraphRegistry was already implemented at N=494. The worker correctly identified this in iteration 192:
+- `codex version --agent` works
+- `crates/core/src/graph.rs` has full GraphRegistry integration
+- Tests exist and pass
+
+The worker correctly continued to more valuable work (audit gaps) instead of re-implementing something that was already done.
+
+---
+
+## UNCOMMITTED WORK
+
+The worker (iteration 192) started implementing **Audit Gap #12** (Search Tools Availability) and made excellent progress:
+- Added `check_search_tools()` function to `crates/cli/src/lib.rs`
+- Integrated it into `run_doctor_checks()`
+- 80 lines of well-structured code
+
+The worker hit context limit before committing. **Your next commit should:**
+1. Verify the uncommitted changes compile (`cargo build`)
+2. Add tests for `check_search_tools()` if needed
+3. Commit: `# 546: Add search tools doctor check (Audit gap #12)`
+
+---
+
+## CURRENT STATE
+
+### All Self-Awareness Features Complete:
+- **GraphManifest** (N=481) - AI knows its graph structure
+- **Architecture CLI** (N=490) - `codex architecture` shows agent graph
+- **PlatformRegistry** (N=492) - `codex capabilities` shows DashFlow features
+- **Features CLI** (N=493) - `codex features` lists compiled features
+- **GraphRegistry** (N=494) - `codex version --agent` shows agent version
+
+### Test Status:
+- 4,477 tests passing (13 ignored)
+- 0 clippy warnings
+- DashFlow at cde1fd6 (N=296) - up to date
+
+---
+
+## NEXT WORK: Audit Gaps
+
+Work through the 12 remaining audit gaps from `reports/codex_dashflow_audit_2025-12-07.md`:
+
+| # | Gap | Priority |
+|---|-----|----------|
+| 1 | Exec-mode approvals non-interactive | High |
+| 2 | Content/glob search shells out | Medium |
+| 3 | Streaming backend Kafka-only | Medium |
+| 4 | Checkpoint resume invariants | Medium |
+| 5 | Training data redaction | Medium |
+| 6 | MCP reconnection best-effort | Low |
+| 7 | Docs: dev vs prod deps | Low |
+| 8 | Exec-mode posture not surfaced | Low |
+| 9 | Retention policy visibility | Low |
+| 10 | Bench/perf monitoring | Low |
+| 11 | MCP rich content | Low |
+| 12 | Search tool availability UX | **IN PROGRESS** |
+
+Continue working through these. Pick the highest priority gaps first.
+
+---
+
+## REFERENCE
+
+- **Audit Report**: `reports/codex_dashflow_audit_2025-12-07.md`
+- **DashFlow**: `~/dashflow/` - Pull before each iteration
+- **Original Codex**: `~/codex/` (READ-ONLY reference)

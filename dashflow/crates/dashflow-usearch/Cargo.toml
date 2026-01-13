@@ -1,0 +1,27 @@
+[package]
+name = "dashflow-usearch"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "USearch vector store integration for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "llm", "vector-store", "usearch", "ann"]
+categories = ["algorithms", "science"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+serde.workspace = true
+serde_json = { workspace = true }
+tokio = { workspace = true }
+usearch = "2.21"
+uuid.workspace = true
+
+[dev-dependencies]
+dashflow-standard-tests = { path = "../dashflow-standard-tests" }
+
+[lints]
+workspace = true

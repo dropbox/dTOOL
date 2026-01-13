@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "dashflow.fullname" . }}-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "dashflow.labels" . | nindent 4 }}
+data:
+  RUST_LOG: {{ .Values.config.logLevel | quote }}
+  RUST_BACKTRACE: "1"
+  KAFKA_AUTO_OFFSET_RESET: "earliest"
+  WEBSOCKET_HOST: "0.0.0.0"
+  WEBSOCKET_PORT: "3002"
+  METRICS_PORT: "9090"
+  KAFKA_TOPIC: {{ .Values.config.kafkaTopic | quote }}
+  OTEL_SERVICE_NAME: {{ .Values.config.otelServiceName | quote }}
+  OTEL_EXPORTER_OTLP_PROTOCOL: {{ .Values.config.otelExporterProtocol | quote }}
+  OTEL_EXPORTER_OTLP_ENDPOINT: {{ include "dashflow.jaegerEndpoint" . | quote }}

@@ -1,0 +1,70 @@
+# DashFlow Helm values for Azure staging environment
+
+global:
+  environment: staging
+  azureRegion: ${azure_region}
+
+websocketServer:
+  enabled: true
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+qualityMonitor:
+  enabled: true
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+prometheusExporter:
+  enabled: true
+  replicaCount: 2
+
+redis:
+  enabled: false
+  external:
+    enabled: true
+    host: ${redis_host}
+    port: 6380
+    tls: true
+    password: ${redis_key}
+
+postgresql:
+  enabled: false
+  external:
+    enabled: true
+    host: ${postgres_host}
+    port: 5432
+    database: dashflow
+    sslMode: require
+
+observability:
+  prometheus:
+    enabled: true
+  grafana:
+    enabled: true
+
+ingress:
+  enabled: true
+  className: azure/application-gateway
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1

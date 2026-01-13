@@ -1,0 +1,145 @@
+[package]
+name = "dterm-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "High-performance, formally verified terminal core"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(loom)', 'cfg(kani)'] }
+
+[lib]
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+default = ["png-images", "zlib"]
+ffi = ["libc"]
+gpu = ["wgpu", "raw-window-handle", "fontdue", "guillotiere", "bytemuck"]
+png-images = ["png"]  # PNG decoding for Kitty graphics protocol
+zlib = ["flate2"]  # Zlib compression for Kitty graphics protocol
+macos-speech = ["objc2", "objc2-foundation", "block2", "objc2-av-foundation", "dispatch2"]
+ios-speech = ["objc2", "objc2-foundation", "block2", "objc2-av-foundation", "dispatch2"]
+windows-speech = ["windows"]
+linux-speech = ["espeakng", "vosk", "alsa"]
+visual-testing = ["gpu", "image"]  # Visual regression testing infrastructure
+wasm-plugins = ["wasmtime"]  # WASM plugin runtime (requires wasmtime)
+
+[dependencies]
+parking_lot = { workspace = true }
+arrayvec = { workspace = true }
+smallvec = { workspace = true }
+memchr = { workspace = true }
+lz4_flex = { workspace = true }
+zstd = { workspace = true }
+roaring = { workspace = true }
+bincode = { workspace = true }
+bitflags = { workspace = true }
+libc = { workspace = true, optional = true }
+unicode-width = "0.2"
+unicode-bidi = "0.3"
+unicode-segmentation = "1.11"
+memmap2 = { workspace = true }
+base64 = { workspace = true }
+regex = "1"
+rustc-hash = { workspace = true }  # Fast non-cryptographic hashing
+png = { workspace = true, optional = true }  # PNG decoding for Kitty graphics
+flate2 = { workspace = true, optional = true }  # Zlib compression for Kitty graphics
+image = { workspace = true, optional = true }  # Image processing for visual testing
+
+# WASM plugin runtime (optional)
+wasmtime = { version = "26", optional = true, default-features = false, features = ["cranelift", "runtime", "component-model"] }
+
+# GPU rendering (optional)
+wgpu = { workspace = true, optional = true }
+raw-window-handle = { workspace = true, optional = true }
+fontdue = { workspace = true, optional = true }
+guillotiere = { workspace = true, optional = true }
+bytemuck = { workspace = true, optional = true }
+
+# macOS/iOS speech (optional)
+[target.'cfg(any(target_os = "macos", target_os = "ios"))'.dependencies]
+objc2 = { version = "0.6", optional = true, features = ["exception", "catch-all"] }
+objc2-foundation = { version = "0.3", optional = true }
+block2 = { version = "0.6", optional = true }
+objc2-av-foundation = { version = "0.3", optional = true }
+dispatch2 = { version = "0.3.0", optional = true }
+
+# Windows speech (optional)
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { version = "0.58", optional = true, features = [
+    "Media_SpeechSynthesis",
+    "Media_SpeechRecognition",
+    "Media_Capture",
+    "Media_MediaProperties",
+    "Media",
+    "Media_Audio",
+    "Media_Render",
+    "Storage_Streams",
+    "Foundation",
+    "Foundation_Collections",
+    "Devices_Enumeration",
+    "Globalization",
+] }
+
+# Linux speech (optional)
+[target.'cfg(target_os = "linux")'.dependencies]
+espeakng = { version = "0.2", optional = true }
+vosk = { version = "0.2", optional = true }
+alsa = { version = "0.9", optional = true }
+
+[dev-dependencies]
+proptest = { workspace = true }
+criterion = "0.5"
+tempfile = "3"
+vte = "0.15"
+loom = "0.7"  # Concurrency testing - model checks thread interleavings
+
+# tokio must be optional for loom testing compatibility
+# Run loom tests with: RUSTFLAGS="--cfg loom" cargo test --test loom_sync --release
+[target.'cfg(not(loom))'.dev-dependencies]
+tokio = { version = "1.35", features = ["rt", "macros"] }  # For async visual tests
+
+[[bench]]
+name = "parser"
+harness = false
+
+[[bench]]
+name = "scrollback"
+harness = false
+
+[[bench]]
+name = "grid"
+harness = false
+
+[[bench]]
+name = "search"
+harness = false
+
+[[bench]]
+name = "checkpoint"
+harness = false
+
+[[bench]]
+name = "simd"
+harness = false
+
+[[bench]]
+name = "comparative"
+harness = false
+
+[[bench]]
+name = "latency"
+harness = false
+
+[[bench]]
+name = "memory"
+harness = false
+
+[[bench]]
+name = "rle_compression"
+harness = false
+
+[[example]]
+name = "mic_test"
+required-features = ["macos-speech"]

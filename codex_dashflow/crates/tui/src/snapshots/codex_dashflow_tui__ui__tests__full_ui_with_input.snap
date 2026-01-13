@@ -1,0 +1,28 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"        Codex DashFlow - test-session-12345 @ ~/codex_dashflow/crates/tui       "
+"                                                                                "
+"────────────────────────────────────────────────────────────────────────────────"
+"┌ Chat ────────────────────────────────────────────────────────────────────────┐"
+"│System: Welcome to Codex DashFlow. Using OPENAI_API_KEY from environment.     │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"│                                                                              │"
+"└──────────────────────────────────────────────────────────────────────────────┘"
+"┌Input [Ctrl+Enter:send Enter:newline Esc:normal] (6 words, 27 chars)──────────┐"
+"│Hello, how can you help me?                                                   │"
+"└──────────────────────────────────────────────────────────────────────────────┘"
+" INSERT  Turn: 0 | Model: gpt-4o-mini | ~3/128k (0%) | Env | Auto               "

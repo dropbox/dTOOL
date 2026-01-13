@@ -1,0 +1,142 @@
+# Docker Compose for Observability Stack
+#
+# This configuration provides:
+# - Jaeger (distributed tracing)
+# - Prometheus (metrics collection)
+#
+# Usage:
+#   docker-compose up -d                    # Start all services
+#   docker-compose down                     # Stop all services
+#   docker-compose logs -f jaeger          # View Jaeger logs
+#
+# Access:
+#   Jaeger UI:     http://localhost:16686
+#   Prometheus UI: http://localhost:9090
+#   Grafana UI:    http://localhost:3000 (admin/admin)
+#
+# Health Checks:
+#   The librarian app (consolidated RAG application) exposes health endpoints.
+#   Run librarian with: cargo run -p librarian --release -- query "test"
+#
+# Note: Historical apps (document_search_streaming, advanced_rag, code_assistant)
+# were consolidated into librarian in December 2025.
+
+services:
+  # Jaeger all-in-one: Collector + Query + UI
+  # https://www.jaegertracing.io/docs/latest/getting-started/
+  jaeger:
+    image: jaegertracing/all-in-one:1.55
+    container_name: jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - LOG_LEVEL=info
+    ports:
+      # Jaeger UI
+      - "16686:16686"
+      # OTLP gRPC receiver (what our apps send to)
+      - "4317:4317"
+      # OTLP HTTP receiver
+      - "4318:4318"
+      # Jaeger Thrift receiver (legacy, for compatibility)
+      - "14268:14268"
+      # Jaeger gRPC receiver (legacy)
+      - "14250:14250"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:14269/"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - observability
+
+  # Prometheus metrics collector
+  # Scrapes /metrics endpoints from our apps
+  prometheus:
+    image: prom/prometheus:v2.49.1
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - observability
+
+  # Grafana dashboards and visualization
+  # Pre-configured with Prometheus datasource and dashboards
+  grafana:
+    image: grafana/grafana:10.3.3
+    container_name: grafana
+    environment:
+      # M-128: Secure by default - use env vars to override
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=${GF_AUTH_ANONYMOUS_ENABLED:-false}
+      - GF_INSTALL_PLUGINS=
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - observability
+
+  # Example healthcheck configuration for containerized librarian app
+  # (Currently runs on host, not in containers)
+  #
+  # librarian:
+  #   image: your-registry/librarian:latest
+  #   ports:
+  #     - "8080:8080"  # App endpoint
+  #   environment:
+  #     - OPENAI_API_KEY=${OPENAI_API_KEY}
+  #     - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
+  #     - RUST_LOG=info
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 30s
+  #   depends_on:
+  #     jaeger:
+  #       condition: service_healthy
+  #     prometheus:
+  #       condition: service_healthy
+  #   networks:
+  #     - observability
+
+networks:
+  observability:
+    driver: bridge
+
+volumes:
+  prometheus-data:
+  grafana-data:

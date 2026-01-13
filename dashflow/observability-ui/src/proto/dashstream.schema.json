@@ -1,0 +1,857 @@
+{
+  "nested": {
+    "dashstream": {
+      "nested": {
+        "v1": {
+          "nested": {
+            "DashStreamMessage": {
+              "oneofs": {
+                "message": {
+                  "oneof": [
+                    "event",
+                    "stateDiff",
+                    "tokenChunk",
+                    "toolExecution",
+                    "checkpoint",
+                    "metrics",
+                    "error",
+                    "eventBatch",
+                    "executionTrace"
+                  ]
+                }
+              },
+              "fields": {
+                "event": {
+                  "type": "Event",
+                  "id": 1
+                },
+                "stateDiff": {
+                  "type": "StateDiff",
+                  "id": 2
+                },
+                "tokenChunk": {
+                  "type": "TokenChunk",
+                  "id": 3
+                },
+                "toolExecution": {
+                  "type": "ToolExecution",
+                  "id": 4
+                },
+                "checkpoint": {
+                  "type": "Checkpoint",
+                  "id": 5
+                },
+                "metrics": {
+                  "type": "Metrics",
+                  "id": 6
+                },
+                "error": {
+                  "type": "Error",
+                  "id": 7
+                },
+                "eventBatch": {
+                  "type": "EventBatch",
+                  "id": 8
+                },
+                "executionTrace": {
+                  "type": "ExecutionTrace",
+                  "id": 9
+                }
+              }
+            },
+            "Header": {
+              "fields": {
+                "messageId": {
+                  "type": "bytes",
+                  "id": 1
+                },
+                "timestampUs": {
+                  "type": "int64",
+                  "id": 2
+                },
+                "tenantId": {
+                  "type": "string",
+                  "id": 3
+                },
+                "threadId": {
+                  "type": "string",
+                  "id": 4
+                },
+                "sequence": {
+                  "type": "uint64",
+                  "id": 5
+                },
+                "type": {
+                  "type": "MessageType",
+                  "id": 6
+                },
+                "parentId": {
+                  "type": "bytes",
+                  "id": 7
+                },
+                "compression": {
+                  "type": "CompressionType",
+                  "id": 8
+                },
+                "schemaVersion": {
+                  "type": "uint32",
+                  "id": 9
+                }
+              }
+            },
+            "MessageType": {
+              "values": {
+                "MESSAGE_TYPE_UNSPECIFIED": 0,
+                "MESSAGE_TYPE_EVENT": 1,
+                "MESSAGE_TYPE_STATE_DIFF": 2,
+                "MESSAGE_TYPE_TOKEN_CHUNK": 3,
+                "MESSAGE_TYPE_TOOL_EXECUTION": 4,
+                "MESSAGE_TYPE_CHECKPOINT": 5,
+                "MESSAGE_TYPE_METRICS": 6,
+                "MESSAGE_TYPE_ERROR": 7,
+                "MESSAGE_TYPE_EVENT_BATCH": 8,
+                "MESSAGE_TYPE_EXECUTION_TRACE": 9
+              }
+            },
+            "CompressionType": {
+              "values": {
+                "COMPRESSION_NONE": 0,
+                "COMPRESSION_ZSTD": 1,
+                "COMPRESSION_LZ4": 2,
+                "COMPRESSION_SNAPPY": 3
+              }
+            },
+            "Event": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "eventType": {
+                  "type": "EventType",
+                  "id": 2
+                },
+                "nodeId": {
+                  "type": "string",
+                  "id": 3
+                },
+                "attributes": {
+                  "keyType": "string",
+                  "type": "AttributeValue",
+                  "id": 4
+                },
+                "durationUs": {
+                  "type": "int64",
+                  "id": 5
+                },
+                "llmRequestId": {
+                  "type": "string",
+                  "id": 6
+                }
+              }
+            },
+            "EventBatch": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "events": {
+                  "rule": "repeated",
+                  "type": "Event",
+                  "id": 2
+                }
+              }
+            },
+            "EventType": {
+              "values": {
+                "EVENT_TYPE_UNSPECIFIED": 0,
+                "EVENT_TYPE_GRAPH_START": 1,
+                "EVENT_TYPE_GRAPH_END": 2,
+                "EVENT_TYPE_GRAPH_ERROR": 3,
+                "EVENT_TYPE_NODE_START": 10,
+                "EVENT_TYPE_NODE_END": 11,
+                "EVENT_TYPE_NODE_ERROR": 12,
+                "EVENT_TYPE_EDGE_TRAVERSAL": 20,
+                "EVENT_TYPE_CONDITIONAL_BRANCH": 21,
+                "EVENT_TYPE_PARALLEL_START": 22,
+                "EVENT_TYPE_PARALLEL_END": 23,
+                "EVENT_TYPE_LLM_START": 30,
+                "EVENT_TYPE_LLM_END": 31,
+                "EVENT_TYPE_LLM_ERROR": 32,
+                "EVENT_TYPE_LLM_RETRY": 33,
+                "EVENT_TYPE_TOOL_START": 40,
+                "EVENT_TYPE_TOOL_END": 41,
+                "EVENT_TYPE_TOOL_ERROR": 42,
+                "EVENT_TYPE_CHECKPOINT_SAVE": 50,
+                "EVENT_TYPE_CHECKPOINT_LOAD": 51,
+                "EVENT_TYPE_CHECKPOINT_DELETE": 52,
+                "EVENT_TYPE_MEMORY_SAVE": 60,
+                "EVENT_TYPE_MEMORY_LOAD": 61,
+                "EVENT_TYPE_HUMAN_INTERRUPT": 70,
+                "EVENT_TYPE_HUMAN_RESUME": 71,
+                "EVENT_TYPE_NODE_PROGRESS": 80,
+                "EVENT_TYPE_NODE_THINKING": 81,
+                "EVENT_TYPE_NODE_SUBSTEP": 82,
+                "EVENT_TYPE_NODE_WARNING": 83,
+                "EVENT_TYPE_OPTIMIZATION_START": 90,
+                "EVENT_TYPE_OPTIMIZATION_END": 91
+              }
+            },
+            "StateDiff": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "baseCheckpointId": {
+                  "type": "bytes",
+                  "id": 2
+                },
+                "operations": {
+                  "rule": "repeated",
+                  "type": "DiffOperation",
+                  "id": 3
+                },
+                "stateHash": {
+                  "type": "bytes",
+                  "id": 4
+                },
+                "fullState": {
+                  "type": "bytes",
+                  "id": 5
+                }
+              }
+            },
+            "DiffOperation": {
+              "fields": {
+                "op": {
+                  "type": "OpType",
+                  "id": 1
+                },
+                "path": {
+                  "type": "string",
+                  "id": 2
+                },
+                "value": {
+                  "type": "bytes",
+                  "id": 3
+                },
+                "from": {
+                  "type": "string",
+                  "id": 4
+                },
+                "encoding": {
+                  "type": "ValueEncoding",
+                  "id": 5
+                }
+              },
+              "nested": {
+                "OpType": {
+                  "values": {
+                    "OP_TYPE_ADD": 0,
+                    "OP_TYPE_REMOVE": 1,
+                    "OP_TYPE_REPLACE": 2,
+                    "OP_TYPE_MOVE": 3,
+                    "OP_TYPE_COPY": 4,
+                    "OP_TYPE_TEST": 5
+                  }
+                },
+                "ValueEncoding": {
+                  "values": {
+                    "VALUE_ENCODING_JSON": 0,
+                    "VALUE_ENCODING_MSGPACK": 1,
+                    "VALUE_ENCODING_PROTOBUF": 2,
+                    "VALUE_ENCODING_RAW": 3
+                  }
+                }
+              }
+            },
+            "TokenChunk": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "requestId": {
+                  "type": "string",
+                  "id": 2
+                },
+                "text": {
+                  "type": "string",
+                  "id": 3
+                },
+                "tokenIds": {
+                  "rule": "repeated",
+                  "type": "uint32",
+                  "id": 4
+                },
+                "logprobs": {
+                  "rule": "repeated",
+                  "type": "float",
+                  "id": 5
+                },
+                "chunkIndex": {
+                  "type": "uint32",
+                  "id": 6
+                },
+                "isFinal": {
+                  "type": "bool",
+                  "id": 7
+                },
+                "finishReason": {
+                  "type": "FinishReason",
+                  "id": 8
+                },
+                "model": {
+                  "type": "string",
+                  "id": 9
+                },
+                "stats": {
+                  "type": "TokenStats",
+                  "id": 10
+                }
+              },
+              "nested": {
+                "FinishReason": {
+                  "values": {
+                    "FINISH_REASON_NONE": 0,
+                    "FINISH_REASON_STOP": 1,
+                    "FINISH_REASON_LENGTH": 2,
+                    "FINISH_REASON_CONTENT_FILTER": 3,
+                    "FINISH_REASON_TOOL_CALLS": 4,
+                    "FINISH_REASON_ERROR": 5
+                  }
+                }
+              }
+            },
+            "TokenStats": {
+              "fields": {
+                "promptTokens": {
+                  "type": "uint32",
+                  "id": 1
+                },
+                "completionTokens": {
+                  "type": "uint32",
+                  "id": 2
+                },
+                "totalTokens": {
+                  "type": "uint32",
+                  "id": 3
+                }
+              }
+            },
+            "ToolExecution": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "callId": {
+                  "type": "string",
+                  "id": 2
+                },
+                "toolName": {
+                  "type": "string",
+                  "id": 3
+                },
+                "stage": {
+                  "type": "ExecutionStage",
+                  "id": 4
+                },
+                "arguments": {
+                  "type": "bytes",
+                  "id": 5
+                },
+                "result": {
+                  "type": "bytes",
+                  "id": 6
+                },
+                "error": {
+                  "type": "string",
+                  "id": 7
+                },
+                "errorDetails": {
+                  "type": "Error",
+                  "id": 8
+                },
+                "durationUs": {
+                  "type": "int64",
+                  "id": 9
+                },
+                "retryCount": {
+                  "type": "uint32",
+                  "id": 10
+                }
+              },
+              "nested": {
+                "ExecutionStage": {
+                  "values": {
+                    "EXECUTION_STAGE_UNSPECIFIED": 0,
+                    "EXECUTION_STAGE_REQUESTED": 1,
+                    "EXECUTION_STAGE_STARTED": 2,
+                    "EXECUTION_STAGE_COMPLETED": 3,
+                    "EXECUTION_STAGE_FAILED": 4,
+                    "EXECUTION_STAGE_RETRYING": 5
+                  }
+                }
+              }
+            },
+            "Checkpoint": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "checkpointId": {
+                  "type": "bytes",
+                  "id": 2
+                },
+                "state": {
+                  "type": "bytes",
+                  "id": 3
+                },
+                "stateType": {
+                  "type": "string",
+                  "id": 4
+                },
+                "checksum": {
+                  "type": "bytes",
+                  "id": 5
+                },
+                "storageUri": {
+                  "type": "string",
+                  "id": 6
+                },
+                "compressionInfo": {
+                  "type": "CompressionInfo",
+                  "id": 7
+                },
+                "metadata": {
+                  "keyType": "string",
+                  "type": "string",
+                  "id": 8
+                }
+              }
+            },
+            "CompressionInfo": {
+              "fields": {
+                "type": {
+                  "type": "CompressionType",
+                  "id": 1
+                },
+                "compressedSize": {
+                  "type": "uint64",
+                  "id": 2
+                },
+                "uncompressedSize": {
+                  "type": "uint64",
+                  "id": 3
+                },
+                "compressionRatio": {
+                  "type": "float",
+                  "id": 4
+                }
+              }
+            },
+            "Metrics": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "scope": {
+                  "type": "string",
+                  "id": 2
+                },
+                "scopeId": {
+                  "type": "string",
+                  "id": 3
+                },
+                "metrics": {
+                  "keyType": "string",
+                  "type": "MetricValue",
+                  "id": 4
+                },
+                "tags": {
+                  "keyType": "string",
+                  "type": "string",
+                  "id": 5
+                }
+              }
+            },
+            "MetricValue": {
+              "oneofs": {
+                "value": {
+                  "oneof": [
+                    "intValue",
+                    "floatValue",
+                    "stringValue",
+                    "boolValue",
+                    "bytesValue"
+                  ]
+                }
+              },
+              "fields": {
+                "intValue": {
+                  "type": "int64",
+                  "id": 1
+                },
+                "floatValue": {
+                  "type": "double",
+                  "id": 2
+                },
+                "stringValue": {
+                  "type": "string",
+                  "id": 3
+                },
+                "boolValue": {
+                  "type": "bool",
+                  "id": 4
+                },
+                "bytesValue": {
+                  "type": "bytes",
+                  "id": 5
+                },
+                "unit": {
+                  "type": "string",
+                  "id": 6
+                },
+                "type": {
+                  "type": "MetricType",
+                  "id": 7
+                }
+              },
+              "nested": {
+                "MetricType": {
+                  "values": {
+                    "METRIC_TYPE_UNSPECIFIED": 0,
+                    "METRIC_TYPE_COUNTER": 1,
+                    "METRIC_TYPE_GAUGE": 2,
+                    "METRIC_TYPE_HISTOGRAM": 3,
+                    "METRIC_TYPE_SUMMARY": 4
+                  }
+                }
+              }
+            },
+            "Error": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "errorCode": {
+                  "type": "string",
+                  "id": 2
+                },
+                "message": {
+                  "type": "string",
+                  "id": 3
+                },
+                "stackTrace": {
+                  "type": "string",
+                  "id": 4
+                },
+                "context": {
+                  "keyType": "string",
+                  "type": "string",
+                  "id": 5
+                },
+                "severity": {
+                  "type": "Severity",
+                  "id": 6
+                },
+                "exceptionType": {
+                  "type": "string",
+                  "id": 7
+                },
+                "suggestions": {
+                  "rule": "repeated",
+                  "type": "string",
+                  "id": 8
+                }
+              },
+              "nested": {
+                "Severity": {
+                  "values": {
+                    "SEVERITY_UNSPECIFIED": 0,
+                    "SEVERITY_DEBUG": 1,
+                    "SEVERITY_INFO": 2,
+                    "SEVERITY_WARNING": 3,
+                    "SEVERITY_ERROR": 4,
+                    "SEVERITY_FATAL": 5
+                  }
+                }
+              }
+            },
+            "AttributeValue": {
+              "oneofs": {
+                "value": {
+                  "oneof": [
+                    "stringValue",
+                    "intValue",
+                    "floatValue",
+                    "boolValue",
+                    "bytesValue",
+                    "arrayValue",
+                    "mapValue"
+                  ]
+                }
+              },
+              "fields": {
+                "stringValue": {
+                  "type": "string",
+                  "id": 1
+                },
+                "intValue": {
+                  "type": "int64",
+                  "id": 2
+                },
+                "floatValue": {
+                  "type": "double",
+                  "id": 3
+                },
+                "boolValue": {
+                  "type": "bool",
+                  "id": 4
+                },
+                "bytesValue": {
+                  "type": "bytes",
+                  "id": 5
+                },
+                "arrayValue": {
+                  "type": "AttributeArray",
+                  "id": 6
+                },
+                "mapValue": {
+                  "type": "AttributeMap",
+                  "id": 7
+                }
+              }
+            },
+            "AttributeArray": {
+              "fields": {
+                "values": {
+                  "rule": "repeated",
+                  "type": "AttributeValue",
+                  "id": 1
+                }
+              }
+            },
+            "AttributeMap": {
+              "fields": {
+                "values": {
+                  "keyType": "string",
+                  "type": "AttributeValue",
+                  "id": 1
+                }
+              }
+            },
+            "Embedding": {
+              "fields": {
+                "embeddingId": {
+                  "type": "string",
+                  "id": 1
+                },
+                "model": {
+                  "type": "string",
+                  "id": 2
+                },
+                "dimensions": {
+                  "type": "uint32",
+                  "id": 3
+                },
+                "encoding": {
+                  "type": "EmbeddingEncoding",
+                  "id": 4
+                },
+                "data": {
+                  "type": "bytes",
+                  "id": 5
+                }
+              },
+              "nested": {
+                "EmbeddingEncoding": {
+                  "values": {
+                    "EMBEDDING_ENCODING_FLOAT32": 0,
+                    "EMBEDDING_ENCODING_FLOAT16": 1,
+                    "EMBEDDING_ENCODING_INT8": 2,
+                    "EMBEDDING_ENCODING_BINARY": 3
+                  }
+                }
+              }
+            },
+            "MessageBatch": {
+              "fields": {
+                "messages": {
+                  "rule": "repeated",
+                  "type": "DashStreamMessage",
+                  "id": 1
+                },
+                "count": {
+                  "type": "uint32",
+                  "id": 2
+                }
+              }
+            },
+            "ExecutionTrace": {
+              "fields": {
+                "header": {
+                  "type": "Header",
+                  "id": 1
+                },
+                "threadId": {
+                  "type": "string",
+                  "id": 2
+                },
+                "executionId": {
+                  "type": "string",
+                  "id": 3
+                },
+                "nodesExecuted": {
+                  "rule": "repeated",
+                  "type": "NodeExecutionRecord",
+                  "id": 4
+                },
+                "totalDurationMs": {
+                  "type": "uint64",
+                  "id": 5
+                },
+                "totalTokens": {
+                  "type": "uint64",
+                  "id": 6
+                },
+                "errors": {
+                  "rule": "repeated",
+                  "type": "ErrorRecord",
+                  "id": 7
+                },
+                "completed": {
+                  "type": "bool",
+                  "id": 8
+                },
+                "startedAt": {
+                  "type": "string",
+                  "id": 9
+                },
+                "endedAt": {
+                  "type": "string",
+                  "id": 10
+                },
+                "finalState": {
+                  "type": "bytes",
+                  "id": 11
+                },
+                "metadata": {
+                  "keyType": "string",
+                  "type": "bytes",
+                  "id": 12
+                }
+              }
+            },
+            "NodeExecutionRecord": {
+              "fields": {
+                "node": {
+                  "type": "string",
+                  "id": 1
+                },
+                "durationMs": {
+                  "type": "uint64",
+                  "id": 2
+                },
+                "promptTokens": {
+                  "type": "uint64",
+                  "id": 3
+                },
+                "completionTokens": {
+                  "type": "uint64",
+                  "id": 4
+                },
+                "totalTokens": {
+                  "type": "uint64",
+                  "id": 5
+                },
+                "succeeded": {
+                  "type": "bool",
+                  "id": 6
+                },
+                "startedAt": {
+                  "type": "string",
+                  "id": 7
+                },
+                "endedAt": {
+                  "type": "string",
+                  "id": 8
+                },
+                "input": {
+                  "type": "bytes",
+                  "id": 9
+                },
+                "output": {
+                  "type": "bytes",
+                  "id": 10
+                },
+                "metadata": {
+                  "keyType": "string",
+                  "type": "string",
+                  "id": 11
+                }
+              }
+            },
+            "ErrorRecord": {
+              "fields": {
+                "node": {
+                  "type": "string",
+                  "id": 1
+                },
+                "message": {
+                  "type": "string",
+                  "id": 2
+                },
+                "errorCode": {
+                  "type": "string",
+                  "id": 3
+                },
+                "timestamp": {
+                  "type": "string",
+                  "id": 4
+                },
+                "recovered": {
+                  "type": "bool",
+                  "id": 5
+                },
+                "stackTrace": {
+                  "type": "string",
+                  "id": 6
+                }
+              }
+            },
+            "StreamControl": {
+              "fields": {
+                "type": {
+                  "type": "ControlType",
+                  "id": 1
+                },
+                "threadId": {
+                  "type": "string",
+                  "id": 2
+                }
+              },
+              "nested": {
+                "ControlType": {
+                  "values": {
+                    "CONTROL_TYPE_START": 0,
+                    "CONTROL_TYPE_PAUSE": 1,
+                    "CONTROL_TYPE_RESUME": 2,
+                    "CONTROL_TYPE_STOP": 3,
+                    "CONTROL_TYPE_RESET": 4
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

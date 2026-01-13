@@ -1,0 +1,125 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/core",
+    "crates/tui",
+    "crates/exec",
+    "crates/cli",
+    "crates/sandbox",
+    "crates/mcp",
+    "crates/mcp-server",
+    "crates/file-search",
+    "crates/apply-patch",
+    "crates/process-hardening",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/dropbox/dTOOL/codex_dashflow"
+
+[workspace.dependencies]
+# DashFlow (orchestration platform) - using local path for development
+dashflow = { path = "../dashflow/crates/dashflow" }
+dashflow-streaming = { path = "../dashflow/crates/dashflow-streaming" }
+dashflow-shell-tool = { path = "../dashflow/crates/dashflow-shell-tool" }
+dashflow-file-tool = { path = "../dashflow/crates/dashflow-file-tool" }
+dashflow-openai = { path = "../dashflow/crates/dashflow-openai" }
+dashflow-anthropic = { path = "../dashflow/crates/dashflow-anthropic" }
+dashflow-postgres-checkpointer = { path = "../dashflow/crates/dashflow-postgres-checkpointer" }
+dashflow-context = { path = "../dashflow/crates/dashflow-context" }
+dashflow-git-tool = { path = "../dashflow/crates/dashflow-git-tool" }
+dashflow-project = { path = "../dashflow/crates/dashflow-project" }
+dashflow-prompts = { path = "../dashflow/crates/dashflow-prompts" }
+dashflow-testing = { path = "../dashflow/crates/dashflow-testing" }
+dashflow-evals = { path = "../dashflow/crates/dashflow-evals" }
+dashflow-observability = { path = "../dashflow/crates/dashflow-observability" }
+
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# TUI
+ratatui = "0.28"
+crossterm = "0.28"
+
+# HTTP client (for LLM API)
+reqwest = { version = "0.12", features = ["json", "stream"] }
+
+# OpenAI API client
+async-openai = "0.25"
+async-trait = "0.1"
+futures = "0.3"
+async-stream = "0.3"
+schemars = "0.8"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Testing
+pretty_assertions = "1.4"
+insta = "1.34"
+serial_test = "3"
+
+# UUID for session IDs
+uuid = { version = "1.6", features = ["v4", "serde"] }
+
+# MCP (Model Context Protocol)
+rmcp = { version = "0.10", features = ["client", "server", "transport-child-process", "transport-streamable-http-client-reqwest", "transport-io"] }
+
+# OAuth and secure credential storage
+keyring = "3"
+oauth2 = "4"
+webbrowser = "1"
+chrono = { version = "0.4", features = ["serde"] }
+sha2 = "0.10"
+tiny_http = "0.12"
+urlencoding = "2"
+base64 = "0.22"
+
+# File search (fuzzy matching)
+nucleo-matcher = "0.3"
+ignore = "0.4"
+
+# Apply patch
+similar = "2"
+tree-sitter = "0.24"
+tree-sitter-bash = "0.23"
+assert_matches = "1.5"
+tempfile = "3"
+
+# Process hardening
+libc = "0.2"
+ctor = "0.2"
+
+# Regex for pattern matching
+regex = "1"
+
+# Shell detection
+which = "7"
+
+# Text encoding detection (Windows code pages)
+chardetng = "0.1"
+encoding_rs = "0.8"
+
+# Markdown parsing
+pulldown-cmark = "0.12"
+
+# Directory utilities
+dirs = "5"
+
+# System clipboard
+arboard = "3"
+
+# Tokio utilities (cancellation tokens)
+tokio-util = "0.7"

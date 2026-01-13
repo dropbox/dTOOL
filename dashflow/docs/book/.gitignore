@@ -1,0 +1,6 @@
+# mdBook build output
+book/
+*.swp
+*.swo
+*~
+.DS_Store

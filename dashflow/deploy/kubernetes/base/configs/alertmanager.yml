@@ -1,0 +1,48 @@
+# Alertmanager configuration for DashFlow
+global:
+  resolve_timeout: 5m
+
+# Route configuration
+route:
+  group_by: ['alertname', 'severity']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'default-receiver'
+  routes:
+    - match:
+        severity: critical
+      receiver: 'critical-receiver'
+    - match:
+        severity: warning
+      receiver: 'warning-receiver'
+
+# Receivers
+receivers:
+  - name: 'default-receiver'
+    # Configure webhook, email, Slack, PagerDuty, etc.
+    # Example webhook:
+    # webhook_configs:
+    #   - url: 'http://alertmanager-webhook:5001/'
+    #     send_resolved: true
+
+  - name: 'critical-receiver'
+    # Configure for critical alerts (e.g., PagerDuty)
+    # pagerduty_configs:
+    #   - service_key: '<your-service-key>'
+    #     severity: critical
+
+  - name: 'warning-receiver'
+    # Configure for warnings (e.g., Slack)
+    # slack_configs:
+    #   - api_url: 'https://hooks.slack.com/services/xxx'
+    #     channel: '#alerts'
+    #     send_resolved: true
+
+# Inhibition rules
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'service']

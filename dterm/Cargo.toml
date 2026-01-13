@@ -1,0 +1,134 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+authors = ["Andrew Yates <ayates@dropbox.com>"]
+repository = "https://github.com/dropbox/dTOOL/dterm"
+
+[workspace.dependencies]
+# Core library
+dterm-core = { path = "crates/dterm-core" }
+
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+async-trait = "0.1"
+
+# HTTP client
+reqwest = { version = "0.11", features = ["json", "stream"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = "1.3"
+
+# CLI
+clap = { version = "4.4", features = ["derive"] }
+
+# TUI
+ratatui = "0.25"
+crossterm = "0.27"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Utilities
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.6", features = ["v4", "serde"] }
+regex = "1.10"
+glob = "0.3"
+walkdir = "2.4"
+dirs = "5.0"
+toml = "0.8"
+
+# AWS signing (for Bedrock)
+aws-sigv4 = "1.1"
+aws-credential-types = "1.1"
+
+# dterm-core dependencies
+parking_lot = "0.12"
+arrayvec = "0.7"
+smallvec = "1.13"
+memchr = "2.7"
+lz4_flex = "0.11"
+zstd = "0.13"
+roaring = "0.10"
+bitflags = "2.7"
+libc = "0.2"
+memmap2 = "0.9"
+base64 = "0.22"
+rustc-hash = "2.1"  # Fast non-cryptographic hashing for small keys
+
+# GPU rendering
+wgpu = "22.1"
+raw-window-handle = "0.6"  # For window handle abstraction
+fontdue = "0.9"  # Fast font rasterization for glyph atlas
+guillotiere = "0.6"  # Rectangle packing for atlas allocation
+bytemuck = { version = "1.14", features = ["derive"] }  # Safe byte casting for GPU buffers
+png = "0.17"  # PNG decoding for Kitty graphics protocol
+flate2 = "1.0"  # Zlib compression for Kitty graphics protocol
+
+# Testing
+proptest = "1.4"
+tempfile = "3.9"
+mockall = "0.12"
+image = { version = "0.25", default-features = false, features = ["png"] }  # Image processing for visual regression testing
+
+[package]
+name = "dterm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors = ["Andrew Yates"]
+description = "A high-performance AI agent terminal written in Rust"
+keywords = ["ai", "agent", "terminal", "claude", "anthropic"]
+categories = ["command-line-utilities", "development-tools"]
+
+[dependencies]
+dterm-core.workspace = true
+tokio.workspace = true
+async-trait.workspace = true
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+clap.workspace = true
+ratatui.workspace = true
+crossterm.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+anyhow.workspace = true
+thiserror.workspace = true
+chrono.workspace = true
+uuid.workspace = true
+regex.workspace = true
+glob.workspace = true
+walkdir.workspace = true
+dirs.workspace = true
+toml.workspace = true
+aws-sigv4.workspace = true
+aws-credential-types.workspace = true
+libc.workspace = true
+arboard = "3.4"
+
+[dev-dependencies]
+tempfile.workspace = true
+mockall.workspace = true
+
+[[bin]]
+name = "dterm"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = 3
+lto = false  # CRITICAL: Must be false for FFI symbol export
+codegen-units = 1
+# strip = true  # Disabled - strips FFI symbols

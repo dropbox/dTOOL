@@ -1,0 +1,108 @@
+# DashFlow Quality Monitor Deployment
+# Generates quality events for LLM outputs
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashflow-quality-monitor
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: quality-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashflow
+      app.kubernetes.io/component: quality-monitor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dashflow
+        app.kubernetes.io/component: quality-monitor
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      serviceAccountName: dashflow
+      containers:
+        - name: quality-monitor
+          image: dashflow/quality-monitor:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3003
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: dashflow-config
+            - secretRef:
+                name: dashflow-secrets
+            # Kafka security secrets (SASL/TLS) - create via:
+            #   kubectl create secret generic dashflow-kafka-security \
+            #     --from-literal=KAFKA_SECURITY_PROTOCOL=sasl_ssl \
+            #     --from-literal=KAFKA_SASL_MECHANISM=SCRAM-SHA-256 \
+            #     --from-literal=KAFKA_SASL_USERNAME=user \
+            #     --from-literal=KAFKA_SASL_PASSWORD=password \
+            #     --from-literal=KAFKA_SSL_CA_LOCATION=/etc/kafka/ca.pem
+            # Uncomment below to enable:
+            # - secretRef:
+            #     name: dashflow-kafka-security
+            #     optional: true
+          env:
+            - name: KAFKA_BROKERS
+              value: "kafka:9092"
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: dashflow-secrets
+                  key: OPENAI_API_KEY
+                  optional: true
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3003
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3003
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quality-monitor
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: quality-monitor
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3003
+      targetPort: 3003
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: quality-monitor

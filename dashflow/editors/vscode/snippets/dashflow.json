@@ -1,0 +1,277 @@
+{
+  "DashFlow Graph": {
+    "prefix": "dfgraph",
+    "body": [
+      "use dashflow::prelude::*;",
+      "",
+      "#[derive(Clone, Default, Debug, Serialize, Deserialize)]",
+      "struct ${1:State} {",
+      "    ${2:field}: ${3:String},",
+      "}",
+      "",
+      "async fn ${4:process}(state: $1) -> Result<$1, DashFlowError> {",
+      "    Ok(state)",
+      "}",
+      "",
+      "let graph = GraphBuilder::<$1>::new()",
+      "    .add_node(\"$4\", $4)",
+      "    .add_edge(START, \"$4\")",
+      "    .add_edge(\"$4\", END)",
+      "    .build()?;",
+      "",
+      "let result = graph.invoke($1::default()).await?;"
+    ],
+    "description": "Create a basic DashFlow graph"
+  },
+  "DashFlow Node": {
+    "prefix": "dfnode",
+    "body": [
+      "async fn ${1:node_name}(state: ${2:State}) -> Result<$2, DashFlowError> {",
+      "    ${3:// Node logic}",
+      "    Ok(state)",
+      "}"
+    ],
+    "description": "Create a DashFlow graph node function"
+  },
+  "DashFlow Conditional Edge": {
+    "prefix": "dfcond",
+    "body": [
+      "fn ${1:router}(state: &${2:State}) -> &'static str {",
+      "    if ${3:condition} {",
+      "        \"${4:path_a}\"",
+      "    } else {",
+      "        \"${5:path_b}\"",
+      "    }",
+      "}",
+      "",
+      ".add_conditional_edges(\"${6:source}\", $1, &[\"$4\", \"$5\"])"
+    ],
+    "description": "Create a conditional edge router"
+  },
+  "DashFlow Agent": {
+    "prefix": "dfagent",
+    "body": [
+      "use dashflow::agents::*;",
+      "",
+      "let agent = AgentExecutor::builder()",
+      "    .llm(${1:llm})",
+      "    .tools(vec![${2:tools}])",
+      "    .max_iterations(${3:10})",
+      "    .build()?;",
+      "",
+      "let result = agent.invoke(\"${4:query}\").await?;"
+    ],
+    "description": "Create a DashFlow agent executor"
+  },
+  "DashFlow Tool": {
+    "prefix": "dftool",
+    "body": [
+      "#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]",
+      "struct ${1:ToolInput} {",
+      "    ${2:query}: String,",
+      "}",
+      "",
+      "async fn ${3:tool_fn}(input: $1) -> Result<String, DashFlowError> {",
+      "    ${4:// Tool logic}",
+      "    Ok(\"result\".to_string())",
+      "}",
+      "",
+      "let tool = Tool::new(",
+      "    \"${5:tool_name}\",",
+      "    \"${6:Tool description}\",",
+      "    $3,",
+      ");"
+    ],
+    "description": "Create a DashFlow tool"
+  },
+  "DashFlow Checkpointer": {
+    "prefix": "dfcheckpoint",
+    "body": [
+      "use dashflow::checkpointing::*;",
+      "",
+      "let checkpointer = ${1|MemoryCheckpointer,FileCheckpointer,PostgresCheckpointer,RedisCheckpointer,S3Checkpointer|}::new(${2:config})?;",
+      "",
+      "let graph = GraphBuilder::<State>::new()",
+      "    .checkpointer(checkpointer)",
+      "    ${3:// ... nodes and edges}",
+      "    .build()?;"
+    ],
+    "description": "Add checkpointing to a graph"
+  },
+  "DashFlow RAG": {
+    "prefix": "dfrag",
+    "body": [
+      "use dashflow::prelude::*;",
+      "use dashflow_${1|chroma,qdrant,pinecone,pgvector|}::*;",
+      "",
+      "#[derive(Clone, Default, Debug, Serialize, Deserialize)]",
+      "struct RagState {",
+      "    query: String,",
+      "    documents: Vec<Document>,",
+      "    answer: String,",
+      "}",
+      "",
+      "async fn retrieve(state: RagState) -> Result<RagState, DashFlowError> {",
+      "    let store = ${2:VectorStore}::new(\"${3:collection}\")?;",
+      "    let docs = store.similarity_search(&state.query, ${4:5}).await?;",
+      "    Ok(RagState { documents: docs, ..state })",
+      "}",
+      "",
+      "async fn generate(state: RagState) -> Result<RagState, DashFlowError> {",
+      "    let llm = ${5:OpenAI}::new()?;",
+      "    let context = state.documents.iter()",
+      "        .map(|d| d.content.as_str())",
+      "        .collect::<Vec<_>>()",
+      "        .join(\"\\n\");",
+      "    let prompt = format!(\"Context:\\n{}\\n\\nQuestion: {}\", context, state.query);",
+      "    let answer = llm.invoke(&prompt).await?;",
+      "    Ok(RagState { answer, ..state })",
+      "}",
+      "",
+      "let rag = GraphBuilder::<RagState>::new()",
+      "    .add_node(\"retrieve\", retrieve)",
+      "    .add_node(\"generate\", generate)",
+      "    .add_edge(START, \"retrieve\")",
+      "    .add_edge(\"retrieve\", \"generate\")",
+      "    .add_edge(\"generate\", END)",
+      "    .build()?;"
+    ],
+    "description": "Create a RAG pipeline"
+  },
+  "DashFlow State": {
+    "prefix": "dfstate",
+    "body": [
+      "#[derive(Clone, Default, Debug, Serialize, Deserialize)]",
+      "struct ${1:State} {",
+      "    ${2:messages}: Vec<${3:Message}>,",
+      "    ${4:data}: ${5:String},",
+      "}"
+    ],
+    "description": "Create a DashFlow state struct"
+  },
+  "DashFlow Parallel": {
+    "prefix": "dfparallel",
+    "body": [
+      ".add_node(\"${1:branch_a}\", ${2:branch_a_fn})",
+      ".add_node(\"${3:branch_b}\", ${4:branch_b_fn})",
+      ".add_node(\"${5:merge}\", ${6:merge_fn})",
+      ".add_edge(\"${7:source}\", \"$1\")",
+      ".add_edge(\"$7\", \"$3\")",
+      ".add_edge(\"$1\", \"$5\")",
+      ".add_edge(\"$3\", \"$5\")"
+    ],
+    "description": "Create parallel branches in a graph"
+  },
+  "DashFlow LLM Call": {
+    "prefix": "dfllm",
+    "body": [
+      "let llm = ${1|OpenAI,Anthropic,Ollama,Bedrock,Groq|}::new()?;",
+      "let response = llm.invoke(\"${2:prompt}\").await?;"
+    ],
+    "description": "Make an LLM call"
+  },
+  "DashFlow Message": {
+    "prefix": "dfmsg",
+    "body": [
+      "Message::${1|user,assistant,system,tool|}(\"${2:content}\".to_string())"
+    ],
+    "description": "Create a message"
+  },
+  "DashFlow Error Handling": {
+    "prefix": "dferror",
+    "body": [
+      "match result {",
+      "    Ok(state) => {",
+      "        ${1:// Handle success}",
+      "    }",
+      "    Err(DashFlowError::${2|Timeout,NodeError,ValidationError,LlmError,ToolError|}(e)) => {",
+      "        ${3:// Handle specific error}",
+      "    }",
+      "    Err(e) => {",
+      "        ${4:// Handle other errors}",
+      "    }",
+      "}"
+    ],
+    "description": "DashFlow error handling pattern"
+  },
+  "DashFlow Streaming": {
+    "prefix": "dfstream",
+    "body": [
+      "use dashflow_streaming::*;",
+      "",
+      "let callback = DashStreamCallback::new(\"${1:stream-id}\")",
+      "    .with_kafka(\"${2:localhost:9092}\")",
+      "    .build()?;",
+      "",
+      "let graph = GraphBuilder::<State>::new()",
+      "    .callback(callback)",
+      "    ${3:// ... nodes and edges}",
+      "    .build()?;"
+    ],
+    "description": "Add streaming to a graph"
+  },
+  "DashFlow Optimization": {
+    "prefix": "dfoptimize",
+    "body": [
+      "use dashflow::optimization::*;",
+      "",
+      "let optimizer = ${1|MIPROv2,SIMBA,Bootstrap,GRPO|}::new()",
+      "    .metric(${2|exact_match,f1,semantic_f1|})",
+      "    .trainset(trainset)",
+      "    .num_candidates(${3:10})",
+      "    .build()?;",
+      "",
+      "let optimized = optimizer.compile(program).await?;"
+    ],
+    "description": "Create an optimization pipeline"
+  },
+  "DashFlow Test": {
+    "prefix": "dftest",
+    "body": [
+      "#[tokio::test]",
+      "async fn test_${1:name}() -> Result<(), DashFlowError> {",
+      "    let graph = GraphBuilder::<${2:State}>::new()",
+      "        ${3:// ... build graph}",
+      "        .build()?;",
+      "",
+      "    let input = $2 { ${4:// ... input} };",
+      "    let result = graph.invoke(input).await?;",
+      "",
+      "    assert!(${5:condition});",
+      "    Ok(())",
+      "}"
+    ],
+    "description": "Create a DashFlow test"
+  },
+  "Mermaid Graph": {
+    "prefix": "mermaid",
+    "body": [
+      "graph ${1|TD,TB,BT,RL,LR|}",
+      "    ${2:__start__} --> ${3:node1}",
+      "    $3 --> ${4:node2}",
+      "    $4 --> ${5:__end__}"
+    ],
+    "description": "Create a Mermaid graph diagram"
+  },
+  "Mermaid Subgraph": {
+    "prefix": "subgraph",
+    "body": [
+      "subgraph ${1:title}",
+      "    ${2:node1} --> ${3:node2}",
+      "end"
+    ],
+    "description": "Create a Mermaid subgraph"
+  },
+  "Mermaid Conditional": {
+    "prefix": "mermaidcond",
+    "body": [
+      "graph TD",
+      "    ${1:start} --> ${2:decision}{${3:Condition?}}",
+      "    $2 -->|${4:Yes}| ${5:path_a}",
+      "    $2 -->|${6:No}| ${7:path_b}",
+      "    $5 --> ${8:end}",
+      "    $7 --> $8"
+    ],
+    "description": "Create a Mermaid conditional flow"
+  }
+}

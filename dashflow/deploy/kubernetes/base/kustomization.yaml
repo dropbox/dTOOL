@@ -1,0 +1,39 @@
+# Kustomize base configuration for DashFlow
+# Apply with: kubectl apply -k deploy/kubernetes/base
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dashflow
+
+# Common labels for all resources
+commonLabels:
+  app.kubernetes.io/name: dashflow
+  app.kubernetes.io/version: "1.11.1"
+  app.kubernetes.io/managed-by: kustomize
+
+# Resources to include
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - secret.yaml
+  - rbac.yaml
+  - redis.yaml
+  - kafka.yaml
+  - websocket-server.yaml
+  - quality-monitor.yaml
+  - prometheus-exporter.yaml
+  - observability.yaml
+  - ingress.yaml
+
+# ConfigMaps generated from files
+configMapGenerator:
+  - name: prometheus-config
+    files:
+      - prometheus.yml=configs/prometheus.yml
+      - alert_rules.yml=configs/alert_rules.yml
+  - name: alertmanager-config
+    files:
+      - alertmanager.yml=configs/alertmanager.yml
+  - name: grafana-provisioning
+    files:
+      - datasources.yaml=configs/grafana-datasources.yaml

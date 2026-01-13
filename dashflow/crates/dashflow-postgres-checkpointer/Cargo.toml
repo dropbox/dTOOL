@@ -1,0 +1,38 @@
+[package]
+name = "dashflow-postgres-checkpointer"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["Andrew Yates <ayates@dropbox.com>", "Dropbox"]
+description = "PostgreSQL checkpointer for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+dashflow-compression = { path = "../dashflow-compression", optional = true }
+tokio-postgres = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+bincode = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }
+async-trait = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+tracing.workspace = true
+
+[features]
+default = []
+compression = ["dashflow-compression"]
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["full"] }
+tracing-subscriber = { workspace = true }
+testcontainers = { workspace = true }
+testcontainers-modules = { version = "0.13", features = ["postgres"] }
+
+[lints]
+workspace = true

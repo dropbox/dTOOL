@@ -1,0 +1,39 @@
+[package]
+name = "dashflow-s3-checkpointer"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "S3 checkpointer for DashFlow"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "dashflow", "checkpointer", "s3", "aws"]
+categories = ["database"]
+
+[dependencies]
+dashflow.workspace = true
+dashflow-compression = { path = "../dashflow-compression", optional = true }
+aws-config = { workspace = true }
+aws-sdk-s3 = { workspace = true }
+bincode = "1.3"
+serde.workspace = true
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio.workspace = true
+tracing = { workspace = true }
+async-trait = { workspace = true }
+
+[features]
+default = []
+compression = ["dashflow-compression"]
+
+[dev-dependencies]
+tokio = { workspace = true }
+proptest = { workspace = true }
+testcontainers = { workspace = true }
+testcontainers-modules = { version = "0.13", features = ["localstack"] }
+serde = { workspace = true }
+
+[lints]
+workspace = true

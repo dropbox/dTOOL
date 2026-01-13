@@ -1,0 +1,67 @@
+# Pod Disruption Budget for production
+# Ensures high availability during maintenance and upgrades
+
+---
+# WebSocket Server PDB
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: dashflow-websocket-server-pdb
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: websocket-server
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashflow
+      app.kubernetes.io/component: websocket-server
+---
+# Quality Monitor PDB
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: dashflow-quality-monitor-pdb
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: quality-monitor
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashflow
+      app.kubernetes.io/component: quality-monitor
+---
+# Kafka PDB
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: kafka-pdb
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: kafka
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashflow
+      app.kubernetes.io/component: kafka
+---
+# Redis PDB
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: redis-pdb
+  namespace: dashflow
+  labels:
+    app.kubernetes.io/name: dashflow
+    app.kubernetes.io/component: redis
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashflow
+      app.kubernetes.io/component: redis

@@ -1,0 +1,22 @@
+# Critical Files - DO NOT DELETE
+# These files are required for the worker infrastructure to function.
+# If any of these are accidentally deleted, restore from git history.
+
+# Worker infrastructure
+run_worker.sh
+json_to_text.py
+
+# Core configuration
+CLAUDE.md
+DESIGN_INVARIANTS.md
+DESIGN_TARGET_ARCHITECTURE.md
+ROADMAP_CURRENT.md
+WORKER_DIRECTIVE.md
+
+# Legal - Copyright 2026 Dropbox (Andrew Yates)
+LICENSE
+
+# Git configuration
+.gitignore
+Cargo.toml
+Cargo.lock

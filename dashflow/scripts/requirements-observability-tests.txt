@@ -1,0 +1,11 @@
+# Requirements for LLM-as-judge observability validation tests
+# Install with: pip install -r scripts/requirements-observability-tests.txt
+
+# Playwright for browser automation
+playwright>=1.40.0
+
+# OpenAI for LLM-as-judge evaluation
+openai>=1.0.0
+
+# Requests for HTTP API testing
+requests>=2.31.0

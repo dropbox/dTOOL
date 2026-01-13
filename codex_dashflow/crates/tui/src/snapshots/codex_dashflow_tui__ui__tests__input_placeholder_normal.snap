@@ -1,0 +1,7 @@
+---
+source: crates/tui/src/ui.rs
+expression: terminal.backend()
+---
+"┌ Input [i:insert /:search q:quit j/k:scroll] ─────────────────────────────────┐"
+"│Press 'i' to enter insert mode                                                │"
+"└──────────────────────────────────────────────────────────────────────────────┘"

@@ -1,0 +1,38 @@
+[package]
+name = "dashflow-redis-checkpointer"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors = ["DashFlow Contributors"]
+description = "Redis checkpointer for DashFlow state persistence"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "redis", "checkpointer", "dashflow", "persistence"]
+categories = ["database"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+dashflow-compression = { path = "../dashflow-compression", optional = true }
+redis.workspace = true
+async-trait = { workspace = true }
+bincode = "1.3"
+serde.workspace = true
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio.workspace = true
+tracing = { workspace = true }
+
+[features]
+default = []
+compression = ["dashflow-compression"]
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+serde.workspace = true
+tracing-subscriber = { workspace = true }
+testcontainers = { workspace = true }
+testcontainers-modules = { version = "0.13", features = ["redis"] }
+
+[lints]
+workspace = true

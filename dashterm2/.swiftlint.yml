@@ -1,0 +1,330 @@
+# =============================================================================
+# SwiftLint Configuration for DashTerm2
+# NASA/NSA Grade - Zero Defect Tolerance
+# =============================================================================
+# This configuration prioritizes safety and correctness over style.
+# Every rule enabled here catches real bugs.
+# =============================================================================
+
+excluded:
+  - ThirdParty/
+  - submodules/
+  - Pods/
+  - build/
+  - DerivedData/
+  - .build/
+  - "**/.build/"
+  - "**/DerivedSources/"
+  - "**/*.generated.swift"
+  # NO EXCLUSIONS FOR TESTS - NASA/NSA LEVEL MEANS EVERYTHING IS PERFECT
+
+# =============================================================================
+# ANALYZER MODE: Strict
+# =============================================================================
+analyzer_rules:
+  - unused_declaration
+  - unused_import
+
+# =============================================================================
+# SAFETY RULES (These catch crashes and bugs)
+# =============================================================================
+opt_in_rules:
+  # Memory Safety
+  - unowned_variable_capture       # Prevent retain cycle crashes
+  - weak_delegate                  # Delegates should be weak
+  - strong_iboutlet                # IBOutlets should be strong (or weak explicitly)
+
+  # Crash Prevention
+  - force_unwrapping               # Enabled as opt-in for stricter checking
+  - fatal_error_message            # Require messages in fatalError
+  - empty_count                    # Use isEmpty instead of count == 0
+  - first_where                    # Use first(where:) for efficiency
+  - last_where                     # Use last(where:) for efficiency
+  - contains_over_first_not_nil    # Prefer contains over first != nil
+  - contains_over_filter_count     # Prefer contains over filter().count
+  - contains_over_filter_is_empty  # Prefer contains over filter().isEmpty
+  - contains_over_range_nil_comparison  # Prefer contains over range != nil
+  - flatmap_over_map_reduce        # Prefer flatMap
+
+  # Logic Bugs
+  - identical_operands             # x == x is always true (usually a bug)
+  - yoda_condition                 # Prevent accidental assignment in conditions
+  - redundant_nil_coalescing       # Remove unnecessary ?? nil
+  - redundant_optional_initialization  # var x: Int? = nil is redundant
+  - xct_specific_matcher           # Use specific XCT matchers
+
+  # Type Safety
+  - discouraged_optional_boolean   # Booleans shouldn't be optional
+  - discouraged_optional_collection  # Collections shouldn't be optional
+  - explicit_init                  # .init() should be Type()
+  - explicit_type_interface        # Explicit types in certain contexts
+  - fallthrough                    # Explicit fallthrough in switches
+  - unavailable_function           # Mark deprecated functions properly
+
+  # Code Quality
+  - array_init                     # Use Array(seq) instead of seq.map { $0 }
+  - closure_body_length            # Closures shouldn't be too long
+  - collection_alignment           # Align collection elements
+  - computed_accessors_order       # get before set
+  - conditional_returns_on_newline # Return on new line in guards
+  - convenience_type               # Use enums for namespacing
+  - discouraged_assert             # Prefer precondition over assert
+  - empty_string                   # Use isEmpty for strings
+  - enum_case_associated_values_count  # Limit associated values
+  - expiring_todo                  # TODOs with dates
+  - explicit_acl                   # Explicit access control
+  - file_name                      # File name should match type
+  - file_name_no_space             # No spaces in file names
+  - function_default_parameter_at_end  # Default params at end
+  - ibinspectable_in_extension     # Don't use IBInspectable in extensions
+  - joined_default_parameter       # Use joined() not joined(separator: "")
+  - legacy_multiple                # Use isMultiple(of:)
+  - legacy_objc_type               # Don't use NSString etc in Swift
+  - let_var_whitespace             # Proper whitespace
+  - literal_expression_end_indentation  # Proper indentation
+  - local_doc_comment              # Doc comments in right place
+  - lower_acl_than_parent          # Children can't be more accessible
+  - missing_docs                   # Require documentation (warning only)
+  - modifier_order                 # Consistent modifier order
+  - multiline_arguments            # Proper multiline formatting
+  - multiline_arguments_brackets   # Brackets on own lines
+  - multiline_function_chains      # Format function chains
+  - multiline_literal_brackets     # Brackets on own lines
+  - multiline_parameters           # Proper parameter formatting
+  - multiline_parameters_brackets  # Brackets on own lines
+  - no_extension_access_modifier   # No access modifiers in extensions
+  - no_grouping_extension          # Don't group with extensions
+  - nslocalizedstring_key          # Localization keys
+  - nslocalizedstring_require_bundle  # Require bundle for localization
+  - number_separator               # Use underscores in large numbers
+  - object_literal                 # Prefer literals
+  - operator_usage_whitespace      # Proper operator spacing
+  - optional_enum_case_matching    # Match optionals properly
+  - overridden_super_call          # Call super in overrides
+  - override_in_extension          # Don't override in extensions
+  - pattern_matching_keywords      # Proper pattern matching
+  - prefer_nimble                  # For tests
+  - prefer_self_in_static_references  # Use Self in static context
+  - prefer_self_type_over_type_of_self  # Use Self instead of type(of: self)
+  - prefer_zero_over_explicit_init # Use .zero
+  - private_action                 # Actions should be private
+  - private_outlet                 # Outlets should be private
+  - private_subject                # Subjects should be private
+  - prohibited_interface_builder   # Avoid IB (if applicable)
+  - quick_discouraged_call         # For Quick tests
+  - quick_discouraged_focused_test # For Quick tests
+  - quick_discouraged_pending_test # For Quick tests
+  - raw_value_for_camel_cased_codable_enum  # Camel case in codable
+  - reduce_into                    # Use reduce(into:) for efficiency
+  - redundant_type_annotation      # Remove redundant type annotations
+  - required_deinit                # Require deinit
+  - required_enum_case             # For protocols
+  - return_value_from_void_function  # Don't return from void
+  - single_test_class              # One test class per file
+  - sorted_first_last              # Use min/max instead of sorted().first
+  - sorted_imports                 # Sort imports
+  - static_operator                # Operators should be static
+  - strict_fileprivate             # Use private over fileprivate
+  - switch_case_on_newline         # Cases on new lines
+  - test_case_accessibility        # Test methods should be internal
+  - toggle_bool                    # Use .toggle()
+  - trailing_closure               # Use trailing closure syntax
+  - type_contents_order            # Consistent type member order
+  - typesafe_array_init            # Type-safe array initialization
+  - unavailable_condition          # Use @available properly
+  - unneeded_parentheses_in_closure_argument  # Remove unnecessary parens
+  - untyped_error_in_catch         # Type errors in catch
+  - vertical_parameter_alignment_on_call  # Align parameters
+  - vertical_whitespace_between_cases  # Whitespace in switches
+  - vertical_whitespace_closing_braces  # Whitespace before }
+  - vertical_whitespace_opening_braces  # Whitespace after {
+
+# =============================================================================
+# DISABLED RULES (Style preferences, not safety)
+# =============================================================================
+disabled_rules:
+  # Pure style - not safety related
+  - trailing_whitespace
+  - line_length
+  - identifier_name
+  - type_name
+  - file_length
+  - function_body_length
+  - type_body_length
+  - cyclomatic_complexity
+  - function_parameter_count
+  - nesting
+  - large_tuple
+  - opening_brace
+  - statement_position
+  - vertical_whitespace
+  - closure_parameter_position
+  - colon
+  - comma
+  - control_statement
+  - legacy_constructor
+  - trailing_newline
+  - trailing_comma
+  - trailing_semicolon
+  - void_return
+  - mark
+  - todo
+  - private_over_fileprivate
+  - duplicate_imports
+  - syntactic_sugar
+  - unneeded_break_in_switch
+  - empty_parentheses_with_trailing_closure
+  - empty_enum_arguments
+  - closure_end_indentation
+
+# =============================================================================
+# RULE SEVERITY (Errors block commits, warnings inform)
+# =============================================================================
+
+# CRITICAL - These are errors (block commits)
+force_cast:
+  severity: error
+
+force_try:
+  severity: error
+
+force_unwrapping:
+  severity: error
+
+empty_count:
+  severity: error
+
+identical_operands:
+  severity: error
+
+unowned_variable_capture:
+  severity: error
+
+# IMPORTANT - Warnings
+weak_delegate:
+  severity: warning
+
+discouraged_optional_boolean:
+  severity: warning
+
+discouraged_optional_collection:
+  severity: warning
+
+fatal_error_message:
+  severity: warning
+
+# DOCUMENTATION - Warnings (don't block)
+missing_docs:
+  severity: warning
+  excludes_extensions: true
+  excludes_inherited_types: true
+  private: ignore
+
+# =============================================================================
+# RULE CONFIGURATION
+# =============================================================================
+
+# Closure body length
+closure_body_length:
+  warning: 30
+  error: 50
+
+# Enum case associated values
+enum_case_associated_values_count:
+  warning: 5
+  error: 7
+
+# Type contents order (for consistency)
+type_contents_order:
+  order:
+    - associated_type
+    - type_alias
+    - case
+    - subtype
+    - type_property
+    - instance_property
+    - ib_inspectable
+    - ib_outlet
+    - initializer
+    - deinitializer
+    - type_method
+    - view_life_cycle_method
+    - ib_action
+    - other_method
+    - subscript
+
+# File name configuration
+file_name:
+  excluded:
+    - main.swift
+    - LinuxMain.swift
+
+# Expiring TODO format: // TODO: [2024-01-15] Fix this
+expiring_todo:
+  approaching_expiry_severity: warning
+  expired_severity: error
+  date_format: "yyyy-MM-dd"
+  date_delimiters:
+    opening: "["
+    closing: "]"
+  date_separator: "-"
+  approaching_expiry_threshold: 30
+
+# =============================================================================
+# CUSTOM RULES (DashTerm2 Specific)
+# =============================================================================
+custom_rules:
+  # Prevent use of fatalError without it_fatalError wrapper
+  no_bare_fatal_error:
+    name: "Use it_fatalError"
+    regex: '(?<!it_)fatalError\s*\('
+    message: "Use it_fatalError instead of fatalError for better crash logs"
+    severity: error
+    match_kinds:
+      - identifier
+
+  # Prevent use of assert without it_assert wrapper
+  no_bare_assert:
+    name: "Use it_assert"
+    regex: '(?<!it_)assert\s*\('
+    message: "Use it_assert instead of assert for better crash logs"
+    severity: warning
+    match_kinds:
+      - identifier
+
+  # Prevent force unwrap on dictionary access
+  # Matches patterns like dict["key"]! or dict[variable]!
+  # Uses negative lookbehind to exclude type annotations like [String]! or : [Type]!
+  no_force_unwrap_dictionary:
+    name: "No Force Unwrap Dictionary"
+    regex: '(?<![:\s,(\[])\[\s*["\w]+\s*\]!'
+    message: "Use safe dictionary access with default value or optional binding"
+    severity: error
+
+  # Prevent UI work on background threads
+  no_ui_on_background:
+    name: "No UI on Background Thread"
+    regex: 'DispatchQueue\.(global|background).*\{[^}]*(self\.view|UIView|NSView|setNeedsDisplay|setNeedsLayout)'
+    message: "UI work must be done on main thread"
+    severity: error
+
+  # Require explicit error handling
+  require_catch_error_handling:
+    name: "Handle Errors Explicitly"
+    regex: 'catch\s*\{\s*(return|break|continue)\s*\}'
+    message: "Don't silently swallow errors - log or handle them"
+    severity: warning
+
+  # No prints in production code
+  no_print_in_production:
+    name: "No Print Statements"
+    regex: '\bprint\s*\('
+    message: "Use proper logging instead of print()"
+    severity: warning
+    match_kinds:
+      - identifier
+
+# =============================================================================
+# REPORTER
+# =============================================================================
+reporter: "xcode"

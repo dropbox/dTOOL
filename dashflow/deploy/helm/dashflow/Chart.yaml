@@ -1,0 +1,33 @@
+apiVersion: v2
+name: dashflow
+description: DashFlow - High-performance LLM orchestration framework in Rust
+type: application
+version: 1.0.0
+appVersion: "1.11.1"
+
+keywords:
+  - llm
+  - dashflow
+  - rust
+  - streaming
+  - observability
+  - agents
+
+home: https://github.com/dropbox/dTOOL/dashflow
+
+maintainers:
+  - name: Andrew Yates
+    email: andrew@dashflow.io
+
+dependencies:
+  # Optional: Use Bitnami Redis instead of built-in
+  # - name: redis
+  #   version: "18.x.x"
+  #   repository: "https://charts.bitnami.com/bitnami"
+  #   condition: redis.external
+
+  # Optional: Use Bitnami Kafka instead of built-in
+  # - name: kafka
+  #   version: "26.x.x"
+  #   repository: "https://charts.bitnami.com/bitnami"
+  #   condition: kafka.external

@@ -1,0 +1,47 @@
+[package]
+name = "dashflow-gemini"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+categories.workspace = true
+license.workspace = true
+description = "Google Gemini integration for DashFlow"
+
+[dependencies]
+# Workspace dependencies
+dashflow.workspace = true
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+async-stream = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+uuid = { workspace = true }
+
+# HTTP client for Gemini API
+reqwest = { workspace = true }
+eventsource-stream = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+dashflow-standard-tests.workspace = true
+dashflow-test-utils.workspace = true
+
+[[example]]
+name = "gemini_basic"
+path = "examples/gemini_basic.rs"
+
+[[example]]
+name = "gemini_streaming"
+path = "examples/gemini_streaming.rs"
+
+[[example]]
+name = "gemini_function_calling"
+path = "examples/gemini_function_calling.rs"
+
+[lints]
+workspace = true

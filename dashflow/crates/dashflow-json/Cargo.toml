@@ -1,0 +1,25 @@
+[package]
+name = "dashflow-json"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+description = "JSON tools for DashFlow - JSON spec navigation and querying"
+repository.workspace = true
+homepage.workspace = true
+keywords = ["dashflow", "json", "tools", "agent"]
+categories = ["data-structures", "parsing"]
+
+[dependencies]
+dashflow = { path = "../dashflow" }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+regex = { workspace = true }
+anyhow.workspace = true
+
+[dev-dependencies]
+tokio.workspace = true
+
+[lints]
+workspace = true

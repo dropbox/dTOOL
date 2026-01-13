@@ -1,0 +1,114 @@
+{{- if .Values.qualityMonitor.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dashflow.fullname" . }}-quality-monitor
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "dashflow.labels" . | nindent 4 }}
+    app.kubernetes.io/component: quality-monitor
+spec:
+  replicas: {{ .Values.qualityMonitor.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "dashflow.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: quality-monitor
+  template:
+    metadata:
+      labels:
+        {{- include "dashflow.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: quality-monitor
+      annotations:
+        prometheus.io/scrape: "false"
+    spec:
+      {{- include "dashflow.imagePullSecrets" . | nindent 6 }}
+      serviceAccountName: {{ include "dashflow.serviceAccountName" . }}
+      containers:
+        - name: quality-monitor
+          image: "{{ .Values.global.imageRegistry }}{{ .Values.qualityMonitor.image.repository }}:{{ .Values.qualityMonitor.image.tag }}"
+          imagePullPolicy: {{ .Values.qualityMonitor.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3003
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "dashflow.fullname" . }}-config
+            - secretRef:
+                name: {{ include "dashflow.fullname" . }}-secrets
+          env:
+            - name: KAFKA_BROKERS
+              value: {{ include "dashflow.kafkaBrokers" . | quote }}
+            {{- /* Kafka security env vars (non-secret values) */}}
+            {{- if .Values.kafka.security.protocol }}
+            - name: KAFKA_SECURITY_PROTOCOL
+              value: {{ .Values.kafka.security.protocol | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.sasl.mechanism }}
+            - name: KAFKA_SASL_MECHANISM
+              value: {{ .Values.kafka.security.sasl.mechanism | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.ssl.caLocation }}
+            - name: KAFKA_SSL_CA_LOCATION
+              value: {{ .Values.kafka.security.ssl.caLocation | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.ssl.certificateLocation }}
+            - name: KAFKA_SSL_CERTIFICATE_LOCATION
+              value: {{ .Values.kafka.security.ssl.certificateLocation | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.ssl.keyLocation }}
+            - name: KAFKA_SSL_KEY_LOCATION
+              value: {{ .Values.kafka.security.ssl.keyLocation | quote }}
+            {{- end }}
+            {{- if .Values.kafka.security.ssl.endpointAlgorithm }}
+            - name: KAFKA_SSL_ENDPOINT_ALGORITHM
+              value: {{ .Values.kafka.security.ssl.endpointAlgorithm | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.qualityMonitor.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3003
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3003
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+      {{- with .Values.qualityMonitor.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.qualityMonitor.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.qualityMonitor.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dashflow.fullname" . }}-quality-monitor
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "dashflow.labels" . | nindent 4 }}
+    app.kubernetes.io/component: quality-monitor
+spec:
+  type: {{ .Values.qualityMonitor.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.qualityMonitor.service.port }}
+      targetPort: 3003
+      protocol: TCP
+  selector:
+    {{- include "dashflow.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: quality-monitor
+{{- end }}

@@ -1,0 +1,84 @@
+Box Drawing Character Test File
+================================
+
+Basic Box Drawing (Light):
+┌────────────────┐
+│  Box Drawing   │
+├────────────────┤
+│ ┌─┬─┐   Test   │
+│ ├─┼─┤          │
+│ └─┴─┘          │
+└────────────────┘
+
+Double Line Box:
+╔════════════════╗
+║  Double Lines  ║
+╠════════════════╣
+║ ╔═╦═╗   Test   ║
+║ ╠═╬═╣          ║
+║ ╚═╩═╝          ║
+╚════════════════╝
+
+Heavy Lines:
+┏━━━━━━━━━━━━━━━━┓
+┃  Heavy Lines   ┃
+┣━━━━━━━━━━━━━━━━┫
+┃ ┏━┳━┓   Test   ┃
+┃ ┣━╋━┫          ┃
+┃ ┗━┻━┛          ┃
+┗━━━━━━━━━━━━━━━━┛
+
+Mixed Weights:
+┍━━━━━━━━━━━━━━━━┑
+│ Mixed Corners  │
+┕━━━━━━━━━━━━━━━━┙
+
+Rounded Corners:
+╭────────────────╮
+│ Rounded        │
+╰────────────────╯
+
+Block Elements:
+█▓▒░ ▀▄ ▌▐ ▁▂▃▄▅▆▇█
+Full  Half  Eighths
+
+Quadrants:
+▖▗▘▙▚▛▜▝▞▟
+
+Triangles:
+◢◣◤◥
+
+Diagonals:
+╱╲╳
+
+Half Lines:
+╴╵╶╷
+
+All Characters Aligned:
+┌───┬───┬───┬───┐
+│ A │ B │ C │ D │
+├───┼───┼───┼───┤
+│ 1 │ 2 │ 3 │ 4 │
+├───┼───┼───┼───┤
+│ X │ Y │ Z │ ! │
+└───┴───┴───┴───┘
+
+Nested Boxes:
+┌─────────────────┐
+│ ┌─────────────┐ │
+│ │ ┌─────────┐ │ │
+│ │ │  INNER  │ │ │
+│ │ └─────────┘ │ │
+│ └─────────────┘ │
+└─────────────────┘
+
+Tree Structure:
+├── item1
+│   ├── subitem1
+│   └── subitem2
+├── item2
+│   └── subitem3
+└── item3
+
+Progress Bar:
+▏▎▍▌▋▊▉█ 100%

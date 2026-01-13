@@ -1,0 +1,9 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc f4b4f04e94037cda43f8a59a220ef95b888f69d04a64bf3d59f40a24290369e1 # shrinks to diff = FieldDiff { path: "", before: Null, after: Null }
+cc 412b73b5b60206bb1f7f7af48bbd61380ede868ea2437c7ec11e54340e513959 # shrinks to diff = StateDiff { added: [], removed: [], modified: [FieldDiff { path: "", before: Null, after: Null }] }
+cc 4a1f9bc2c468083a84d3d6dd66a2fbf6803022b6f36c6a801e0bd17540cd444e # shrinks to msg = Tool { content: Text(""), tool_call_id: "A", artifact: Some(Null), status: None, fields: BaseMessageFields { id: None, name: None, additional_kwargs: {}, response_metadata: {} } }

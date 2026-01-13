@@ -1,0 +1,45 @@
+# Staging environment overlay
+# Apply with: kubectl apply -k deploy/kubernetes/overlays/staging
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dashflow-staging
+
+# Include base resources
+resources:
+  - ../../base
+
+# Staging-specific labels
+commonLabels:
+  environment: staging
+
+# Patches for staging environment
+patches:
+  # WebSocket server must remain single replica (M-415): Kafka consumer group partitioning
+  # would otherwise cause partial streams depending on which pod a client connects to.
+  - patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+    target:
+      kind: Deployment
+      name: dashflow-websocket-server
+
+# Override namespace
+nameSuffix: ""
+
+# Staging ConfigMap patches
+configMapGenerator:
+  - name: dashflow-config
+    behavior: merge
+    literals:
+      - RUST_LOG=info
+
+# Image tags for staging
+images:
+  - name: dashflow/websocket-server
+    newTag: staging
+  - name: dashflow/quality-monitor
+    newTag: staging
+  - name: dashflow/prometheus-exporter
+    newTag: staging

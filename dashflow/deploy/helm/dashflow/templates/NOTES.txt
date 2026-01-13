@@ -1,0 +1,82 @@
+DashFlow has been deployed!
+
+=== Access Information ===
+
+{{- if .Values.ingress.enabled }}
+Application URL:
+{{- range $host := .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ $host.host }}
+{{- end }}
+{{- else }}
+
+To access DashFlow services, use port-forwarding:
+
+1. WebSocket Server:
+   kubectl port-forward -n {{ .Values.namespace }} svc/{{ include "dashflow.fullname" . }}-websocket-server 3002:3002
+
+2. Quality Monitor:
+   kubectl port-forward -n {{ .Values.namespace }} svc/{{ include "dashflow.fullname" . }}-quality-monitor 3003:3003
+
+{{- if .Values.observability.grafana.enabled }}
+3. Grafana Dashboard:
+   kubectl port-forward -n {{ .Values.namespace }} svc/{{ include "dashflow.fullname" . }}-grafana 3000:3000
+   Default credentials: admin / {{ .Values.secrets.grafanaAdminPassword }}
+{{- end }}
+
+{{- if .Values.observability.jaeger.enabled }}
+4. Jaeger Tracing:
+   kubectl port-forward -n {{ .Values.namespace }} svc/{{ include "dashflow.fullname" . }}-jaeger 16686:16686
+{{- end }}
+
+{{- if .Values.observability.prometheus.enabled }}
+5. Prometheus:
+   kubectl port-forward -n {{ .Values.namespace }} svc/{{ include "dashflow.fullname" . }}-prometheus 9090:9090
+{{- end }}
+
+{{- if .Values.prometheusExporter.enabled }}
+6. Prometheus Exporter:
+   kubectl port-forward -n {{ .Values.namespace }} svc/{{ include "dashflow.fullname" . }}-prometheus-exporter 9091:{{ .Values.prometheusExporter.service.port }}
+   Metrics: http://localhost:9091/metrics
+{{- end }}
+{{- end }}
+
+=== Configuration ===
+
+Namespace: {{ .Values.namespace }}
+Kafka Brokers: {{ include "dashflow.kafkaBrokers" . }}
+Redis URL: {{ include "dashflow.redisUrl" . }}
+Log Level: {{ .Values.config.logLevel }}
+
+=== Components ===
+
+{{- if .Values.websocketServer.enabled }}
+- WebSocket Server: {{ .Values.websocketServer.replicaCount }} replica(s)
+{{- end }}
+{{- if .Values.qualityMonitor.enabled }}
+- Quality Monitor: {{ .Values.qualityMonitor.replicaCount }} replica(s)
+{{- end }}
+{{- if .Values.prometheusExporter.enabled }}
+- Prometheus Exporter: {{ .Values.prometheusExporter.replicaCount }} replica(s)
+{{- end }}
+{{- if and .Values.redis.enabled (not .Values.redis.external) }}
+- Redis: Built-in
+{{- else if .Values.redis.external }}
+- Redis: External ({{ .Values.redis.host }})
+{{- end }}
+{{- if and .Values.kafka.enabled (not .Values.kafka.external) }}
+- Kafka: Built-in
+{{- else if .Values.kafka.external }}
+- Kafka: External ({{ .Values.kafka.brokers }})
+{{- end }}
+
+=== Next Steps ===
+
+1. Verify deployment:
+   kubectl get pods -n {{ .Values.namespace }}
+
+2. Check logs:
+   kubectl logs -n {{ .Values.namespace }} deployment/{{ include "dashflow.fullname" . }}-websocket-server
+
+3. View metrics in Grafana (if enabled)
+
+For more information, visit: https://github.com/dropbox/dTOOL/dashflow

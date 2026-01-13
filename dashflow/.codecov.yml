@@ -1,0 +1,113 @@
+codecov:
+  require_ci_to_pass: yes
+  notify:
+    wait_for_ci: yes
+
+coverage:
+  precision: 2
+  round: down
+  range: "50...85"
+
+  status:
+    project:
+      default:
+        target: 50%           # Current realistic target based on N=1001 findings
+        threshold: 2%         # Allow 2% decrease
+        if_ci_failed: error
+
+    patch:
+      default:
+        target: 60%           # New code should have higher coverage
+        threshold: 5%
+        if_ci_failed: error
+
+  # Only include source files, exclude generated and test files
+  ignore:
+    - "target/**/*"
+    - "examples/**/*"
+    - "benches/**/*"
+    - "tests/**/*"
+    - "**/tests.rs"
+    - "**/*_test.rs"
+
+comment:
+  layout: "header, diff, components, tree"
+  behavior: default
+  require_changes: false
+  require_base: yes
+  require_head: yes
+
+component_management:
+  default_rules:
+    statuses:
+      - type: project
+        target: 50%
+      - type: patch
+        target: 60%
+
+  individual_components:
+    # Core library - high coverage target
+    - component_id: langchain-core
+      name: "LangChain Core"
+      paths:
+        - "crates/langchain-core/**/*.rs"
+      statuses:
+        - type: project
+          target: 75%
+
+    # DashFlow - moderate coverage (async instrumentation limits)
+    - component_id: dashflow
+      name: "DashFlow"
+      paths:
+        - "crates/dashflow/**/*.rs"
+      statuses:
+        - type: project
+          target: 55%
+
+    # LLM providers - moderate coverage (I/O heavy)
+    - component_id: llm-providers
+      name: "LLM Providers"
+      paths:
+        - "crates/langchain-openai/**/*.rs"
+        - "crates/langchain-anthropic/**/*.rs"
+        - "crates/langchain-google/**/*.rs"
+      statuses:
+        - type: project
+          target: 60%
+
+    # Checkpointers - moderate coverage (I/O heavy)
+    - component_id: checkpointers
+      name: "Checkpointers"
+      paths:
+        - "crates/langchain-postgres-checkpointer/**/*.rs"
+        - "crates/langchain-redis-checkpointer/**/*.rs"
+        - "crates/langchain-s3-checkpointer/**/*.rs"
+      statuses:
+        - type: project
+          target: 55%
+
+    # Text splitters - high coverage target
+    - component_id: text-splitters
+      name: "Text Splitters"
+      paths:
+        - "crates/langchain-text-splitters/**/*.rs"
+      statuses:
+        - type: project
+          target: 80%
+
+    # Observability - high coverage target (new code)
+    - component_id: observability
+      name: "Observability"
+      paths:
+        - "crates/langchain-observability/**/*.rs"
+      statuses:
+        - type: project
+          target: 85%
+
+# GitHub checks configuration
+github_checks:
+  annotations: true
+
+# Slack/notification integration (configure with webhook)
+# slack:
+#   enabled: no
