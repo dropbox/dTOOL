@@ -10,15 +10,17 @@ The terminal is the natural habitat of AI agents. These tools provide the infras
 
 | Project | Description | Status | License |
 |---------|-------------|--------|---------|
-| **dashflow** | AI workflow orchestration framework (108 crates) | Planned | Apache 2.0 |
-| **dterm** | Terminal emulator v3 | Planned | Apache 2.0 |
-| **dasher** | Unified agentic coding tool | Planned | Apache 2.0 |
-| **sg** | SuperGrep - enhanced code search | Planned | Apache 2.0 |
-| **dashterm2** | iTerm2 fork with AI automation | Planned | GPL v2 |
+| **dashflow** | AI agent workflow platform. 108 crates, LangChain-compatible. | Planned | Apache 2.0 |
+| **dashterm2** | iTerm2 fork with AI automation. | Planned | GPL v2 |
+| **dterm** | Terminal v3. Next-gen, designed for dashflow integration. | Planned | Apache 2.0 |
+| **dasher** | Unified agentic coding CLI. Claude Code + Codex + Gemini patterns. | Planned | Apache 2.0 |
+| **codex_dashflow** | Codex ported to Rust/DashFlow. Research for Dasher. | Planned | Apache 2.0 |
+| **gemini_cli_rs** | Gemini CLI port. Research for Dasher. | Planned | Apache 2.0 |
+| **codex_inky** | Codex + inky TUI. | Planned | Apache 2.0 |
+| **dashterm** | Terminal v1. Legacy. | Planned | Apache 2.0 |
+| **ay_coder** | Early agentic coding attempt. Superseded by Dasher. | Planned | Apache 2.0 |
 
-## Status
-
-These projects are in **preview** status. APIs may change.
+*Note: inky moved to dRS (research ports). dashnews archived (replaced by GitHub Discussions).*
 
 ## License
 
