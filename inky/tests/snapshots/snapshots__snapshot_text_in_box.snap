@@ -1,0 +1,10 @@
+---
+source: tests/snapshots.rs
+assertion_line: 84
+expression: "render_snapshot(&node, 25, 10)"
+---
+┌──────────────────┐     
+│Hello, World!     │     
+│                  │     
+│                  │     
+└──────────────────┘

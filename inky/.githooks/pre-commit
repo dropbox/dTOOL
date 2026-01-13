@@ -1,0 +1,54 @@
+#!/bin/bash
+# Pre-commit hook: Enforce linters and tests before commit
+# Install: git config core.hooksPath .githooks
+
+set -e
+
+echo "=== Pre-commit checks ==="
+
+# 1. Check formatting
+echo "[1/4] Checking formatting..."
+if ! cargo fmt --check 2>/dev/null; then
+    echo "ERROR: Code is not formatted. Run 'cargo fmt' first."
+    exit 1
+fi
+echo "  ✓ Formatting OK"
+
+# 2. Run clippy (zero warnings)
+echo "[2/4] Running clippy..."
+CLIPPY_OUTPUT=$(cargo clippy --all-targets 2>&1)
+if echo "$CLIPPY_OUTPUT" | grep -q "^warning:"; then
+    echo "ERROR: Clippy warnings found:"
+    echo "$CLIPPY_OUTPUT" | grep -E "^warning:" | head -10
+    echo ""
+    echo "Fix all warnings before committing."
+    exit 1
+fi
+echo "  ✓ Clippy OK (zero warnings)"
+
+# 3. Run tests
+echo "[3/4] Running tests..."
+if ! cargo test --quiet 2>/dev/null; then
+    echo "ERROR: Tests failed. Fix tests before committing."
+    exit 1
+fi
+echo "  ✓ Tests OK"
+
+# 4. Check for common issues
+echo "[4/4] Checking for common issues..."
+
+# Check for debug prints
+if git diff --cached --name-only | xargs grep -l "dbg!" 2>/dev/null | grep -q "."; then
+    echo "WARNING: Found dbg! macro in staged files. Consider removing."
+fi
+
+# Check for TODO/FIXME in new code (warning only)
+TODOS=$(git diff --cached | grep -E "^\+.*TODO|^\+.*FIXME" | wc -l)
+if [ "$TODOS" -gt 0 ]; then
+    echo "  Note: $TODOS TODO/FIXME comments added"
+fi
+
+echo "  ✓ Checks complete"
+
+echo ""
+echo "=== All checks passed ==="

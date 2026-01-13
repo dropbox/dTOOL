@@ -1,0 +1,12 @@
+---
+source: tests/snapshots.rs
+expression: "render_snapshot(&node, 45, 10)"
+---
+┌──────────────────────────────────────┐     
+│┌─ rust                               │     
+││ fn hello() {                        │     
+││     println!("Hi!");                │     
+││ }                                   │     
+│                                      │     
+│                                      │     
+└──────────────────────────────────────┘

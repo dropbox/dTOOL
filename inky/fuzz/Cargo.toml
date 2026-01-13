@@ -1,0 +1,49 @@
+[package]
+name = "inky-fuzz"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.inky-tui]
+path = ".."
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[profile.release]
+debug = 1
+
+[[bin]]
+name = "fuzz_markdown"
+path = "fuzz_targets/fuzz_markdown.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_buffer"
+path = "fuzz_targets/fuzz_buffer.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_style"
+path = "fuzz_targets/fuzz_style.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "fuzz_layout"
+path = "fuzz_targets/fuzz_layout.rs"
+test = false
+doc = false
+bench = false

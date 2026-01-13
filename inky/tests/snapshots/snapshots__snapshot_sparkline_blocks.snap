@@ -1,0 +1,8 @@
+---
+source: tests/snapshots.rs
+expression: "render_snapshot(&node, 25, 6)"
+---
+┌──────────────────┐     
+│▂▅▁█▄▆▃▇          │     
+│                  │     
+└──────────────────┘

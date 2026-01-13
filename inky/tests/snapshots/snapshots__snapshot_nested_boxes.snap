@@ -1,0 +1,12 @@
+---
+source: tests/snapshots.rs
+assertion_line: 182
+expression: "render_snapshot(&outer, 25, 12)"
+---
+╔══════════════════╗     
+║                  ║     
+║ ╭────────╮       ║     
+║ │        │       ║     
+║ ╰────────╯       ║     
+║                  ║     
+╚══════════════════╝

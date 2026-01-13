@@ -1,0 +1,12 @@
+---
+source: tests/snapshots.rs
+expression: "render_snapshot(&node, 45, 10)"
+---
+┌──────────────────────────────────────┐     
+│# Header                              │     
+│                                      │     
+│This is a bold and italic paragraph.  │     
+│                                      │     
+│                                      │     
+│                                      │     
+└──────────────────────────────────────┘

@@ -1,0 +1,13 @@
+[book]
+title = "inky User Guide"
+authors = ["Andrew Yates"]
+language = "en"
+multilingual = false
+src = "src"
+
+[build]
+build-dir = "book"
+
+[output.html]
+default-theme = "light"
+preferred-dark-theme = "light"
