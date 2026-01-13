@@ -1,5 +1,0 @@
-# Fuzz target artifacts
-target/
-corpus/
-artifacts/
-coverage/

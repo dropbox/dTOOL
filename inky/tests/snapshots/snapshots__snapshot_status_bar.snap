@@ -1,7 +1,0 @@
----
-source: tests/snapshots.rs
-expression: "render_snapshot(&node, 45, 5)"
----
-┌──────────────────────────────────────┐     
-│⣾ Processing files...                 │     
-└──────────────────────────────────────┘
